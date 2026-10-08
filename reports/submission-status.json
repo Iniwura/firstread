@@ -16,9 +16,9 @@
   },
   "publication": {
     "repository": "https://github.com/Iniwura/firstread",
-    "repositoryCommit": "49ebd6454e831e173ceba49cac8741baf9276950",
+    "repositoryCommit": "e43deb124f92f5954d5055ebd540e31bb0a31189",
     "productionUrl": "https://firstread-psi.vercel.app/",
-    "deploymentId": "dpl_Q9oaHhsCM6MJAhEZVbqRKatzL4b6",
+    "deploymentId": "dpl_E5or9WbFhY9adFg9EuSLSHnUKGkR",
     "deploymentState": "READY",
     "anonymousHttpStatus": 200,
     "browserSmoke": "PASS"

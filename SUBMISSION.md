@@ -44,7 +44,7 @@ The LLM receives only the typed packet assembled after the as-of filter. It may 
 ## Links and external submission status
 
 - Repository: `https://github.com/Iniwura/firstread`
-- Production demo: `https://firstread-psi.vercel.app/` (final deployment `dpl_Q9oaHhsCM6MJAhEZVbqRKatzL4b6`; anonymous HTTP and Chromium checks returned 200/pass from the verification environment).
+- Production demo: `https://firstread-psi.vercel.app/` (final deployment `dpl_E5or9WbFhY9adFg9EuSLSHnUKGkR`; anonymous HTTP and Chromium checks returned 200/pass from the verification environment).
 - Form checked, not submitted: `https://forms.gle/GyWZCMCPocgJdJon6`
 - Required Bitget interaction post to quote/reply: `https://x.com/Bitget_AI/status/2062506424085917944?s=20`
 

@@ -14,6 +14,15 @@
     "observedTimeline": "9/3 start; 9/21 submission deadline; 10/8 winners announced",
     "conflictsWithForm": true
   },
+  "publication": {
+    "repository": "https://github.com/Iniwura/firstread",
+    "repositoryCommit": "49ebd6454e831e173ceba49cac8741baf9276950",
+    "productionUrl": "https://firstread-psi.vercel.app/",
+    "deploymentId": "dpl_Q9oaHhsCM6MJAhEZVbqRKatzL4b6",
+    "deploymentState": "READY",
+    "anonymousHttpStatus": 200,
+    "browserSmoke": "PASS"
+  },
   "requiredUserActions": [
     "Provide or confirm team identity and Bitget UID",
     "Approve final project description and public links",

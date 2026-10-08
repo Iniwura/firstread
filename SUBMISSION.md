@@ -44,12 +44,12 @@ The LLM receives only the typed packet assembled after the as-of filter. It may 
 ## Links and external submission status
 
 - Repository: `https://github.com/Iniwura/firstread`
-- Production project: Vercel project `firstread`; access status must be checked from a fresh unauthenticated browser before calling it judge-ready.
+- Production demo: `https://firstread-psi.vercel.app/` (final deployment `dpl_Q9oaHhsCM6MJAhEZVbqRKatzL4b6`; anonymous HTTP and Chromium checks returned 200/pass from the verification environment).
 - Form checked, not submitted: `https://forms.gle/GyWZCMCPocgJdJon6`
 - Required Bitget interaction post to quote/reply: `https://x.com/Bitget_AI/status/2062506424085917944?s=20`
 
 Draft X post (requires explicit user approval before publication):
 
-> We built FIRSTREAD for Bitget AI Trading Desk: an evidence-timed earnings research desk for Reality rTokens. It separates what was knowable at a decision time from later filings and future candles, shows the actual rToken response, and keeps AI constrained to cited evidence. Demo: [PUBLIC URL] Repo: https://github.com/Iniwura/firstread #BitgetAI #AITrading
+> We built FIRSTREAD for Bitget AI Trading Desk: an evidence-timed earnings research desk for Reality rTokens. It separates what was knowable at a decision time from later filings and future candles, shows the actual rToken response, and keeps AI constrained to cited evidence. Demo: https://firstread-psi.vercel.app/ Repo: https://github.com/Iniwura/firstread #BitgetAI #AITrading
 
 The current form text showed an October 8, 23:59 (UTC+8) deadline while the official activity page showed an earlier timeline. Team identity, Bitget UID, university, acceptance, extension, and successful form submission are not invented here. The user must confirm those fields and submit externally if desired.

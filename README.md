@@ -82,6 +82,7 @@ Observed validation includes 13 automated temporal/research tests, live API prob
 
 - [Submission description and role of LLM](SUBMISSION.md)
 - [Submission status](reports/submission-status.json)
+- Live demo: https://firstread-psi.vercel.app/
 
 The live form was checked but not submitted. It currently states an October 8, 23:59 (UTC+8) deadline; the official activity page shows a conflicting earlier timeline. Acceptance and any extension are not claimed. The X promotional draft is in `SUBMISSION.md` and requires user approval before posting.
 

@@ -1,0 +1,1030 @@
+{
+  "project": "FIRSTREAD",
+  "fetchedAt": "2026-10-08T22:33:48.186Z",
+  "directReality": {
+    "endpoints": [
+      {
+        "url": "https://api.bitget.com/api/v3/reality/market/stock-info?symbol=RNVDAUSDT",
+        "httpStatus": 200,
+        "ok": true,
+        "body": {
+          "code": "00000",
+          "msg": "success",
+          "requestTime": 1791498829034,
+          "data": [
+            {
+              "symbol": "RNVDAUSDT",
+              "code": "NVDA",
+              "name": null,
+              "tradingPeriod": [
+                "overnight",
+                "pre_market",
+                "regular",
+                "after_hours"
+              ],
+              "weekendTradable": "yes"
+            }
+          ]
+        },
+        "rawText": "{\"code\":\"00000\",\"msg\":\"success\",\"requestTime\":1791498829034,\"data\":[{\"symbol\":\"RNVDAUSDT\",\"code\":\"NVDA\",\"name\":null,\"tradingPeriod\":[\"overnight\",\"pre_market\",\"regular\",\"after_hours\"],\"weekendTradable\":\"yes\"}]}",
+        "sessionId": null
+      },
+      {
+        "url": "https://api.bitget.com/api/v3/reality/market/states",
+        "httpStatus": 200,
+        "ok": true,
+        "body": {
+          "code": "00000",
+          "msg": "success",
+          "requestTime": 1791498829451,
+          "data": {
+            "market": "US",
+            "daylightType": "standard",
+            "stateList": [
+              {
+                "state": "pre_market",
+                "timeZone": "ET",
+                "startTime": "04:00",
+                "endTime": "09:30"
+              },
+              {
+                "state": "regular",
+                "timeZone": "ET",
+                "startTime": "09:30",
+                "endTime": "16:00"
+              },
+              {
+                "state": "after_hours",
+                "timeZone": "ET",
+                "startTime": "16:00",
+                "endTime": "20:00"
+              },
+              {
+                "state": "overnight",
+                "timeZone": "ET",
+                "startTime": "20:00",
+                "endTime": "04:00"
+              }
+            ]
+          }
+        },
+        "rawText": "{\"code\":\"00000\",\"msg\":\"success\",\"requestTime\":1791498829451,\"data\":{\"market\":\"US\",\"daylightType\":\"standard\",\"stateList\":[{\"state\":\"pre_market\",\"timeZone\":\"ET\",\"startTime\":\"04:00\",\"endTime\":\"09:30\"},{\"state\":\"regular\",\"timeZone\":\"ET\",\"startTime\":\"09:30\",\"endTime\":\"16:00\"},{\"state\":\"after_hours\",\"timeZone\":\"ET\",\"startTime\":\"16:00\",\"endTime\":\"20:00\"},{\"state\":\"overnight\",\"timeZone\":\"ET\",\"startTime\":\"20:00\",\"endTime\":\"04:00\"}]}}",
+        "sessionId": null
+      },
+      {
+        "url": "https://api.bitget.com/api/v3/reality/market/calendar",
+        "httpStatus": 200,
+        "ok": true,
+        "body": {
+          "code": "00000",
+          "msg": "success",
+          "requestTime": 1791498829845,
+          "data": {
+            "timeZone": "ET",
+            "specificConfig": [
+              {
+                "remark": "",
+                "startTime": "2026-06-18 20:00",
+                "endTime": "2026-06-19 20:00"
+              },
+              {
+                "remark": "",
+                "startTime": "2026-07-02 20:00",
+                "endTime": "2026-07-03 20:00"
+              },
+              {
+                "remark": "",
+                "startTime": "2026-09-06 20:00",
+                "endTime": "2026-09-07 20:00"
+              }
+            ],
+            "regularConfig": [
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          }
+        },
+        "rawText": "{\"code\":\"00000\",\"msg\":\"success\",\"requestTime\":1791498829845,\"data\":{\"timeZone\":\"ET\",\"specificConfig\":[{\"remark\":\"\",\"startTime\":\"2026-06-18 20:00\",\"endTime\":\"2026-06-19 20:00\"},{\"remark\":\"\",\"startTime\":\"2026-07-02 20:00\",\"endTime\":\"2026-07-03 20:00\"},{\"remark\":\"\",\"startTime\":\"2026-09-06 20:00\",\"endTime\":\"2026-09-07 20:00\"}],\"regularConfig\":[\"SATURDAY\",\"SUNDAY\"]}}",
+        "sessionId": null
+      },
+      {
+        "url": "https://api.bitget.com/api/v3/market/instruments?category=SPOT&symbol=RNVDAUSDT",
+        "httpStatus": 200,
+        "ok": true,
+        "body": {
+          "code": "00000",
+          "msg": "success",
+          "requestTime": 1791498830240,
+          "data": [
+            {
+              "symbol": "RNVDAUSDT",
+              "category": "SPOT",
+              "baseCoin": "rNVDA",
+              "quoteCoin": "USDT",
+              "symbolType": "stock",
+              "buyLimitPriceRatio": "0.1",
+              "sellLimitPriceRatio": "0.1",
+              "minOrderQty": "0.0001",
+              "maxOrderQty": "0",
+              "pricePrecision": "2",
+              "quantityPrecision": "4",
+              "quotePrecision": "6",
+              "minOrderAmount": "10",
+              "maxMarketOrderAmount": "1000000",
+              "maxSymbolOrderNum": "",
+              "maxProductOrderNum": "400",
+              "status": "online",
+              "maintainTime": "",
+              "areaSymbol": "yes",
+              "maxPositionNum": "200",
+              "isReality": "yes",
+              "launchTime": "1776914552903"
+            }
+          ]
+        },
+        "rawText": "{\"code\":\"00000\",\"msg\":\"success\",\"requestTime\":1791498830240,\"data\":[{\"symbol\":\"RNVDAUSDT\",\"category\":\"SPOT\",\"baseCoin\":\"rNVDA\",\"quoteCoin\":\"USDT\",\"symbolType\":\"stock\",\"buyLimitPriceRatio\":\"0.1\",\"sellLimitPriceRatio\":\"0.1\",\"minOrderQty\":\"0.0001\",\"maxOrderQty\":\"0\",\"pricePrecision\":\"2\",\"quantityPrecision\":\"4\",\"quotePrecision\":\"6\",\"minOrderAmount\":\"10\",\"maxMarketOrderAmount\":\"1000000\",\"maxSymbolOrderNum\":\"\",\"maxProductOrderNum\":\"400\",\"status\":\"online\",\"maintainTime\":\"\",\"areaSymbol\":\"yes\",\"maxPositionNum\":\"200\",\"isReality\":\"yes\",\"launchTime\":\"1776914552903\"}]}",
+        "sessionId": null
+      }
+    ],
+    "allSuccessful": true,
+    "schema": "Bitget REST envelope { code, msg, requestTime, data }"
+  },
+  "fundamentalsMcp": {
+    "endpoint": "https://agent.bitget.com/mcp",
+    "server": {
+      "name": "bitget-mcp-server",
+      "version": "4.0.5"
+    },
+    "initialize": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {
+          "logging": {},
+          "prompts": {
+            "listChanged": true
+          },
+          "resources": {
+            "subscribe": false,
+            "listChanged": true
+          },
+          "tools": {
+            "listChanged": true
+          }
+        },
+        "serverInfo": {
+          "name": "bitget-mcp-server",
+          "version": "4.0.5"
+        }
+      }
+    },
+    "tools": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "_meta": {
+              "fastmcp": {
+                "tags": []
+              }
+            },
+            "description": "List available data categories, or entries within a category (optionally filtered).",
+            "inputSchema": {
+              "properties": {
+                "category": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "subcategory": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                },
+                "keyword": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                }
+              },
+              "type": "object",
+              "additionalProperties": false
+            },
+            "name": "guide",
+            "outputSchema": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "title": "Guide"
+          },
+          {
+            "_meta": {
+              "fastmcp": {
+                "tags": []
+              }
+            },
+            "description": "Execute a catalog entry by id, forwarding validated params to agent-data-platform.",
+            "inputSchema": {
+              "properties": {
+                "entry_id": {
+                  "type": "string"
+                },
+                "params": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null
+                }
+              },
+              "required": [
+                "entry_id"
+              ],
+              "type": "object",
+              "additionalProperties": false
+            },
+            "name": "do_query",
+            "outputSchema": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "title": "Do Query"
+          }
+        ]
+      }
+    },
+    "equityGuide": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "text": "{\"entries\":[{\"id\":\"equity_price_quote\",\"url_path\":\"equity/price/quote\",\"subcategory\":\"行情\",\"title\":\"股票基本信息 / 实时报价\",\"summary\":\"获取美股的实时报价与基本信息\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_price_historical\",\"url_path\":\"equity/price/historical\",\"subcategory\":\"行情\",\"title\":\"股票历史K线\",\"summary\":\"获取美股历史K线（OHLCV）数据\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"symbols\",\"required\":false,\"type\":\"string\"},{\"name\":\"start_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"end_time\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_profile\",\"url_path\":\"equity/profile\",\"subcategory\":\"基本面（含财报）\",\"title\":\"公司基本信息\",\"summary\":\"获取上市公司的基本信息\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_management\",\"url_path\":\"equity/fundamental/management\",\"subcategory\":\"基本面（含财报）\",\"title\":\"管理层基本信息\",\"summary\":\"获取公司管理层的基本信息\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_calendar\",\"url_path\":\"equity/calendar\",\"subcategory\":\"基本面（含财报）\",\"title\":\"财报日历\",\"summary\":\"获取美股财报发布日历\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"fiscal_year\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_balance\",\"url_path\":\"equity/fundamental/balance\",\"subcategory\":\"基本面（含财报）\",\"title\":\"资产负债表\",\"summary\":\"获取公司资产负债表\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"report_type\",\"required\":false,\"type\":\"string\"},{\"name\":\"statement_year\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_income\",\"url_path\":\"equity/fundamental/income\",\"subcategory\":\"基本面（含财报）\",\"title\":\"利润表\",\"summary\":\"获取公司利润表\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"report_type\",\"required\":false,\"type\":\"string\"},{\"name\":\"statement_year\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_cash\",\"url_path\":\"equity/fundamental/cash\",\"subcategory\":\"基本面（含财报）\",\"title\":\"现金流量表\",\"summary\":\"获取公司现金流量表\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"report_type\",\"required\":false,\"type\":\"string\"},{\"name\":\"statement_year\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_metrics\",\"url_path\":\"equity/fundamental/metrics\",\"subcategory\":\"基本面（含财报）\",\"title\":\"财务分析指标\",\"summary\":\"获取公司财务分析指标\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"report_type\",\"required\":false,\"type\":\"string\"},{\"name\":\"report_annual\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_ratios\",\"url_path\":\"equity/fundamental/ratios\",\"subcategory\":\"基本面（含财报）\",\"title\":\"估值指标\",\"summary\":\"获取公司估值比率指标\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_fundamental_dividends\",\"url_path\":\"equity/fundamental/dividends\",\"subcategory\":\"基本面（含财报）\",\"title\":\"股票分红\",\"summary\":\"获取公司历史分红记录\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"start_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"end_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"event_type\",\"required\":false,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_ownership_insider_trading\",\"url_path\":\"equity/ownership/insider_trading\",\"subcategory\":\"机构持仓\",\"title\":\"内部人交易\",\"summary\":\"获取公司内部人交易记录\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"end_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_ownership_major_holders\",\"url_path\":\"equity/ownership/major_holders\",\"subcategory\":\"机构持仓\",\"title\":\"主要股东持股查询\",\"summary\":\"获取公司主要股东持股信息\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_ownership_form_13f\",\"url_path\":\"equity/ownership/form_13f\",\"subcategory\":\"机构持仓\",\"title\":\"机构持仓明细查询\",\"summary\":\"获取机构 13F 持仓明细\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"date\",\"required\":false,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_ownership_inst_position_detail\",\"url_path\":\"equity/ownership/inst_position_detail\",\"subcategory\":\"机构持仓\",\"title\":\"机构持仓明细\",\"summary\":\"获取机构持仓明细\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_ownership_inst_position_summary\",\"url_path\":\"equity/ownership/inst_position_summary\",\"subcategory\":\"机构持仓\",\"title\":\"机构持仓汇总\",\"summary\":\"获取机构持仓汇总\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":true,\"type\":\"string\"},{\"name\":\"start_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"end_date\",\"required\":false,\"type\":\"string\"},{\"name\":\"page\",\"required\":false,\"type\":\"integer\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_estimates_price_target\",\"url_path\":\"equity/estimates/price_target\",\"subcategory\":\"分析师评级\",\"title\":\"分析师价格预测\",\"summary\":\"获取分析师给出的目标价预测\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"limit\",\"required\":false,\"type\":\"integer\"},{\"name\":\"start_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"end_time\",\"required\":false,\"type\":\"integer\"},{\"name\":\"rating_org\",\"required\":false,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_estimates_forward_pe\",\"url_path\":\"equity/estimates/forward_pe\",\"subcategory\":\"分析师评级\",\"title\":\"分析师前瞻 PE 预测\",\"summary\":\"获取分析师对前瞻市盈率的预测\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"annual\",\"required\":false,\"type\":\"integer\"},{\"name\":\"is_actual_value\",\"required\":false,\"type\":\"boolean\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_estimates_forward_eps\",\"url_path\":\"equity/estimates/forward_eps\",\"subcategory\":\"分析师评级\",\"title\":\"分析师前瞻 EPS 预测\",\"summary\":\"获取分析师对前瞻每股收益的预测\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"annual\",\"required\":false,\"type\":\"integer\"},{\"name\":\"is_actual_value\",\"required\":false,\"type\":\"boolean\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_estimates_forward_ebitda\",\"url_path\":\"equity/estimates/forward_ebitda\",\"subcategory\":\"分析师评级\",\"title\":\"分析师前瞻 EBITDA 预测\",\"summary\":\"获取分析师对前瞻 EBITDA 的预测\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"annual\",\"required\":false,\"type\":\"integer\"},{\"name\":\"is_actual_value\",\"required\":false,\"type\":\"boolean\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_estimates_forward_sales\",\"url_path\":\"equity/estimates/forward_sales\",\"subcategory\":\"分析师评级\",\"title\":\"分析师前瞻营收预测\",\"summary\":\"获取分析师对前瞻营收的预测\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"annual\",\"required\":false,\"type\":\"integer\"},{\"name\":\"is_actual_value\",\"required\":false,\"type\":\"boolean\"}],\"docs_url\":\"/docs/equity\"},{\"id\":\"equity_estimates_consensus\",\"url_path\":\"equity/estimates/consensus\",\"subcategory\":\"分析师评级\",\"title\":\"分析师一致预期\",\"summary\":\"获取分析师一致预期数据\",\"data_tier\":\"free\",\"params_summary\":[{\"name\":\"symbol\",\"required\":false,\"type\":\"string\"},{\"name\":\"fore_indicator_name\",\"required\":false,\"type\":\"string\"}],\"docs_url\":\"/docs/equity\"}]}",
+            "type": "text"
+          }
+        ],
+        "isError": false,
+        "structuredContent": {
+          "entries": [
+            {
+              "id": "equity_price_quote",
+              "url_path": "equity/price/quote",
+              "subcategory": "行情",
+              "title": "股票基本信息 / 实时报价",
+              "summary": "获取美股的实时报价与基本信息",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_price_historical",
+              "url_path": "equity/price/historical",
+              "subcategory": "行情",
+              "title": "股票历史K线",
+              "summary": "获取美股历史K线（OHLCV）数据",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "symbols",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "start_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "end_time",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_profile",
+              "url_path": "equity/profile",
+              "subcategory": "基本面（含财报）",
+              "title": "公司基本信息",
+              "summary": "获取上市公司的基本信息",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_management",
+              "url_path": "equity/fundamental/management",
+              "subcategory": "基本面（含财报）",
+              "title": "管理层基本信息",
+              "summary": "获取公司管理层的基本信息",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_calendar",
+              "url_path": "equity/calendar",
+              "subcategory": "基本面（含财报）",
+              "title": "财报日历",
+              "summary": "获取美股财报发布日历",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "fiscal_year",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_balance",
+              "url_path": "equity/fundamental/balance",
+              "subcategory": "基本面（含财报）",
+              "title": "资产负债表",
+              "summary": "获取公司资产负债表",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "report_type",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "statement_year",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_income",
+              "url_path": "equity/fundamental/income",
+              "subcategory": "基本面（含财报）",
+              "title": "利润表",
+              "summary": "获取公司利润表",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "report_type",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "statement_year",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_cash",
+              "url_path": "equity/fundamental/cash",
+              "subcategory": "基本面（含财报）",
+              "title": "现金流量表",
+              "summary": "获取公司现金流量表",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "report_type",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "statement_year",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_metrics",
+              "url_path": "equity/fundamental/metrics",
+              "subcategory": "基本面（含财报）",
+              "title": "财务分析指标",
+              "summary": "获取公司财务分析指标",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "report_type",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "report_annual",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_ratios",
+              "url_path": "equity/fundamental/ratios",
+              "subcategory": "基本面（含财报）",
+              "title": "估值指标",
+              "summary": "获取公司估值比率指标",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_fundamental_dividends",
+              "url_path": "equity/fundamental/dividends",
+              "subcategory": "基本面（含财报）",
+              "title": "股票分红",
+              "summary": "获取公司历史分红记录",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "start_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "end_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "event_type",
+                  "required": false,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_ownership_insider_trading",
+              "url_path": "equity/ownership/insider_trading",
+              "subcategory": "机构持仓",
+              "title": "内部人交易",
+              "summary": "获取公司内部人交易记录",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "end_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_ownership_major_holders",
+              "url_path": "equity/ownership/major_holders",
+              "subcategory": "机构持仓",
+              "title": "主要股东持股查询",
+              "summary": "获取公司主要股东持股信息",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_ownership_form_13f",
+              "url_path": "equity/ownership/form_13f",
+              "subcategory": "机构持仓",
+              "title": "机构持仓明细查询",
+              "summary": "获取机构 13F 持仓明细",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_ownership_inst_position_detail",
+              "url_path": "equity/ownership/inst_position_detail",
+              "subcategory": "机构持仓",
+              "title": "机构持仓明细",
+              "summary": "获取机构持仓明细",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_ownership_inst_position_summary",
+              "url_path": "equity/ownership/inst_position_summary",
+              "subcategory": "机构持仓",
+              "title": "机构持仓汇总",
+              "summary": "获取机构持仓汇总",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "start_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "end_date",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "page",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_estimates_price_target",
+              "url_path": "equity/estimates/price_target",
+              "subcategory": "分析师评级",
+              "title": "分析师价格预测",
+              "summary": "获取分析师给出的目标价预测",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "limit",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "start_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "end_time",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "rating_org",
+                  "required": false,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_estimates_forward_pe",
+              "url_path": "equity/estimates/forward_pe",
+              "subcategory": "分析师评级",
+              "title": "分析师前瞻 PE 预测",
+              "summary": "获取分析师对前瞻市盈率的预测",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "annual",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "is_actual_value",
+                  "required": false,
+                  "type": "boolean"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_estimates_forward_eps",
+              "url_path": "equity/estimates/forward_eps",
+              "subcategory": "分析师评级",
+              "title": "分析师前瞻 EPS 预测",
+              "summary": "获取分析师对前瞻每股收益的预测",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "annual",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "is_actual_value",
+                  "required": false,
+                  "type": "boolean"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_estimates_forward_ebitda",
+              "url_path": "equity/estimates/forward_ebitda",
+              "subcategory": "分析师评级",
+              "title": "分析师前瞻 EBITDA 预测",
+              "summary": "获取分析师对前瞻 EBITDA 的预测",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "annual",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "is_actual_value",
+                  "required": false,
+                  "type": "boolean"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_estimates_forward_sales",
+              "url_path": "equity/estimates/forward_sales",
+              "subcategory": "分析师评级",
+              "title": "分析师前瞻营收预测",
+              "summary": "获取分析师对前瞻营收的预测",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "annual",
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "is_actual_value",
+                  "required": false,
+                  "type": "boolean"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            },
+            {
+              "id": "equity_estimates_consensus",
+              "url_path": "equity/estimates/consensus",
+              "subcategory": "分析师评级",
+              "title": "分析师一致预期",
+              "summary": "获取分析师一致预期数据",
+              "data_tier": "free",
+              "params_summary": [
+                {
+                  "name": "symbol",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "fore_indicator_name",
+                  "required": false,
+                  "type": "string"
+                }
+              ],
+              "docs_url": "/docs/equity"
+            }
+          ]
+        }
+      }
+    },
+    "liveQuery": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "result": {
+        "content": [
+          {
+            "text": "{\"success\":false,\"status_code\":503,\"data\":\"<html>\\r\\n<head><title>503 Service Temporarily Unavailable</title></head>\\r\\n<body>\\r\\n<center><h1>503 Service Temporarily Unavailable</h1></center>\\r\\n</body>\\r\\n</html>\\r\\n\",\"error\":null}",
+            "type": "text"
+          }
+        ],
+        "isError": false,
+        "structuredContent": {
+          "success": false,
+          "status_code": 503,
+          "data": "<html>\r\n<head><title>503 Service Temporarily Unavailable</title></head>\r\n<body>\r\n<center><h1>503 Service Temporarily Unavailable</h1></center>\r\n</body>\r\n</html>\r\n",
+          "error": null
+        }
+      }
+    },
+    "transportReachable": true,
+    "catalogReachable": true,
+    "equityCatalogReachable": true,
+    "backendQuerySuccessful": false,
+    "limitation": "The public MCP transport and catalog were reachable; the live equity profile query returned backend HTTP 503 during the probe. No fundamentals are fabricated or cached as successful."
+  }
+}

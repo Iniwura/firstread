@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-08T22:30:00.000Z",
+  "form": {
+    "shortUrl": "https://forms.gle/GyWZCMCPocgJdJon6",
+    "finalUrl": "https://docs.google.com/forms/d/e/1FAIpQLScojKm9H2xDNFL3ijcDcKxwG-_PvkmyimiAB-SEFOx_WsqGNA/viewform?usp=send_form",
+    "httpStatus": 200,
+    "title": "Bitget AI Trading Competition Submission Form",
+    "deadlineShown": "October 8, 23:59 (UTC+8)",
+    "acceptanceConfirmed": false,
+    "submissionAttempted": false
+  },
+  "officialActivityPage": {
+    "url": "https://www.bitget.com/zh-CN/activity-hub/hackathon",
+    "observedTimeline": "9/3 start; 9/21 submission deadline; 10/8 winners announced",
+    "conflictsWithForm": true
+  },
+  "requiredUserActions": [
+    "Provide or confirm team identity and Bitget UID",
+    "Approve final project description and public links",
+    "Approve and publish the required X quote post",
+    "Submit the form manually; this agent does not submit it"
+  ],
+  "status": "materials prepared; external submission and acceptance remain unconfirmed"
+}

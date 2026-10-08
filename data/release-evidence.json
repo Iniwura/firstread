@@ -1,0 +1,56 @@
+[
+  {
+    "ticker": "NVDA",
+    "company": "NVIDIA",
+    "event": "Q2 FY2027 earnings",
+    "issuerReleaseUrl": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2027/",
+    "issuerScheduleUrl": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Second-Quarter-Financial-Results/default.aspx",
+    "publisher": "NVIDIA Investor Relations",
+    "publicDate": "2026-08-26",
+    "firstPublicAt": "2026-08-26T20:20:00.000Z",
+    "precision": "minute-approximate",
+    "evidenceNote": "NVIDIA's official schedule says written commentary would be posted immediately after results were publicly announced at approximately 1:20 p.m. PT. This is approximate, not a tick-level timestamp.",
+    "secAcceptedAt": "2026-08-26T20:21:19.000Z",
+    "facts": [
+      { "label": "Revenue", "value": "$96.2B", "quote": "NVIDIA today reported revenue ... of $96.2 billion" },
+      { "label": "GAAP EPS", "value": "$2.46", "quote": "GAAP ... earnings per diluted share were ... $2.46" },
+      { "label": "Q3 outlook", "value": "$108.0B ±2%", "quote": "Revenue is expected to be $108.0 billion, plus or minus 2%." }
+    ]
+  },
+  {
+    "ticker": "AAPL",
+    "company": "Apple",
+    "event": "Q3 FY2026 earnings",
+    "issuerReleaseUrl": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "issuerScheduleUrl": "https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/",
+    "publisher": "Apple Newsroom",
+    "publicDate": "2026-07-30",
+    "firstPublicAt": null,
+    "precision": "date-only",
+    "evidenceNote": "The official Apple release verifies the publication date but exposes no reliable public clock time in the retrieved page. Precision-sensitive replay therefore uses the SEC filing-availability anchor and makes no initial-reaction claim.",
+    "secAcceptedAt": "2026-07-30T20:30:28.000Z",
+    "facts": [
+      { "label": "Revenue", "value": "$109.4B", "quote": "The Company posted quarterly revenue of $109.4 billion" },
+      { "label": "Diluted EPS", "value": "$2.02", "quote": "Diluted earnings per share was $2.02" },
+      { "label": "Gross margin", "value": "50.1%", "quote": "Company gross margin was 50.1%" }
+    ]
+  },
+  {
+    "ticker": "MSFT",
+    "company": "Microsoft",
+    "event": "FY2026 Q4 earnings",
+    "issuerReleaseUrl": "https://www.microsoft.com/en-us/investor/earnings/fy-2026-q4/press-release-webcast",
+    "issuerScheduleUrl": "https://www.microsoft.com/en-us/investor/earnings/fy-2026-q4/earnings-fy-2026-q4",
+    "publisher": "Microsoft Investor Relations",
+    "publicDate": "2026-07-29",
+    "firstPublicAt": null,
+    "precision": "date-only",
+    "evidenceNote": "The official Microsoft release verifies the publication date but exposes no reliable public clock time in the retrieved release page. Precision-sensitive replay therefore uses the SEC filing-availability anchor and makes no initial-reaction claim.",
+    "secAcceptedAt": "2026-07-29T20:04:53.000Z",
+    "facts": [
+      { "label": "Revenue", "value": "$90.0B", "quote": "Revenue was $90.0 billion and increased 18%" },
+      { "label": "GAAP EPS", "value": "$4.81", "quote": "Diluted earnings per share was $4.81" },
+      { "label": "Cloud and AI", "value": "Strength fuels Q4", "quote": "Microsoft Cloud and AI Strength Fuels Fourth Quarter Results" }
+    ]
+  }
+]

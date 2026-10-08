@@ -1,0 +1,29 @@
+[
+  {
+    "ticker": "NVDA",
+    "company": "NVIDIA",
+    "event": "Q2 FY2027 earnings (Form 8-K)",
+    "secAcceptedAt": "2026-08-26T20:21:19.000Z",
+    "source": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/0001045810-26-000073-index.html",
+    "sourceDocument": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm",
+    "timestampCaution": "SEC acceptance is NOT necessarily the first public release time. Validate earlier company/news dissemination before claiming first-reaction results."
+  },
+  {
+    "ticker": "AAPL",
+    "company": "Apple",
+    "event": "Q3 FY2026 earnings (Form 8-K)",
+    "secAcceptedAt": "2026-07-30T20:30:28.000Z",
+    "source": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/0000320193-26-000018-index.htm",
+    "sourceDocument": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm",
+    "timestampCaution": "SEC acceptance is NOT necessarily the first public release time. Validate earlier company/news dissemination before claiming first-reaction results."
+  },
+  {
+    "ticker": "MSFT",
+    "company": "Microsoft",
+    "event": "Q4 FY2026 earnings (Form 8-K)",
+    "secAcceptedAt": "2026-07-29T20:04:53.000Z",
+    "source": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/0001193125-26-323632-index.htm",
+    "sourceDocument": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/msft-ex99_1.htm",
+    "timestampCaution": "SEC acceptance is NOT necessarily the first public release time. Validate earlier company/news dissemination before claiming first-reaction results."
+  }
+]

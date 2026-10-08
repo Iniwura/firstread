@@ -5,7 +5,7 @@ function queryText(value) {
 }
 
 module.exports = async function handler(req, res) {
-  const query = queryText(req.query?.q);
+  const query = queryText(req.query?.q ?? req.query?.query);
   let asOf;
   try { asOf = normalizeAsOf(req.query?.asOf); } catch (error) { return res.status(400).json({ error: error.message }); }
   const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;

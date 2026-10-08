@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="FIRSTREAD is an evidence-first market and research workspace." />
+    <title>FIRSTREAD — Evidence before reaction</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="FIRSTREAD home"><span class="brand-mark">F</span><span>FIRSTREAD</span></a>
+        <div class="topbar-meta"><span class="status-dot"></span><span id="connection-status">Connecting to Bitget</span><span class="topbar-divider"></span><span id="exchange-time">Exchange time —</span></div>
+        <button class="icon-button" id="refresh-button" title="Refresh market data" aria-label="Refresh market data">↻</button>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar">
+          <div class="sidebar-section-label">Workspace</div>
+          <nav class="nav-list" aria-label="Workspace navigation">
+            <a class="nav-item active" href="#overview"><span class="nav-icon">◈</span>Market lens</a>
+            <a class="nav-item" href="#research"><span class="nav-icon">⌕</span>Research desk</a>
+            <a class="nav-item" href="#ai"><span class="nav-icon">✦</span>AI synthesis</a>
+          </nav>
+          <div class="sidebar-section-label watchlist-label">Watchlist <span>3</span></div>
+          <div class="watchlist" id="watchlist">
+            <button class="watch-item active" data-symbol="BTCUSDT"><span class="coin-badge btc">₿</span><span><strong>BTC / USDT</strong><small>Bitcoin</small></span><span class="watch-price" data-watch-price="BTCUSDT">—</span></button>
+            <button class="watch-item" data-symbol="ETHUSDT"><span class="coin-badge eth">Ξ</span><span><strong>ETH / USDT</strong><small>Ethereum</small></span><span class="watch-price" data-watch-price="ETHUSDT">—</span></button>
+            <button class="watch-item" data-symbol="SOLUSDT"><span class="coin-badge sol">S</span><span><strong>SOL / USDT</strong><small>Solana</small></span><span class="watch-price" data-watch-price="SOLUSDT">—</span></button>
+          </div>
+          <div class="sidebar-bottom"><span class="sidebar-section-label">Data policy</span><p>Market values are live observations. Research is filtered by its as-of cutoff. No returns are simulated here.</p><a href="#evidence">View evidence rules <span>↗</span></a></div>
+        </aside>
+
+        <main class="main-content">
+          <section class="intro" id="overview">
+            <div><p class="eyebrow">Research before reaction <span class="eyebrow-line"></span></p><h1>A clearer first read<br /><em>for noisy markets.</em></h1><p class="intro-copy">Live market context and dated evidence in one focused workspace. Ask a question, set the cutoff, and see what was knowable then.</p></div>
+            <div class="intro-stamp"><span class="stamp-kicker">As of</span><strong id="as-of-label">—</strong><span class="stamp-note">Exchange time · UTC</span></div>
+          </section>
+
+          <section class="market-panel panel" aria-labelledby="market-heading">
+            <div class="panel-heading"><div><p class="section-kicker">Live market lens</p><h2 id="market-heading"><span id="active-symbol">BTC</span> / USDT</h2></div><div class="panel-heading-right"><span class="live-pill"><span class="status-dot"></span>Live</span><span class="source-label">Source: Bitget public API</span></div></div>
+            <div class="market-grid">
+              <div class="price-block"><span class="metric-label">Last price</span><strong id="last-price">—</strong><span id="price-change" class="price-change neutral">Waiting for data</span></div>
+              <div class="metric"><span class="metric-label">24h high</span><strong id="high-price">—</strong><small>session range</small></div>
+              <div class="metric"><span class="metric-label">24h low</span><strong id="low-price">—</strong><small>session range</small></div>
+              <div class="metric"><span class="metric-label">Spread</span><strong id="spread">—</strong><small>best bid / ask</small></div>
+            </div>
+            <div class="chart-wrap"><div class="chart-meta"><span>1 minute candles · latest 30</span><span id="candle-observed">Observed —</span></div><svg id="price-chart" viewBox="0 0 920 180" preserveAspectRatio="none" role="img" aria-label="BTC price chart"><path class="chart-gridline" d="M0 30H920M0 90H920M0 150H920"></path><path id="chart-area" class="chart-area" d=""></path><path id="chart-line" class="chart-line" d=""></path></svg></div>
+          </section>
+
+          <section class="research-grid" id="research">
+            <article class="research-panel panel"><div class="panel-heading compact"><div><p class="section-kicker">Point-in-time research</p><h2>Evidence desk</h2></div><span class="evidence-count" id="evidence-count">No run yet</span></div>
+              <form id="research-form" class="research-form"><label for="research-query">What are you trying to understand?</label><div class="query-row"><input id="research-query" name="query" value="bitcoin market structure" autocomplete="off" /><button type="submit" class="primary-button">Run research <span>↗</span></button></div><div class="cutoff-row"><label for="as-of-input">As of</label><input id="as-of-input" type="datetime-local" /><span>Future-dated items are excluded.</span></div></form>
+              <div id="research-state" class="research-state"><span class="empty-icon">⌁</span><strong>Set a question, then run the desk.</strong><p>FIRSTREAD records retrieval time, publication time, and a content hash for every included item.</p></div><div id="research-results" class="research-results" hidden></div>
+            </article>
+            <article class="ai-panel panel" id="ai"><div class="panel-heading compact"><div><p class="section-kicker">AI synthesis</p><h2>Ask the evidence</h2></div><span class="ai-badge">Responses API</span></div><p class="ai-intro">Turn the current evidence set into a concise read. The model is instructed to separate observation from inference and say when the record is thin.</p><form id="ai-form" class="ai-form"><textarea id="ai-question" rows="3" placeholder="What should I pay attention to here?" required></textarea><button class="secondary-button" type="submit">Synthesize answer <span>✦</span></button></form><div id="ai-answer" class="ai-answer"><span class="empty-icon">✦</span><p>Run research first so the answer has something to stand on.</p></div></article>
+          </section>
+
+          <section class="evidence-rules panel" id="evidence"><div><p class="section-kicker">Evidence rules</p><h2>Every read has a timestamp.</h2></div><div class="rules"><div class="rule"><span>01</span><p><strong>Live is labeled live.</strong> Bitget values show the exchange observation time and retrieval time.</p></div><div class="rule"><span>02</span><p><strong>Past stays in the past.</strong> The research cutoff filters out items published after the selected as-of timestamp.</p></div><div class="rule"><span>03</span><p><strong>Thin evidence stays thin.</strong> FIRSTREAD does not estimate performance or turn missing data into a confident signal.</p></div></div></section>
+          <footer class="footer"><span>FIRSTREAD · Evidence before reaction</span><span id="footer-captured">No market capture yet</span></footer>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

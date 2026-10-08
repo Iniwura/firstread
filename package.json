@@ -1,0 +1,16 @@
+{
+  "name": "firstread",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Evidence-first market and research workspace for Bitget data.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:live": "node scripts/bitget-feasibility.mjs && node scripts/point-in-time-feasibility.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0"
+  }
+}

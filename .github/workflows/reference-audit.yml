@@ -1,0 +1,30 @@
+name: FIRSTREAD visual reference inspection
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/reference-audit.mjs'
+      - '.github/workflows/reference-audit.yml'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Inspect public Monodrift reference
+        run: node scripts/reference-audit.mjs
+      - name: Save reference screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Monodrift-reference-audit
+          path: artifacts/reference/

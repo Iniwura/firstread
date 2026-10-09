@@ -45,7 +45,7 @@ These are **conservative SEC publication anchors**, not proof that earnings info
 - Bitget public Reality instruments and historical candles were probed live for `RNVDAUSDT`, `RAAPLUSDT`, and `RMSFTUSDT`.
 - Each case has real one-hour candle coverage around a verified SEC filing-acceptance timestamp.
 - Bitget Reality public stock-info, market-state, market-calendar, and instrument endpoints return live data with the observed `{code,msg,requestTime,data}` envelope.
-- The Bitget US-equity MCP transport initializes publicly and exposes a 22-entry equity catalog. Its backend returned HTTP 503 for a live profile query during the recorded probe; FIRSTREAD does not present unavailable MCP data as successful.
+- The Bitget US-equity MCP transport exposes an equity catalog. The first probe returned HTTP 503, but [subsequent live verification](https://github.com/Iniwura/firstread/actions/runs/37926356094) confirmed successful equity profile, income statement, metrics and quote queries. Fresh provider values are kept outside the historical evidence packet.
 - Issuer release evidence is labeled with its actual precision. NVDA has an official approximate public-release schedule; Apple and Microsoft are date-only in the retrieved issuer pages and are excluded from precision-sensitive issuer replay.
 
 Reports: `reports/bitget-feasibility.json`, `reports/source-feasibility.json`, and `reports/submission-status.json`.
@@ -102,7 +102,7 @@ For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATIO
 - No causal claim from simple price movement; no simulated fills labelled real.
 - Zero fabricated credentials, customers, outcomes, metrics, reviews, or API results.
 
-Observed validation includes a GitHub CI run with **42 of 42 tests passing**, plus live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
+Observed validation includes a GitHub CI run with **63 of 63 tests passing**, plus live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
 
 ## Financial comparison and independent source reconciliation
 
@@ -118,6 +118,16 @@ The [independent live verification](https://github.com/Iniwura/firstread/actions
 A later [live provider check](https://github.com/Iniwura/firstread/actions/runs/37927430868) verifies the abstention and agreements. This is a **post-hoc source audit**, not a historical trading signal, model benchmark, profitability proof or evidence of user adoption.
 
 The `scripts/typecheck.mjs` checks the root browser entrypoint `app.js` in addition to API/scripts/source JavaScript. This was added after the production browser check exposed malformed JavaScript that the earlier source-only CI did not catch.
+
+## Demonstration video and verified app
+
+A captioned real-browser video demonstrates all three issuer cases, historical evidence isolation, SEC-sourced YoY financial analysis and the independent Bitget data reconciliation.
+
+- [Captioned competition demo (GitHub Actions artifact)](https://github.com/Iniwura/firstread/actions/runs/37927622231/artifacts/11614679622) — browser recording, converted to MP4 and archived.
+- [Production browser proof](https://github.com/Iniwura/firstread/actions/runs/37928241804) — PASS with zero failures, desktop/mobile, user journey and live reconciliation.
+- [Automated quality proof](https://github.com/Iniwura/firstread/actions/runs/37928108573) — 63/63 tests pass and root browser entrypoint syntax verified.
+
+The video is a scripted product demonstration, not a successful live Qwen response or an independent human usability study. Actual Qwen access has been applied for by the builder and remains unverified until the key is issued and a real response passes the live-model test.
 
 ## Competition materials
 

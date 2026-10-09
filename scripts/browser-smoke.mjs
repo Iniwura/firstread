@@ -1,46 +1,77 @@
-import { createRequire } from 'node:module';
-const require = createRequire('/mnt/c/Users/DELL 7400/Documents/Codex/2026-10-08/read-codex-autopilot-md-in-the/outputs/firstread/package.json');
-const { chromium } = require('/mnt/c/Users/DELL 7400/Documents/Codex/2026-10-08/read-codex-autopilot-md-in-the/outputs/firstread/node_modules/playwright');
+import { mkdir } from 'node:fs/promises';
+import path from 'node:path';
 
-const baseUrl = process.env.FIRSTREAD_URL || 'http://127.0.0.1:4174';
-const desktopShot = process.env.FIRSTREAD_DESKTOP_SHOT || '/mnt/c/Users/DELL 7400/Documents/Codex/2026-10-08/read-codex-autopilot-md-in-the/outputs/firstread-starter-browser-desktop.png';
-const mobileShot = process.env.FIRSTREAD_MOBILE_SHOT || '/mnt/c/Users/DELL 7400/Documents/Codex/2026-10-08/read-codex-autopilot-md-in-the/outputs/firstread-starter-browser-mobile.png';
+let chromium;
+try { ({ chromium } = await import('playwright')); }
+catch { throw new Error('Playwright is required for browser verification. Install it in the local development environment before running this script.'); }
+
+const baseUrl = (process.env.FIRSTREAD_URL || 'http://127.0.0.1:4174').replace(/\/$/, '');
+const outputDir = path.resolve(process.env.FIRSTREAD_SCREENSHOT_DIR || 'artifacts');
+await mkdir(outputDir, { recursive: true });
+
 const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const consoleErrors = [];
-page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
-await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle', timeout: 45000 });
-await page.waitForSelector('#evidence-count');
-await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'));
-const title = await page.title();
-const initial = {
-  selected: await page.locator('#selected-case').textContent(),
-  evidence: await page.locator('#evidence-count').textContent(),
-  baseline: await page.locator('#baseline-decision').textContent(),
-  price: await page.locator('#market-price').textContent(),
-  source: await page.locator('#source-status').textContent(),
-};
-await page.screenshot({ path: desktopShot, fullPage: true });
-await page.getByRole('button', { name: /AAPL/ }).click();
-await page.waitForFunction(() => document.querySelector('#selected-case')?.textContent.includes('AAPL'));
-await page.waitForFunction(() => document.querySelector('#precision-caveat')?.textContent.includes('date-only'));
-const aapl = { selected: await page.locator('#selected-case').textContent(), evidence: await page.locator('#evidence-count').textContent(), caveat: await page.locator('#precision-caveat').textContent() };
-await page.locator('#ai-question').fill('What should a human investigate next?');
-await page.getByRole('button', { name: /Review this receipt/ }).click();
-await page.waitForFunction(() => document.querySelector('#ai-answer')?.textContent.includes('not configured'));
-const aiFallback = await page.locator('#ai-answer').textContent();
-const badNetwork = await page.evaluate(async () => {
-  const original = window.fetch;
-  window.fetch = (input, init) => String(input).includes('/api/research') ? Promise.reject(new Error('simulated offline')) : original(input, init);
-  return true;
-});
-await page.getByRole('button', { name: /Run the desk/ }).click();
-await page.waitForFunction(() => document.querySelector('#ingestion-status')?.textContent.includes('Source error'));
-const offline = await page.locator('#replay-status').textContent();
-const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
-await mobile.goto(`${baseUrl}/`, { waitUntil: 'networkidle', timeout: 45000 });
-await mobile.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'));
-const noHorizontalOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
-await mobile.screenshot({ path: mobileShot, fullPage: true });
-await browser.close();
-console.log(JSON.stringify({ pass: title === 'FIRSTREAD — Evidence before reaction' && initial.baseline === 'RESEARCH_READY' && aapl.selected.includes('AAPL') && aapl.evidence.includes('1 visible') && aiFallback.includes('not configured') && offline === 'ABSTAIN' && noHorizontalOverflow && consoleErrors.length === 0, title, initial, aapl, aiFallback, offline, noHorizontalOverflow, consoleErrors, screenshots: { desktopShot, mobileShot } }, null, 2));
+const failures = [];
+const details = {};
+try {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  page.on('pageerror', (error) => failures.push('browser error: ' + error.message));
+  await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
+  details.title = await page.title();
+  details.case = await page.locator('#selected-case').textContent();
+  details.source = await page.locator('#source-status').textContent();
+  details.provider = await page.locator('#ai-provider-status').textContent();
+  if (details.title !== 'FIRSTREAD — Evidence before reaction') failures.push('wrong page title');
+  if (!details.case.includes('NVDA')) failures.push('NVDA case failed to initialize');
+
+  await page.locator('[data-replay-offset="-15"]').click();
+  await page.waitForFunction(() => document.querySelector('#replay-status')?.textContent !== 'Fetching', { timeout: 45000 });
+  const before = await page.locator('#evidence-count').textContent();
+  if (!before.includes('0 visible')) failures.push('pre-filing replay unexpectedly exposes evidence');
+
+  await page.locator('[data-replay-offset="0"]').click();
+  await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
+  await page.waitForFunction(() => document.querySelector('#dossier-summary')?.textContent.includes('completed pre-decision candles'), { timeout: 45000 });
+  details.filingEvidence = await page.locator('#evidence-count').textContent();
+  details.dossier = await page.locator('#dossier-summary').textContent();
+  if (!details.filingEvidence.includes('visible')) failures.push('filing evidence missing');
+  await page.screenshot({ path: path.join(outputDir, 'firstread-desktop.png'), fullPage: true });
+
+  await page.locator('[data-replay-offset="120"]').click();
+  await page.waitForFunction(() => document.querySelector('#replay-status')?.textContent !== 'Fetching', { timeout: 45000 });
+  if (!(await page.locator('#as-of-input').inputValue()).includes('22:21:19')) failures.push('later replay preset failed');
+
+  await page.getByRole('button', { name: /AAPL/ }).first().click();
+  await page.waitForFunction(() => document.querySelector('#precision-caveat')?.textContent.includes('date-only'), { timeout: 45000 });
+  details.aaplPrecision = await page.locator('#precision-caveat').textContent();
+
+  const status = await page.evaluate(async () => (await (await fetch('/api/ai')).json()));
+  if (!status.configured) {
+    await page.locator('#ai-question').fill('What is verifiably known at this time?');
+    await page.getByRole('button', { name: /Review verified evidence/ }).click();
+    await page.waitForFunction(() => document.querySelector('#ai-answer')?.textContent.toLowerCase().includes('not configured'), { timeout: 20000 });
+    details.aiFallback = 'verified';
+  } else {
+    details.aiFallback = 'provider configured; requires separate cited live-model check';
+  }
+  await page.evaluate(() => {
+    const original = window.fetch;
+    window.fetch = (input, init) => String(input).includes('/api/research') ?
+      Promise.reject(new Error('simulated offline')) : original(input, init);
+  });
+  await page.getByRole('button', { name: /Run the desk/ }).click();
+  await page.waitForFunction(() => document.querySelector('#replay-status')?.textContent === 'ABSTAIN', { timeout: 20000 });
+  details.offline = await page.locator('#replay-status').textContent();
+
+  const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  mobile.on('pageerror', (error) => failures.push('mobile browser error: ' + error.message));
+  await mobile.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await mobile.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
+  details.mobileNoOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
+  if (!details.mobileNoOverflow) failures.push('mobile horizontal overflow');
+  await mobile.screenshot({ path: path.join(outputDir, 'firstread-mobile.png'), fullPage: true });
+} catch (error) { failures.push(error.message); }
+finally { await browser.close(); }
+const report = { pass: failures.length === 0, baseUrl, details, failures, screenshots: outputDir };
+console.log(JSON.stringify(report, null, 2));
+if (!report.pass) process.exitCode = 1;

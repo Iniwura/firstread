@@ -1,0 +1,116 @@
+/* FIRSTREAD RESEARCH ROOM / synced to editorial site.
+   This is the functional instrument, not a duplicate marketing page. */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+ --ink:#181e19;--muted:#687468;--paper:#f3f4ef;--panel:#fffefa;
+ --line:#d4dacf;--blue:#3e6d4f;--blue-soft:#e6eee2;
+ --amber:#b5e969;--amber-soft:#ebf5db;--green:#336e43;
+ --shadow:none;--signal:#b7ff65;--dark:#101512;--dark-edge:#344333;
+ font-family:'DM Sans',Arial,sans-serif;background:var(--paper);color:var(--ink);
+}
+.topbar{background:var(--dark);border-bottom:1px solid #2c3a2d;min-height:71px;color:#f8fff3}
+.brand{font:700 20px 'Chakra Petch',sans-serif;letter-spacing:-.065em;color:#f4fff1}
+.brand-mark{background:var(--signal);color:var(--dark);font:700 20px 'Chakra Petch',sans-serif}
+.brand-period{color:var(--signal)}
+.topbar .ghost-button{background:var(--signal);border-color:var(--signal);color:var(--dark);font:700 11px 'Chakra Petch',sans-serif}
+.topbar .ghost-button:hover{background:#d2ffa1}
+.live-dot{background:var(--signal);box-shadow:0 0 0 4px rgba(183,255,101,.12)}
+.rail{background:var(--dark);border-color:#293a2c}
+.rail-eyebrow,.rail-nav-title,.rail-label{color:#9fb29b}
+.rail-label span{color:var(--signal)}
+.case-button{border-radius:0}
+.case-button:hover{background:#1e2b1e}
+.case-button.active{border-left-color:var(--signal);background:#273727}
+.case-button.active .ticker-chip{background:var(--signal);color:#152116;border-color:var(--signal)}
+.case-state{color:#b5d8a0}
+.rail-navigation a:hover,.rail-navigation a:focus-visible{border-left-color:var(--signal)}
+.rail-note .section-label{color:#92a990}
+.rail-note p{color:#e7f0e4}
+.rail-footer .signal-key i.amber{background:var(--signal)}
+.main{padding-top:38px}
+.hero{align-items:end;grid-template-columns:minmax(0,1fr);margin-bottom:23px}
+.hero>div:first-child{padding:0}
+.hero h1{
+ font:700 clamp(43px,4.6vw,75px)/.97 'Chakra Petch',sans-serif;
+ text-transform:uppercase;letter-spacing:-.07em;margin:12px 0 15px
+}
+.hero h1 em{color:#346444;font-style:normal;background:var(--signal);padding:0 6px}
+.hero .kicker{font:600 10px 'IBM Plex Mono',monospace;color:#335b3a}
+.hero-copy{font:400 14px/1.6 'DM Sans',sans-serif;max-width:680px}
+.hero-workflow{font:500 10px 'IBM Plex Mono',monospace}
+.hero-workflow b{color:#246b3e}
+.hero-meta{display:none}
+.workspace-heading .section-number{color:#568c40}
+.workspace-heading h2{
+ font:700 clamp(26px,3vw,45px)/1 'Chakra Petch',sans-serif;
+ text-transform:uppercase;letter-spacing:-.075em
+}
+.workspace-heading p{font-size:12px;max-width:320px}
+.panel{background:#fff;border:1px solid #d1d9cc;box-shadow:none}
+.control-bar{border-top:5px solid var(--signal)}
+.control-case strong{font:700 22px 'Chakra Petch',sans-serif}
+.section-label,.kicker{color:#667a5f}
+.primary-button{background:var(--signal);border-color:var(--signal);color:#172516;font:700 12px 'Chakra Petch',sans-serif}
+.primary-button:hover{background:#d2ffa1;border-color:#d2ffa1}
+.time-presets button[aria-pressed="true"]{background:#111b13;box-shadow:inset 0 -3px 0 var(--signal)}
+.control-status strong{font:700 17px 'Chakra Petch',sans-serif}
+.panel-head h2{font:700 clamp(23px,2.5vw,34px)/1 'Chakra Petch',sans-serif;text-transform:uppercase}
+.panel-head .kicker{font:500 10px 'IBM Plex Mono',monospace}
+.decision-grid .thesis-panel{background:#151d16;border-color:#151d16}
+.thesis-panel .panel-head h2{color:#f6fff2}
+.thesis-panel .baseline-lede{font:700 26px/1.2 'Chakra Petch',sans-serif}
+.thesis-panel .kicker{color:var(--signal)}
+.thesis-panel .baseline-list li::before{color:var(--signal)}
+.thesis-panel .baseline-stats strong{font:700 23px 'Chakra Petch',sans-serif}
+.thesis-panel .decision-options button:hover,.thesis-panel .decision-options button.selected{background:var(--signal);border-color:var(--signal)}
+.receipt-badge,.ai-tag,.small-tag{border-radius:0;font:600 10px 'IBM Plex Mono',monospace}
+.evidence-rail::before{background:var(--signal);box-shadow:0 0 0 1px #94c96f}
+.evidence-meta a,.brief-item a,.financial-source{color:#266d3d}
+.caveat{border-left:4px solid var(--signal)}
+.market-panel{background:#151d16;border-color:#151d16}
+.market-panel .panel-head h2{font-size:31px;color:#f6fff2}
+.market-panel .panel-head .kicker{color:var(--signal)}
+.market-head-meta span:first-child{font:700 29px 'Chakra Petch',sans-serif}
+.market-summary>div{background:#202d20}
+.market-summary{background:#455845}
+.market-summary strong{font:700 25px 'Chakra Petch',sans-serif}
+.chart-grid{stroke:#3e503e}
+.pre-line{stroke:var(--signal);stroke-width:3.5}
+.reaction-line{stroke:#e5e9dc;stroke-width:3}
+.decision-marker{stroke:#f3f3ee}
+.chart-legend i{background:var(--signal)}
+.chart-legend .line-amber{background:#e6eadc}
+.audit-strip{background:#263627}
+.brief-headline{font:700 clamp(26px,2.8vw,39px)/1.12 'Chakra Petch',sans-serif;letter-spacing:-.06em;text-transform:uppercase}
+.brief-grid{background:#dce6d5;border-color:#dce6d5}
+.brief-grid>div{background:#f7faf5}
+.brief-item strong{font-size:13px}
+.brief-status{color:#496b28}
+.brief-limitation::before{color:#6a9b43}
+.financial-table thead th{background:#162315;color:#eafbdc}
+.financial-table td.financial-up{color:#287843}
+.financial-table td.financial-down{color:#9a4a38}
+.financial-argument:first-child{background:#e9f5e2}
+.financial-argument:nth-child(2){background:#f9f2e9}
+.reconcile-head h3{font:700 27px 'Chakra Petch',sans-serif}
+.reconcile-head .ghost-button{background:var(--dark);color:#fff}
+.reconcile-head .ghost-button:hover{background:#314d30}
+.reconcile-status{border-color:var(--signal)}
+.dossier-summary{background:#e8f2e4}
+.bullet-item::before{background:#edfacf;color:#426727}
+.ai-panel{background:#f8faf5}
+.ai-copy{font-size:13px}
+.ai-panel textarea{font-size:13px}
+.secondary-button{background:#151d16}
+.secondary-button:hover{background:#304631}
+.ai-answer{background:#edf7e6}
+.spark{color:#3d8133}
+.footer strong{font:700 17px 'Chakra Petch',sans-serif}
+@media(max-width:780px){
+ .main{padding-top:22px}
+ .hero h1{font-size:clamp(38px,9vw,60px)}
+ .panel-head h2{font-size:25px}
+ .workspace-heading h2{font-size:25px}
+ .market-panel .panel-head h2{font-size:27px}
+ .case-button.active .ticker-chip{background:var(--signal)}
+}

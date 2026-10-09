@@ -89,7 +89,7 @@
         <section class="control-bar panel clock-instrument" aria-label="Replay controls">
             <div class="control-case"><span class="section-label">01 / COMPANY IN FOCUS</span><strong id="selected-case">—</strong><span id="selected-event" class="muted">—</span></div>
             <div class="control-clock"><label for="as-of-input"><span class="section-label">02 / DECISION TIMESTAMP · UTC</span><input id="as-of-input" type="datetime-local" step="1" /></label><button class="primary-button" id="run-button">Run research <span>↗</span></button><div class="time-presets" aria-label="Quick replay times"><button type="button" data-replay-offset="-15" title="15 minutes before the SEC filing">Before filing</button><button type="button" data-replay-offset="0" title="At the verified SEC acceptance">Filing available</button><button type="button" data-replay-offset="120" title="Two hours after SEC acceptance">+2 hours</button></div></div>
-            <div class="control-status"><span class="section-label">03 / REPLAY STATE</span><strong id="replay-status">Waiting</strong><span id="replay-note" class="muted">Select a case to begin</span></div>
+            <div class="control-status"><span class="section-label">03 / REPLAY STATE</span><strong id="replay-status" role="status" aria-live="polite">Waiting</strong><span id="replay-note" class="muted">Select a case to begin</span></div>
           </section>
         <div class="replay-help"><strong>TRY THIS</strong><span>Click <b>Before filing</b>, then <b>Filing available</b>. Watch what changes in the evidence and financial results.</span></div>
         <div class="below-clock-note"><span>↳</span> Filing acceptance does not necessarily equal first public earnings release. Reaction data stays outside the model's historical context.</div>
@@ -114,7 +114,7 @@
         <div class="section-line"><span>[03] THE COMPANY RESULTS</span><span>AS FILED / SEC EXHIBIT 99.1</span></div>
         <div class="editorial-head"><h2>BEHIND THE<br><em>HEADLINE.</em></h2><p>Reported numbers, year-over-year changes, contrasting business drivers and a separate current Bitget source check.</p></div>
         <section class="panel financial-panel" id="financial" aria-labelledby="financial-title">
-            <div class="panel-head"><div><p class="kicker">05 · Filed earnings intelligence</p><h2 id="financial-title">What changed year over year?</h2></div><span id="financial-state" class="small-tag">Checking availability</span></div>
+            <div class="panel-head"><div><p class="kicker">05 · Filed earnings intelligence</p><h2 id="financial-title">What changed year over year?</h2></div><span id="financial-state" class="small-tag" aria-live="polite">Checking availability</span></div>
             <p class="financial-caveat" id="financial-note">This research uses time-qualified SEC Exhibit 99.1 comparisons, not current analyst consensus.</p>
             <div id="earnings-spectrum" class="earnings-spectrum" aria-live="polite"></div>
             <div id="financial-content" class="financial-content"><p class="empty-state">Choose a verified filing cutoff to unlock financial comparisons.</p></div>
@@ -125,7 +125,7 @@
                   <p>Compare the SEC-filed quarter with Bitget's equity MCP income records retrieved today. This audit is excluded from historical trading decisions and from the AI replay packet.</p></div>
                 <button type="button" id="run-crosscheck" class="ghost-button">Reconcile SEC ↔ Bitget</button>
               </div>
-              <p class="reconcile-status" id="crosscheck-status">Not checked. Independent Bitget source verification is optional.</p>
+              <p class="reconcile-status" id="crosscheck-status" role="status" aria-live="polite">Not checked. Independent Bitget source verification is optional.</p>
               <div id="crosscheck-output"></div>
             </section>
           </section>
@@ -162,11 +162,11 @@
               <div id="contradictions" class="bullet-stack"><div class="empty-state">Evidence-backed conflicts will appear here.</div></div>
             </article>
             <article class="panel ai-panel" id="ai">
-              <div class="panel-head"><div><p class="kicker">07 · LLM review</p><h2>Ask the evidence</h2></div><span class="ai-tag" id="ai-provider-status">Checking AI provider</span></div>
+              <div class="panel-head"><div><p class="kicker">07 · LLM review</p><h2>Ask the evidence</h2></div><span class="ai-tag" id="ai-provider-status" aria-live="polite">Checking AI provider</span></div>
               <p class="ai-copy">The model receives only the visible receipt and completed pre-decision candles. It must cite evidence IDs and abstain on unsupported claims.</p>
               <div class="research-prompts" aria-label="Example research questions"><button type="button" data-research-question="What facts were knowable by the selected cutoff, and which remained unavailable?">Available evidence</button><button type="button" data-research-question="What evidence conflicts with the thesis, and what would make you abstain?">Challenge the thesis</button><button type="button" data-research-question="Explain the market data limitations without citing any information from after the cutoff.">Market limitations</button></div>
               <form id="ai-form"><label class="sr-only" for="ai-question">Question for the AI</label><textarea id="ai-question" maxlength="500" rows="3" placeholder="Ask a source-grounded research question…"></textarea><button class="secondary-button" type="submit">Review verified evidence <span>✦</span></button></form>
-              <div id="ai-answer" class="ai-answer"><span class="spark">✦</span><span>Run the desk first. The answer stays attached to this decision time.</span></div>
+              <div id="ai-answer" class="ai-answer" aria-live="polite"><span class="spark">✦</span><span>Run the desk first. The answer stays attached to this decision time.</span></div>
             </article>
           </section>
       </section>

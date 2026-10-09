@@ -91,8 +91,11 @@ function renderChart(data) {
   const pre = data.market.preWindow.visible;
   const reaction = data.market.reactionWindow;
   const all = [...pre, ...reaction];
-  const values = all.flatMap((row) => [Number(row[2]), Number(row[3])]).filter(Number.isFinite);
-  const min = Math.min(...values, 0); const max = Math.max(...values, 1);
+  const values = all.flatMap((row) => [Number(row[2]), Number(row[3])]).filter((v) => Number.isFinite(v) && v > 0);
+  const observedMin = values.length ? Math.min(...values) : 0;
+  const observedMax = values.length ? Math.max(...values) : 1;
+  const padding = Math.max((observedMax - observedMin) * .12, observedMax * .001);
+  const min = Math.max(0, observedMin - padding); const max = observedMax + padding;
   const width = 1000; const height = 230; const preWidth = pre.length && all.length > 1 ? ((pre.length - 1) / (all.length - 1)) * width : width;
   $('#pre-line').setAttribute('d', pointPath(pre, min, max, preWidth, height, 0, pre.length));
   $('#pre-area').setAttribute('d', pre.length ? `${pointPath(pre, min, max, preWidth, height, 0, pre.length)} L${preWidth} ${height} L0 ${height} Z` : '');

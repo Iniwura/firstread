@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/demo-video.yml'
+      - 'scripts/record-demo.mjs'
 jobs:
   record:
     runs-on: ubuntu-latest

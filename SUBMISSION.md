@@ -58,6 +58,14 @@ The project submission requires a complete description, role-of-LLM field, publi
 
 See [EVALUATION.md](EVALUATION.md) for the full judge walkthrough, observed engineering proof boundaries, and external user-testing protocol.
 
+## Site navigation and 2026 visual refresh
+
+- **First impression / project explanation:** https://firstread-psi.vercel.app/
+- **Functional SEC/Bitget research workspace:** https://firstread-psi.vercel.app/desk.html
+- **Conservative pre-SEC evidence demonstration:** https://firstread-psi.vercel.app/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z
+- The landing page has a verified before/after SEC cut-off control, three authentic case entrypoints, and a locally hosted public-domain Library of Congress image.
+- Do not call the landing interaction a live trade. The AI provider still requires a private server key.
+
 ## Demo video and what judges can verify
 
 - **Full working product:** https://firstread-psi.vercel.app/

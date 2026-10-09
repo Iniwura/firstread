@@ -79,3 +79,26 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
     integrity: { evidenceHashed: true, evidenceHash: JSON.stringify(evidence.visible).length ? sha256(evidence.visible) : null, futureCandlesExcluded: true, sourceGrounded: true },
   };
 }
+
+
+/**
+ * Fast, authoritative pre-decision AI context.
+ * Fetches only historical candles; no present-day quote, later reaction data,
+ * trading status or document-status network calls enter the model path.
+ */
+export async function buildAiResearchPacket({ ticker = 'NVDA', asOf: requestedAsOf } = {}, { getCandles = getRealityCandles } = {}) {
+  const caseData = getCases().find((item) => item.ticker === String(ticker).toUpperCase());
+  if (!caseData) throw new Error('Unsupported research case');
+  const asOf = exactTimestamp(requestedAsOf ?? caseData.secAcceptedAt);
+  const evidence = buildEvidence(caseData, caseData.release, new Date().toISOString(), asOf, caseData.secExhibit);
+  // The requested end-time is the cutoff, not eight hours after it.
+  const price = await getCandles(caseData.symbol, asOf, 12, 0);
+  if (!Array.isArray(price?.candles)) throw new Error('Historical Bitget candle data unavailable');
+  const pre = auditCandles(price.candles, asOf, 3600000);
+  const baseline = buildRulesBaseline({ evidence, candles: pre, asOf, intervalMs: 3600000 });
+  return {
+    aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline }),
+    baselineDecision: baseline.decision,
+    context: 'server-verified-primary-sources-and-completed-prior-candles',
+  };
+}

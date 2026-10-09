@@ -1,0 +1,18 @@
+name: FIRSTREAD live AI proof
+on:
+  workflow_dispatch:
+jobs:
+  live-ai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify real AI response with SEC-filed evidence
+        env:
+          FIRSTREAD_URL: https://firstread-psi.vercel.app
+        run: node scripts/verify-live-ai.mjs

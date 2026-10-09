@@ -65,7 +65,8 @@ try{
  await page.goto(base+'/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z',{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForFunction(()=>document.querySelector('#evidence-count')?.textContent.includes('visible'),{timeout:45000});
  const early=await page.locator('#evidence-count').textContent();
- if(!early.includes('0 visible'))failures.push('deep link early source leaked: '+early);
+ const earlyState=await page.locator('#financial-state').textContent();
+ if(!earlyState.includes('Held out'))failures.push('early SEC exhibit leaked: '+earlyState);
  report.functional.early=early;
  await page.goto(base+'/desk.html?ticker=AAPL',{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForFunction(()=>document.querySelector('#selected-case')?.textContent.includes('AAPL'),{timeout:45000});

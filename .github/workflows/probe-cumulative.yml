@@ -1,0 +1,20 @@
+name: FIRSTREAD cumulative period inspection
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/probe-cumulative.yml'
+      - 'scripts/probe-cumulative.mjs'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect public income statement periods for two equities
+        run: node scripts/probe-cumulative.mjs

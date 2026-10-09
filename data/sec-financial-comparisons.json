@@ -55,7 +55,8 @@
         "finding": "The $108B ±2% next-quarter revenue outlook does not assume any Data Center compute revenue from China. Assess exposure before extrapolating.",
         "quote": "NVIDIA is not assuming any Data Center compute revenue from China in its outlook."
       }
-    ]
+    ],
+    "quarterEnded": "2026-07-26"
   },
   {
     "ticker": "AAPL",
@@ -131,7 +132,8 @@
         "finding": "iPhone and Services revenues grew year-over-year, but at different rates. Compare their relative growth rather than assuming the same driver explains both.",
         "quote": "iPhone 54,252 44,582; Services 30,739 27,423"
       }
-    ]
+    ],
+    "quarterEnded": "2026-06-27"
   },
   {
     "ticker": "MSFT",
@@ -198,6 +200,7 @@
         "finding": "Azure and other cloud services grew 43% year over year while More Personal Computing segment sales declined. A strong consolidated quarter can mask segment divergence.",
         "quote": "Azure and other cloud services revenue increased 43%"
       }
-    ]
+    ],
+    "quarterEnded": "2026-06-30"
   }
 ]

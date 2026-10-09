@@ -24,8 +24,7 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: |
-          npm ci
-          npm install --no-save playwright
+          npm install --no-save --no-package-lock playwright
       - name: Install browser
         run: npx playwright install --with-deps chromium
       - name: Audit live production with Chromium

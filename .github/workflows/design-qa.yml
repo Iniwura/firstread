@@ -1,0 +1,70 @@
+name: FIRSTREAD visual redesign QA
+on:
+  push:
+    paths:
+      - '.github/workflows/design-qa.yml'
+  workflow_dispatch:
+jobs:
+  visual-and-functional:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium test runner
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Check full research workflow on preview
+        env:
+          FIRSTREAD_URL: https://firstread-me4djd5fh-iniwura-akurus-projects.vercel.app
+          FIRSTREAD_SCREENSHOT_DIR: artifacts/redesign-preview
+        run: node scripts/browser-smoke.mjs
+      - name: Audit visual hierarchy and device responsiveness
+        env:
+          FIRSTREAD_URL: https://firstread-me4djd5fh-iniwura-akurus-projects.vercel.app
+        run: |
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          let count=0;
+          try {
+            for(const [name,width,height] of [['desktop',1440,900],['laptop',1100,800],['tablet',820,1000],['phone',390,844]]){
+              const page=await browser.newPage({viewport:{width,height}});
+              page.on('pageerror',error=>{count++;console.error(name+' runtime error: '+error.message)});
+              await page.goto(process.env.FIRSTREAD_URL,{waitUntil:'domcontentloaded',timeout:45000});
+              await page.waitForFunction(()=>document.querySelector('#evidence-count')?.textContent.includes('visible'),{timeout:45000});
+              const result=await page.evaluate(()=>{
+                const hero=document.querySelector('.hero h1');
+                const layout=document.querySelector('.layout');
+                const css=getComputedStyle(hero);
+                const redesign=Array.from(document.styleSheets).some(sheet=>String(sheet.href||'').includes('design.css'));
+                return {
+                  title:document.title,headFontSize:css.fontSize,headFontWeight:css.fontWeight,
+                  navBackground:getComputedStyle(document.querySelector('.topbar')).backgroundColor,
+                  sidebarBackground:getComputedStyle(document.querySelector('.rail')).backgroundColor,
+                  horizontalOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,
+                  designCSSLoaded:redesign, visibleCase:document.querySelector('#selected-case').textContent,
+                  layoutColumns:getComputedStyle(layout).gridTemplateColumns,
+                  marketBackground:getComputedStyle(document.querySelector('.market-panel')).backgroundColor,
+                };
+              });
+              console.log(name+' '+JSON.stringify(result));
+              if(result.horizontalOverflow||!result.designCSSLoaded||parseInt(result.headFontSize)<39||result.visibleCase==='—') count++;
+              await page.screenshot({path:'artifacts/redesign-preview/visual-'+name+'.png',fullPage:true});
+              await page.close();
+            }
+          } finally {await browser.close()}
+          if(count)process.exit(1);
+          NODE
+      - name: Archive screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: FIRSTREAD-redesign-desktop-mobile
+          path: artifacts/redesign-preview/
+          if-no-files-found: ignore

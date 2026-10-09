@@ -2,7 +2,7 @@ name: FIRSTREAD editorial visual QA
 on:
   workflow_dispatch:
   push:
-    branches: [main, 'design/bitget-blue-desk']
+    branches: [main, 'design/evidence-instrument']
     paths:
       - 'index.html'
       - 'landing.css'
@@ -10,6 +10,7 @@ on:
       - 'desk.html'
       - 'desk-polish.css'
       - 'desk-v3.css'
+      - 'desk-edition.css'
       - 'landing.css'
       - 'scripts/desk-visual-qa.mjs'
       - 'app.js'

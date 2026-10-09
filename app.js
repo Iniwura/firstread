@@ -43,6 +43,7 @@ function selectCase(ticker) {
   $('#selected-case').textContent = `${state.selected.ticker} · ${state.selected.company}`;
   $('#selected-event').textContent = state.selected.event;
   $('#as-of-input').value = toInputValue(state.selected.secAcceptedAt);
+  document.querySelectorAll('[data-replay-offset]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.replayOffset === '0')));
   $('#replay-status').textContent = 'Ready';
   $('#replay-note').textContent = `Default anchor · ${formatUTC(state.selected.secAcceptedAt)}`;
   renderCases();
@@ -164,6 +165,15 @@ async function askAI(event) {
   } catch (error) { answer.innerHTML = `<span class="spark">!</span><span>AI review unavailable: ${escapeHtml(error.message)}</span>`; }
 }
 
+document.querySelectorAll('[data-replay-offset]').forEach((button) => button.addEventListener('click', () => {
+  if (!state.selected) return;
+  const minutes = Number(button.dataset.replayOffset);
+  if (![-15, 0, 120].includes(minutes)) return;
+  const asOf = new Date(Date.parse(state.selected.secAcceptedAt) + minutes * 60000);
+  $('#as-of-input').value = toInputValue(asOf.toISOString());
+  document.querySelectorAll('[data-replay-offset]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+  runDesk();
+}));
 $('#run-button').addEventListener('click', runDesk);
 $('#refresh-button').addEventListener('click', runDesk);
 $('#ai-form').addEventListener('submit', askAI);

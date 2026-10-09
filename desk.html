@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="FIRSTREAD is an evidence-timed earnings desk for Bitget Reality rTokens." />
+    <title>FIRSTREAD / Research workspace</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/design.css" />
+    <link rel="stylesheet" href="/desk-polish.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="FIRSTREAD home"><span class="brand-mark">F<span class="brand-slash">/</span></span><span>FIRSTREAD<span class="brand-period">.</span></span></a>
+        <div class="topbar-center"><span class="topbar-edition">US EQUITIES / RESEARCH TERMINAL</span><span class="topbar-separator">/</span><span class="live-dot"></span><span id="ingestion-status">Connecting to live sources</span></div>
+        <div class="topbar-actions"><span class="clock-label" id="retrieval-clock">—</span><button class="ghost-button" id="refresh-button" title="Refresh research">↻ &nbsp;Refresh data</button></div>
+      </header>
+
+      <div class="layout" id="top">
+        <aside class="rail">
+          <div class="rail-eyebrow">WORKSPACE <span>01 / 03</span></div><div class="rail-label">Earnings watchlist <span>03</span></div>
+          <nav id="case-list" class="case-list" aria-label="Research cases"></nav>
+          <nav class="rail-navigation" aria-label="Workspace sections"><span class="rail-nav-title">ON THIS PAGE</span><a href="#overview"><span>01</span> Decision room</a><a href="#market"><span>02</span> Market tape</a><a href="#financial"><span>03</span> Earnings analysis</a><a href="#audit"><span>04</span> Stress test</a><a href="#ai"><span>05</span> AI research</a><a href="#receipt"><span>06</span> Source receipt</a></nav>
+          <div class="rail-note"><span class="section-label">OPERATING PRINCIPLE</span><p>Know what was public. Then decide what it means.</p><p class="muted">No orders. No hindsight in the research packet.</p></div>
+          <div class="rail-footer"><span class="signal-key"><i class="green"></i> MARKET FEED</span><span class="signal-key"><i class="amber"></i> VERIFIED / CAUTION</span></div>
+        </aside>
+
+        <main class="main">
+          <section class="hero" aria-labelledby="page-title">
+            <div>
+              <p class="kicker"><span class="kicker-accent">●</span> FIELD NOTES / 001 <span class="rule"></span> BITGET REALITY</p>
+              <h1 id="page-title">A better read<br />on <em>earnings.</em></h1>
+              <p class="hero-copy">An evidence-first research terminal for tokenized US stocks. Rewind to a filing, examine what was actually knowable, and challenge the trade thesis before acting.</p>
+              <div class="hero-workflow"><span>01 &nbsp; PICK AN EVENT</span><b>→</b><span>02 &nbsp; SET THE CLOCK</span><b>→</b><span>03 &nbsp; CHALLENGE THE THESIS</span></div>
+            </div>
+            <div class="hero-meta"><div class="hero-meta-top"><span class="meta-label">HISTORICAL INTEGRITY</span><span class="hero-meta-indicator">● ACTIVE</span></div><strong>NO FUTURE<br />FACTS.</strong><span class="hero-meta-rule"></span><span>Time-qualified primary sources</span><span>Completed candles only</span><span>Outcome data kept separate</span></div>
+          </section>
+
+          <section class="control-bar panel" aria-label="Replay controls">
+            <div class="control-case"><span class="section-label">01 / COMPANY IN FOCUS</span><strong id="selected-case">—</strong><span id="selected-event" class="muted">—</span></div>
+            <div class="control-clock"><label for="as-of-input"><span class="section-label">02 / DECISION TIMESTAMP · UTC</span><input id="as-of-input" type="datetime-local" step="1" /></label><button class="primary-button" id="run-button">Run research <span>↗</span></button><div class="time-presets" aria-label="Quick replay times"><button type="button" data-replay-offset="-15" title="15 minutes before the SEC filing">Before filing</button><button type="button" data-replay-offset="0" title="At the verified SEC acceptance">Filing available</button><button type="button" data-replay-offset="120" title="Two hours after SEC acceptance">+2 hours</button></div></div>
+            <div class="control-status"><span class="section-label">03 / REPLAY STATE</span><strong id="replay-status">Waiting</strong><span id="replay-note" class="muted">Select a case to begin</span></div>
+          </section>
+
+          <div class="workspace-heading"><div><span class="section-number">01 / DECISION ROOM</span><h2>Start with what you know.</h2></div><p>Reconstruct the information set at the chosen clock time.</p></div>
+          <section class="grid-two decision-grid" id="overview">
+            <article class="panel evidence-panel" id="evidence">
+              <div class="panel-head"><div><p class="kicker">01 · Information set</p><h2>What was knowable</h2></div><span class="receipt-badge" id="evidence-count">—</span></div>
+              <div id="evidence-timeline" class="timeline"><div class="empty-state">Run a replay to build the evidence receipt.</div></div>
+              <div class="caveat" id="precision-caveat">Dates without exact public clock times are excluded from precision-sensitive replays.</div>
+            </article>
+            <article class="panel thesis-panel" id="decision">
+              <div class="panel-head"><div><p class="kicker">02 · Rules-only baseline</p><h2>First read</h2></div><span id="baseline-decision" class="decision-pill">—</span></div>
+              <div id="baseline-body" class="baseline-body"><div class="empty-state">The baseline will abstain when the record is thin.</div></div>
+              <div class="decision-options"><span>Human posture</span><button data-posture="INVESTIGATE">Investigate</button><button data-posture="WAIT">Wait</button><button data-posture="REJECT">Reject</button></div>
+            </article>
+          </section>
+
+          <div class="workspace-heading"><div><span class="section-number">02 / PRICE DISCOVERY</span><h2>The market, in context.</h2></div><p>Observed price movement is not a prediction or a fill.</p></div>
+          <section class="panel market-panel" id="market">
+            <div class="panel-head"><div><p class="kicker">03 · Bitget Reality market</p><h2><span id="market-symbol">r—</span> / USDT response</h2></div><div class="market-head-meta"><span id="market-price">—</span><span id="market-source" class="muted">Awaiting quote</span></div></div>
+            <div class="market-summary"><div><span class="section-label">Instrument</span><strong id="instrument-status">—</strong></div><div><span class="section-label">Pre-decision candles</span><strong id="candle-count">—</strong></div><div><span class="section-label">Reaction window</span><strong id="reaction-count">—</strong></div><div><span class="section-label">Data gaps</span><strong id="gap-count">—</strong></div></div>
+            <div class="chart-shell"><div class="chart-legend"><span><i class="line-blue"></i> visible before decision</span><span><i class="line-amber"></i> observed after decision</span><span id="chart-note">—</span></div><svg id="price-chart" viewBox="0 0 1000 230" preserveAspectRatio="none" role="img" aria-label="rToken price replay chart"><path class="chart-grid" d="M0 40H1000M0 115H1000M0 190H1000"></path><path id="pre-area" class="pre-area" d=""></path><path id="reaction-line" class="reaction-line" d=""></path><path id="pre-line" class="pre-line" d=""></path><line id="decision-marker" class="decision-marker" x1="0" x2="0" y1="0" y2="230"></line></svg></div>
+            <div id="market-audit" class="audit-strip">Market audit will show stale candles, gaps, session context, and separation of future observations.</div>
+          </section>
+
+          <div class="workspace-heading"><div><span class="section-number">03 / THE RESEARCH</span><h2>Evidence into judgment.</h2></div><p>Verified facts, unresolved risks, and next investigative steps.</p></div>
+          <section class="panel research-brief-panel" aria-labelledby="brief-title">
+            <div class="panel-head"><div><p class="kicker">04 · Actionable research task</p><h2 id="brief-title">The evidence-based decision brief</h2></div><span class="small-tag">Human decides</span></div>
+            <p id="brief-headline" class="brief-headline">Select an event and decision time to generate a sourced research brief.</p>
+            <div class="brief-grid">
+              <div><h3>What is verified</h3><div id="brief-verified" class="brief-stack">Awaiting research</div></div>
+              <div><h3>What is missing</h3><div id="brief-limitations" class="brief-stack">Awaiting research</div></div>
+              <div><h3>What to do next</h3><div id="brief-actions" class="brief-stack">Awaiting research</div></div>
+            </div>
+            <p class="brief-disclaimer" id="brief-disclaimer">Publication-time reconstruction. No simulated fills, historical analyst expectations or trade instructions.</p>
+          </section>
+
+          <section class="panel financial-panel" id="financial" aria-labelledby="financial-title">
+            <div class="panel-head"><div><p class="kicker">05 · Filed earnings intelligence</p><h2 id="financial-title">What changed year over year?</h2></div><span id="financial-state" class="small-tag">Checking availability</span></div>
+            <p class="financial-caveat" id="financial-note">This research uses time-qualified SEC Exhibit 99.1 comparisons, not current analyst consensus.</p>
+            <div id="financial-content" class="financial-content"><p class="empty-state">Choose a verified filing cutoff to unlock financial comparisons.</p></div>
+            <div class="financial-drivers" id="financial-drivers"></div>
+            <section class="source-reconcile" aria-labelledby="reconcile-title">
+              <div class="reconcile-head">
+                <div><h3 id="reconcile-title">Independent source check</h3>
+                  <p>Compare the SEC-filed quarter with Bitget's equity MCP income records retrieved today. This audit is excluded from historical trading decisions and from the AI replay packet.</p></div>
+                <button type="button" id="run-crosscheck" class="ghost-button">Reconcile SEC ↔ Bitget</button>
+              </div>
+              <p class="reconcile-status" id="crosscheck-status">Not checked. Independent Bitget source verification is optional.</p>
+              <div id="crosscheck-output"></div>
+            </section>
+          </section>
+
+          <div class="workspace-heading"><div><span class="section-number">04 / DUE DILIGENCE</span><h2>Pressure-test the thesis.</h2></div><p>The right research knows when to say there isn't enough evidence.</p></div>
+          <section class="grid-two review-grid">
+            <article class="panel contradictions-panel" id="audit">
+              <div class="panel-head"><div><p class="kicker">06 · Evidence and market stress</p><h2>Where the thesis breaks</h2></div><span class="small-tag">Measured, not predicted</span></div>
+              <p id="dossier-summary" class="dossier-summary">Calculating market and evidence checks…</p>
+              <div id="contradictions" class="bullet-stack"><div class="empty-state">Evidence-backed conflicts will appear here.</div></div>
+            </article>
+            <article class="panel ai-panel" id="ai">
+              <div class="panel-head"><div><p class="kicker">07 · LLM review</p><h2>Ask the evidence</h2></div><span class="ai-tag" id="ai-provider-status">Checking AI provider</span></div>
+              <p class="ai-copy">The model receives only the visible receipt and completed pre-decision candles. It must cite evidence IDs and abstain on unsupported claims.</p>
+              <div class="research-prompts" aria-label="Example research questions"><button type="button" data-research-question="What facts were knowable by the selected cutoff, and which remained unavailable?">Available evidence</button><button type="button" data-research-question="What evidence conflicts with the thesis, and what would make you abstain?">Challenge the thesis</button><button type="button" data-research-question="Explain the market data limitations without citing any information from after the cutoff.">Market limitations</button></div>
+              <form id="ai-form"><label class="sr-only" for="ai-question">Question for the AI</label><textarea id="ai-question" maxlength="500" rows="3" placeholder="Ask a source-grounded research question…"></textarea><button class="secondary-button" type="submit">Review verified evidence <span>✦</span></button></form>
+              <div id="ai-answer" class="ai-answer"><span class="spark">✦</span><span>Run the desk first. The answer stays attached to this decision time.</span></div>
+            </article>
+          </section>
+
+          <section class="panel receipt-panel" id="receipt">
+            <div class="panel-head"><div><p class="kicker">08 · Reproducible receipt</p><h2>Every read has a timestamp.</h2></div><button class="ghost-button" id="copy-receipt">Copy receipt</button></div>
+            <div class="receipt-grid"><div><span class="section-label">Source status</span><p id="source-status">—</p></div><div><span class="section-label">Evidence hash</span><p id="evidence-hash" class="mono">—</p></div><div><span class="section-label">Decision guardrail</span><p>Not financial advice. No account access. No order execution. The human decides.</p></div></div>
+            <details class="receipt-details"><summary>Inspect machine-readable evidence receipt <span>↗</span></summary><pre id="receipt-json" class="receipt-json">Run a replay to create the raw receipt.</pre></details>
+          </section>
+
+          <footer class="footer"><strong>F/ &nbsp; FIRSTREAD</strong><span>AN EVIDENCE-FIRST RESEARCH INSTRUMENT</span><span>Public data. Human decisions.</span></footer>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

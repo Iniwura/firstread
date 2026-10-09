@@ -30,11 +30,14 @@ try {
   if (!before.includes('0 visible')) failures.push('pre-filing replay unexpectedly exposes evidence');
 
   await page.locator('[data-replay-offset="0"]').click();
-  await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('2 visible'), { timeout: 45000 });
+  await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('3 visible'), { timeout: 45000 });
   await page.waitForFunction(() => document.querySelector('#dossier-summary')?.textContent.includes('completed pre-decision candles'), { timeout: 45000 });
   details.filingEvidence = await page.locator('#evidence-count').textContent();
   details.dossier = await page.locator('#dossier-summary').textContent();
-  if (!details.filingEvidence.includes('visible')) failures.push('filing evidence missing');
+  if (!details.filingEvidence.includes('3 visible')) failures.push('NVIDIA SEC-attached release missing');
+  details.nvdaBrief = await page.locator('#brief-verified').textContent();
+  if (!details.nvdaBrief.includes('SEC-filed earnings results') ||
+      !details.nvdaBrief.includes('$96.2B')) failures.push('NVIDIA financial-source proof missing');
   await page.screenshot({ path: path.join(outputDir, 'firstread-desktop.png'), fullPage: true });
 
   await page.locator('[data-replay-offset="120"]').click();
@@ -44,6 +47,13 @@ try {
   await page.getByRole('button', { name: /AAPL/ }).first().click();
   await page.waitForFunction(() => document.querySelector('#precision-caveat')?.textContent.includes('date-only'), { timeout: 45000 });
   details.aaplPrecision = await page.locator('#precision-caveat').textContent();
+  await page.waitForFunction(() => document.querySelector('#brief-verified')?.textContent.includes('$109.4B'), { timeout: 45000 });
+  details.aaplBrief = await page.locator('#brief-verified').textContent();
+  if (!details.aaplBrief.includes('E3-AAPL')) failures.push('Apple SEC Exhibit 99.1 was not used');
+  await page.getByRole('button', { name: /MSFT/ }).first().click();
+  await page.waitForFunction(() => document.querySelector('#brief-verified')?.textContent.includes('$90.0B'), { timeout: 45000 });
+  details.msftBrief = await page.locator('#brief-verified').textContent();
+  if (!details.msftBrief.includes('E3-MSFT')) failures.push('Microsoft SEC Exhibit 99.1 was not used');
 
   const status = await page.evaluate(async () => (await (await fetch('/api/ai')).json()));
   if (!status.configured) {

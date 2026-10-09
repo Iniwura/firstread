@@ -510,4 +510,36 @@ a:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible,
  .receipt-grid>div{padding-top:15px}
  .desk-footer{padding:28px 16px}
 }
+
+/* Phone evidence is a readable comparison, not a hidden four-column scroll. */
+@media(max-width:650px){
+ .case-nav-head span:last-child::after{content:" · SWIPE →";color:var(--cyan)}
+ .financial-content .financial-scroll{overflow:visible}
+ .financial-content .financial-table{width:100%;min-width:0;display:block;border-top:2px solid var(--night)}
+ .financial-content .financial-table thead{display:none}
+ .financial-content .financial-table tbody{display:block}
+ .financial-content .financial-table tbody tr{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  background:#fff!important;border-bottom:1px solid #b9d1d6;padding:6px 12px 14px
+ }
+ .financial-content .financial-table tbody th{
+  grid-column:1/-1;display:block;width:100%;
+  padding:13px 0 9px;border:0;font:700 14px var(--body)
+ }
+ .financial-content .financial-table tbody td{
+  border:0;padding:8px 8px 0 0;
+  text-align:left;white-space:normal;font:600 12px var(--mono);overflow-wrap:anywhere
+ }
+ .financial-content .financial-table tbody td::before{
+  display:block;color:#67848a;font:500 8px var(--mono);white-space:normal;
+  letter-spacing:0;margin:0 0 8px
+ }
+ .financial-content .financial-table tbody td:nth-child(2)::before{content:"PRIOR"}
+ .financial-content .financial-table tbody td:nth-child(3)::before{content:"FILED"}
+ .financial-content .financial-table tbody td:nth-child(4)::before{content:"YOY CHANGE"}
+ #crosscheck-output .financial-scroll::before{
+  content:"SWIPE TO SEE ALL PROVIDER COLUMNS →";
+  display:block;font:600 9px var(--mono);color:#9fd1d8;padding:9px 0
+ }
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

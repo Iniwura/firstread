@@ -12,6 +12,8 @@ on:
       - 'app.js'
       - 'index.html'
       - 'styles.css'
+      - 'design.css'
+      - '.github/workflows/production-browser.yml'
 jobs:
   production-browser:
     runs-on: ubuntu-latest

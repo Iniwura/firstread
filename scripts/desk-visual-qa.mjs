@@ -66,11 +66,11 @@ for(const [label,width,height] of [['desktop',1440,900],['laptop',1100,800],['ta
   if(!spectrum.includes('YEAR ON YEAR') || !spectrum.includes('Revenue'))
     failures.push(label+': source-based comparison spectrum missing');
   await page.locator('[data-replay-offset="-15"]').click();
+  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('Held out'),{timeout:45000});
   if((await page.locator('#cutoff-tape').getAttribute('data-phase')) !== 'before')
     failures.push(label+': before filing cutoff visualization incorrect');
   if((await page.locator('#earnings-spectrum').textContent()).trim())
     failures.push(label+': financial visualization leaked before SEC acceptance');
-  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('Held out'),{timeout:45000});
   await page.locator('[data-replay-offset="0"]').click();
   if((await page.locator('#cutoff-tape').getAttribute('data-phase')) !== 'acceptance')
     failures.push(label+': SEC acceptance marker incorrect');

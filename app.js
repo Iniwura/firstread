@@ -37,6 +37,29 @@ function renderCases() {
   }
 }
 
+function updateEvidenceInstrument() {
+  if (!state.selected) return;
+  const ticker = state.selected.ticker;
+  const accepted = Date.parse(state.selected.secAcceptedAt);
+  const timeInput = $('#as-of-input').value;
+  const selectedTime = timeInput ? Date.parse(fromInputValue(timeInput)) : accepted;
+  const valid = Number.isFinite(selectedTime);
+  const phase = !valid ? 'unknown' : selectedTime < accepted ? 'before' : selectedTime === accepted ? 'acceptance' : 'after';
+  const date = new Date(accepted);
+  $('#hero-ticker').textContent = ticker;
+  $('#hero-event-label').textContent = state.selected.event;
+  $('#hero-accept-time').textContent = date.toISOString().slice(11, 19) + ' UTC';
+  $('#hero-accept-date').textContent = date.toISOString().slice(0, 10) + ' / VERIFIED';
+  $('#hero-evidence-id').textContent = 'E3-' + ticker + ' / SEC 8-K';
+  $('#hero-gate').textContent = phase === 'before' ? 'EXHIBIT WITHHELD AT CUTOFF' :
+    phase === 'unknown' ? 'INVALID REPLAY CLOCK' : 'EXHIBIT ACCEPTED BY CUTOFF';
+  $('#cutoff-tape').dataset.phase = phase;
+  $('#cutoff-label').textContent = phase === 'before' ? 'BEFORE SEC ACCEPTANCE' :
+    phase === 'acceptance' ? 'AT SEC ACCEPTANCE' : phase === 'after' ?
+    'AFTER SEC ACCEPTANCE' : 'INVALID TIMESTAMP';
+  $('.masthead-aside').dataset.phase = phase;
+}
+
 function selectCase(ticker, initialAsOf = null) {
   state.selected = state.cases.find((item) => item.ticker === ticker) || state.cases[0];
   state.posture = null;
@@ -51,6 +74,7 @@ function selectCase(ticker, initialAsOf = null) {
     Number.isFinite(Date.parse(initialAsOf)) &&
     Math.abs(Date.parse(initialAsOf) - Date.parse(state.selected.secAcceptedAt)) <= 24 * 3600 * 1000;
   $('#as-of-input').value = toInputValue(verifiedOverride ? initialAsOf : state.selected.secAcceptedAt);
+  updateEvidenceInstrument();
   document.querySelectorAll('[data-replay-offset]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.replayOffset === '0')));
   $('#replay-status').textContent = 'Ready';
   $('#replay-note').textContent = `Default anchor · ${formatUTC(state.selected.secAcceptedAt)}`;
@@ -157,12 +181,35 @@ function renderFinancial(data) {
   $('#run-crosscheck').disabled = financial?.status !== 'AVAILABLE';
   if (!financial || financial.status !== 'AVAILABLE') {
     $('#financial-state').textContent = financial?.status === 'INVALID_PROVENANCE' ? 'Provenance rejected' : 'Held out at this time';
+    $('#earnings-spectrum').replaceChildren();
     $('#financial-note').textContent = 'The SEC earnings exhibit was not source-qualified by this cutoff. Historical comparison unavailable.';
     $('#financial-content').innerHTML = '<p class="empty-state">No time-qualified financial comparisons. Use “Filing available” to move to the actual SEC acceptance timestamp.</p>';
     $('#financial-drivers').replaceChildren();
     return;
   }
   $('#financial-state').textContent = financial.sourceId + ' · SEC filed';
+  const spectrumRows = ['revenue', 'operating_income', 'gaap_eps']
+    .map((id) => financial.comparisons.find((row) => row.id === id))
+    .filter((row) => row && Number.isFinite(row.changePct));
+  const scale = Math.max(25, ...spectrumRows.map((row) => Math.abs(row.changePct)));
+  $('#earnings-spectrum').innerHTML = spectrumRows.length
+    ? '<div class="spectrum-head"><span>FILED GROWTH / YEAR ON YEAR</span><span>SHARED PERCENTAGE SCALE · 0 IN THE CENTER</span></div>' +
+      '<div class="spectrum-grid">' + spectrumRows.map((row) => {
+        const pct = row.changePct;
+        const size = Math.min(47, Math.abs(pct) / scale * 47);
+        const start = pct < 0 ? 50 - size : 50;
+        const text = (pct > 0 ? '+' : '') + pct.toFixed(2) + '%';
+        return '<div class="spectrum-item"><div class="spectrum-meta"><span>' +
+          escapeHtml(row.label) + '</span><strong>' + escapeHtml(text) +
+          '</strong></div><div class="spectrum-track" role="img" aria-label="' +
+          escapeHtml(row.label + ' changed ' + text + ' year on year') +
+          '"><i class="spectrum-zero"></i><i class="spectrum-bar ' +
+          (pct < 0 ? 'spectrum-negative' : 'spectrum-positive') +
+          '" style="left:' + start.toFixed(2) + '%;width:' +
+          size.toFixed(2) + '%"></i></div></div>';
+      }).join('') + '</div><p class="spectrum-disclaimer">All bars share the same percentage scale. SEC-filed year-on-year changes, not earnings surprises or a price forecast.</p>'
+    : '';
+
   $('#financial-note').textContent = financial.period + ' · SEC Exhibit 99.1 · Calculated YoY, not consensus surprises.';
   const rows = financial.comparisons.map((x) =>
     '<tr><th scope="row">' + escapeHtml(x.label) + '</th><td>' + escapeHtml(x.priorLabel) +
@@ -265,6 +312,7 @@ async function runDesk() {
   const requestId = ++state.requestId;
   const ticker = state.selected.ticker;
   const asOf = fromInputValue($('#as-of-input').value);
+  updateEvidenceInstrument();
   state.research = null;
   $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
   try {
@@ -305,6 +353,7 @@ document.querySelectorAll('[data-replay-offset]').forEach((button) => button.add
   runDesk();
 }));
 $('#run-button').addEventListener('click', runDesk);
+$('#as-of-input').addEventListener('change', updateEvidenceInstrument);
 $('#refresh-button').addEventListener('click', runDesk);
 $('#ai-form').addEventListener('submit', askAI);
 $('#run-crosscheck').addEventListener('click', runCrosscheck);

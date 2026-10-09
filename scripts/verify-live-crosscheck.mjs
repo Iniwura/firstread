@@ -26,9 +26,16 @@ for(const ticker of ['NVDA','AAPL','MSFT']){
  }catch(e){report.cases.push({ticker,status:'REQUEST_FAILED',message:e.message})}
 }
 const n=report.cases.find(x=>x.ticker==='NVDA');
-const passed=n.status==='DISCREPANCY' && n.historicalUse===false &&
+const a=report.cases.find(x=>x.ticker==='AAPL');
+const m=report.cases.find(x=>x.ticker==='MSFT');
+const nvdaOk=n.status==='DISCREPANCY' && n.historicalUse===false &&
  n.comparisons.some(x=>x.metric==='revenue'&&x.verdict==='AGREES') &&
  n.comparisons.some(x=>x.metric==='operating_income'&&x.verdict==='DISAGREES');
-report.pass=passed;
+const appleOk=a.status==='INCOMPARABLE_PERIOD' && a.comparisons.length===0;
+const microsoftOk=m.status==='COMPARED' && m.historicalUse===false &&
+ m.comparisons.some(x=>x.metric==='revenue'&&x.verdict==='AGREES') &&
+ m.comparisons.some(x=>x.metric==='gaap_eps'&&x.verdict==='AGREES');
+report.pass=nvdaOk&&appleOk&&microsoftOk;
+report.proof={nvdaOk,appleOk,microsoftOk};
 console.log(JSON.stringify(report,null,2));
-if(!passed)process.exitCode=1;
+if(!report.pass)process.exitCode=1;

@@ -19,7 +19,7 @@ test('temporary MCP outage is visible and does not generate fake financial verif
 test('reconciled MCP data is explicitly current and excluded from as-of model context',async()=>{
  const h=createCrosscheckHandler({lookup:async()=>({
   retrievedAt:'2026-10-09T12:00:00Z',endpoint:'https://agent.bitget.com/mcp',
-  records:[{symbol:'NVDA',period_ending:'2026-07-25',fiscal_year:2027,currency_code:'USD',
+  records:[{symbol:'NVDA',period_ending:'2026-07-25',fiscal_year:2027,fiscal_period:'二季报',currency_code:'USD',
    revenue:96221000000,operating_income:64003000000,total_dlt_earnings_common_ps:2.46}]
  })});
  const out=res();await h({method:'GET',query:{ticker:'NVDA'}},out);

@@ -23,8 +23,22 @@ export function reconcileSources({ticker,context,income}){
   const db=Math.abs(Date.parse(b.period_ending)-date);
   return da-db;
  });
- const record=matches[0];
- if(!record)return {...base,summary:'No matching USD income statement for this SEC fiscal quarter was returned by Bitget MCP.'};
+ const quarter=Number(context.period?.match(/^Q([1-4])\s/)?.[1]);
+ const quarterCharacter=['','一','二','三','四'][quarter];
+ const compatible=quarterCharacter ? matches.filter(row=>{
+  const type=String(row.fiscal_period??'');
+  return type.includes(quarterCharacter+'季报') && !/累计|年报/.test(type);
+ }) : [];
+ const record=compatible[0];
+ if(!record){
+  return {...base,
+   status:matches.length?'INCOMPARABLE_PERIOD':'UNAVAILABLE',
+   summary:matches.length ?
+    'Bitget returned fiscal-year or cumulative reporting records, but no explicitly standalone fiscal-quarter statement. Comparing those directly with the SEC quarterly exhibit would produce false discrepancies.' :
+    'No matching USD income statement for this SEC fiscal quarter was returned by Bitget MCP.',
+   providerPeriodTypes:[...new Set(matches.map(x=>String(x.fiscal_period??'unspecified')))].slice(0,7),
+  };
+ }
  const mapping=[
   ['revenue','revenue','usd_millions'],
   ['operating_income','operating_income','usd_millions'],

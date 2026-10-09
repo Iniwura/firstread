@@ -5,17 +5,21 @@
 ## Anonymous production browser
 
 - Public URL: https://firstread-psi.vercel.app/
-- GitHub Actions runner: [production Chromium verification](https://github.com/Iniwura/firstread/actions/runs/37900824728)
-- Result: **PASS**, zero recorded browser test failures.
+- GitHub Actions runner: [production Chromium verification](https://github.com/Iniwura/firstread/actions/runs/37903207802)
+- Result: **PASS**, zero recorded browser test failures. The combined tests exercise all three companies, research briefs, chart and temporal controls, mobile rendering, no-key fallback, and a simulated network failure.
 - Title: `FIRSTREAD — Evidence before reaction`.
-- Filing replay: `2 visible · 0 held out` at the NVIDIA SEC acceptance cutoff.
+- Filing replay: `3 visible · 0 held out` at the NVIDIA SEC acceptance cutoff (issuer schedule, SEC 8-K acceptance, SEC Exhibit 99.1).
 - Research dossier: `CAUTION · 1 unresolved checks · 12 completed pre-decision candles`.
+- NVIDIA filed earnings figures visible: revenue `$96.2B`, GAAP EPS `$2.46`, Q3 outlook `$108.0B ±2%`.
+- Apple filed earnings figures visible despite date-only publisher release: revenue `$109.4B`, EPS `$2.02`, gross margin `50.1%`.
+- Microsoft filed earnings figures visible despite date-only publisher release: revenue `$90.0B`, GAAP EPS `$4.81`, Azure `+43% YoY`.
+- Browser verified filed figures were linked to source ID `E3-NVDA`, `E3-AAPL`, `E3-MSFT`; finance records were excluded before SEC acceptance under adversarial unit tests.
 - AI without provider key: truthful not-configured fallback verified.
 - Simulated network failure: `ABSTAIN`.
 - Narrow mobile viewport: no horizontal overflow.
 - Screenshots: workflow artifact `firstread-production-browser`.
 
-The browser test confirms real app behavior at the tested time. It does not prove a live Qwen response, market profit, historical analyst consensus, user adoption, or acceptance of an external submission.
+The production browser captured a source-status caveat: `Issuer page access caveat · SEC source unavailable`, reflecting that primary-source webpages were not directly fetched by the server in that run. The exhibit data and links were independently verified against SEC EDGAR; first-public earnings timestamps are not claimed. The browser test confirms real app behavior at the tested time. It does not prove a live Qwen response, market profit, historical analyst consensus, user adoption, or acceptance of an external submission.
 
 ## Submission-form status (read-only)
 

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/desk-v3.css">
+  <link rel="stylesheet" href="/desk-edition.css">
 </head>
 <body>
   <a class="skip-link" href="#clock">Skip to research controls</a>
@@ -23,18 +24,46 @@
     </div>
   </header>
   <main>
-    <section class="desk-masthead">
-      <div class="masthead-sup"><span>[ RESEARCH INSTRUMENT 001 ]</span><span>PUBLIC MARKET DATA / SOURCE-VERIFIED</span><span id="retrieval-clock">—</span></div>
+    <section class="desk-masthead" aria-labelledby="page-title">
+      <div class="masthead-sup">
+        <span>FR / INTELLIGENCE SERIES</span>
+        <span>01 — TIME-QUALIFIED FINANCIAL RESEARCH</span>
+        <span id="retrieval-clock">—</span>
+      </div>
       <div class="masthead-body">
-        <div>
-          <div class="eyebrow"><span class="signal-dot">●</span> THE ORDER MATTERS</div>
-          <h1 id="page-title">READ THE<br><mark>RECORD.</mark></h1>
-          <p class="masthead-copy">An earnings research system that knows which facts were available at your chosen decision time. Rewind. Verify. Challenge the thesis.</p>
+        <div class="hero-editorial">
+          <div class="hero-index"><span class="index-square"></span> FIELD REPORT <b>01/03</b> <span class="index-rule"></span> BITGET REALITY</div>
+          <h1 id="page-title">THE<br>INFORMATION<br><span>DIVIDE<span class="end-period">.</span></span></h1>
+          <div class="hero-exit-row">
+            <p class="masthead-copy">A filing can change the market in a second. Rebuild the information set before making sense of the move.</p>
+            <a class="hero-scroll-link" href="#clock" aria-label="Go to decision-time research controls"><span>ENTER THE FILE</span><strong>↘</strong></a>
+          </div>
         </div>
-        <div class="masthead-aside">
-          <div class="masthead-aside-top"><span>FIRSTREAD® / V1.0</span><span>03 CASES</span></div>
-          <div class="masthead-aside-middle"><strong>NO<br>LOOK<br><span>AHEAD.</span></strong></div>
-          <div class="masthead-aside-bottom"><span>01</span><span>NO WALLET / NO TRADES</span></div>
+        <div class="masthead-aside" aria-label="Active SEC filing timeline">
+          <div class="hero-dossier-top"><span>FR. / RECORD 001</span><span class="hero-verified"><i></i> PRIMARY SOURCE</span></div>
+          <div class="hero-orbit" aria-hidden="true">
+            <svg viewBox="0 0 390 235" preserveAspectRatio="xMidYMid meet">
+              <defs><pattern id="tinyGrid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0H0V15" fill="none" stroke="#494949" stroke-width=".5"/></pattern></defs>
+              <rect width="390" height="235" fill="url(#tinyGrid)" opacity=".35"/>
+              <circle cx="199" cy="112" r="91" fill="none" stroke="#5a5a5a" stroke-width=".65"/>
+              <circle cx="199" cy="112" r="64" fill="none" stroke="#898989" stroke-width=".65" stroke-dasharray="2 5"/>
+              <circle cx="199" cy="112" r="37" fill="none" stroke="#555" stroke-width=".65"/>
+              <path d="M0 112H390M199 0V235" fill="none" stroke="#606060" stroke-width=".65"/>
+              <path d="M33 161 L91 161 L107 134 L128 179 L160 86 L176 134 L193 111 L213 145 L237 64 L258 119 L277 112 L304 112 L325 96 L345 112 L390 112" fill="none" stroke="#00f0ff" stroke-width="2.25" stroke-linejoin="round"/>
+              <path d="M197 0 V235" fill="none" stroke="#00f0ff" stroke-width=".7" stroke-dasharray="3 8"/>
+              <circle cx="199" cy="112" r="5" fill="#00f0ff" stroke="#080808" stroke-width="3"/>
+              <path d="M20 20H45M20 20V45M370 190V215H345" fill="none" stroke="#888" stroke-width="1.1"/>
+            </svg>
+            <span class="orbit-label">THE MOMENT OF RECORD</span>
+            <span class="orbit-corner">[ SOURCE / SEC ]</span>
+          </div>
+          <div class="hero-dossier-bottom">
+            <div class="hero-dossier-identity"><span>ACTIVE FILING</span><strong id="hero-ticker">NVDA</strong><small id="hero-event-label">SEC earnings event</small></div>
+            <div class="hero-dossier-stamp">
+              <span>SEC EXHIBIT ACCEPTED</span><strong id="hero-accept-time">—</strong><small id="hero-accept-date">—</small>
+            </div>
+          </div>
+          <div class="hero-dossier-gate"><span class="gate-pulse" aria-hidden="true"></span><strong id="hero-gate">CHECKING CUTOFF</strong><span id="hero-evidence-id">E3 / PRIMARY EXHIBIT</span></div>
         </div>
       </div>
     </section>
@@ -48,6 +77,11 @@
         <div class="editorial-head">
           <h2>TIME IS<br><em>THE TEST.</em></h2>
           <p>Change the clock before or after the SEC filing. The source register and financial analysis follow verified publication boundaries.</p>
+        </div>
+        <div class="cutoff-tape" id="cutoff-tape" data-phase="acceptance" aria-label="Conceptual evidence cutoff diagram">
+          <div class="cutoff-top"><span>DOCUMENT AVAILABILITY / SEC 8-K</span><span id="cutoff-label">ACCEPTANCE ANCHOR</span></div>
+          <div class="cutoff-timeline" aria-hidden="true"><span class="time-start">PRE-FILING</span><div class="cutoff-ticks"><div class="cutoff-gate"></div><div class="cutoff-cursor"></div></div><span class="time-end">POST-FILING</span></div>
+          <div class="cutoff-note">CONCEPTUAL TIMELINE · NOT A PRICE CHART OR A CLAIM OF FIRST PUBLICATION</div>
         </div>
         <section class="control-bar panel clock-instrument" aria-label="Replay controls">
             <div class="control-case"><span class="section-label">01 / COMPANY IN FOCUS</span><strong id="selected-case">—</strong><span id="selected-event" class="muted">—</span></div>

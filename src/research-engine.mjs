@@ -18,7 +18,7 @@ export function evidenceAvailability(item, asOf) {
   }
 }
 
-export function buildEvidence(caseData, releaseData, retrievedAt, asOf) {
+export function buildEvidence(caseData, releaseData, retrievedAt, asOf, secExhibit = null) {
   const issuer = {
     id: `E1-${caseData.ticker}`,
     sourceURL: releaseData.issuerReleaseUrl,
@@ -51,7 +51,25 @@ export function buildEvidence(caseData, releaseData, retrievedAt, asOf) {
     precision: 'second',
     evidenceNote: caseData.timestampCaution,
   };
-  const all = [issuer, sec].map((item) => ({ ...item, availability: evidenceAvailability(item, asOf) }));
+  const exhibit = secExhibit && secExhibit.acceptedAt === caseData.secAcceptedAt &&
+    /^https:\/\/www\.sec\.gov\/Archives\/edgar\/data\//.test(secExhibit.sourceURL) &&
+    secExhibit.ticker === caseData.ticker ? {
+      id: `E3-${caseData.ticker}`,
+      sourceURL: secExhibit.sourceURL,
+      publisher: 'SEC EDGAR · filed company earnings exhibit',
+      companyTicker: caseData.ticker,
+      documentID: `${secExhibit.accession}-${secExhibit.exhibit}`,
+      publishedAt: caseData.secAcceptedAt,
+      firstObservedAt: null,
+      availabilityBasis: 'SEC-filed exhibit accessible from 8-K acceptance, reconstructed from a verified EDGAR link; not first public release time',
+      retrievedAt,
+      sections: [secExhibit.exhibit, 'corporate earnings'],
+      facts: secExhibit.facts,
+      quoteLocations: secExhibit.facts.map((fact) => ({ label: fact.label, quote: fact.quote, sourceURL: secExhibit.sourceURL })),
+      precision: 'second',
+      evidenceNote: 'Earnings figures appear in an SEC-filed exhibit linked from the accepted 8-K. This proves filing availability, not the first public announcement or analyst expectations.',
+    } : null;
+  const all = [issuer, sec, ...(exhibit ? [exhibit] : [])].map((item) => ({ ...item, availability: evidenceAvailability(item, asOf) }));
   return { all, visible: all.filter((item) => item.availability.visible), excluded: all.filter((item) => !item.availability.visible) };
 }
 

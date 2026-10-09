@@ -37,6 +37,21 @@ export async function getRealityCandles(symbol, asOf, hoursBefore = 12, hoursAft
   return { ...result, candles: result.data ?? [] };
 }
 
+export async function getRealityStockInfo(symbol) {
+  const result = await fetchJson('/api/v3/reality/market/stock-info', { symbol });
+  const raw = Array.isArray(result.data) ? result.data.find((item) =>
+    String(item.symbol).toUpperCase() === String(symbol).toUpperCase()) : null;
+  if (!raw) throw new Error('Reality stock-info did not contain the requested symbol');
+  return {
+    url:result.url, requestTime:result.requestTime,
+    stockInfo:{
+      symbol:raw.symbol,code:raw.code,
+      tradingPeriod:Array.isArray(raw.tradingPeriod) ? raw.tradingPeriod.filter((v)=>typeof v==='string') : [],
+      weekendTradable:raw.weekendTradable === 'yes',
+    }
+  };
+}
+
 export async function getRealityStatus() {
   const states = await fetchJson('/api/v3/reality/market/states');
   await new Promise((resolve) => setTimeout(resolve, 1100));

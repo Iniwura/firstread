@@ -54,6 +54,11 @@ jobs:
           FIRSTREAD_URL: http://127.0.0.1:4174
           FIRSTREAD_SCREENSHOT_DIR: artifacts/bitget-blue
         run: node scripts/desk-visual-qa.mjs
+      - name: Verify first-visit tour, accessibility, persistence and mobile behavior
+        env:
+          FIRSTREAD_URL: http://127.0.0.1:4174
+          FIRSTREAD_SCREENSHOT_DIR: artifacts/tour
+        run: node scripts/desk-tour-smoke.mjs
       - name: Test real historical SEC and Bitget research journey
         env:
           FIRSTREAD_URL: http://127.0.0.1:4174

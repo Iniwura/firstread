@@ -58,6 +58,17 @@ The project submission requires a complete description, role-of-LLM field, publi
 
 See [EVALUATION.md](EVALUATION.md) for the full judge walkthrough, observed engineering proof boundaries, and external user-testing protocol.
 
+## Demo video and what judges can verify
+
+- **Full working product:** https://firstread-psi.vercel.app/
+- **Captioned product demonstration (MP4 artifact):** https://github.com/Iniwura/firstread/actions/runs/37927622231/artifacts/11614679622
+- **Independent production browser QA:** https://github.com/Iniwura/firstread/actions/runs/37928241804
+- **63/63 automated temporal, financial, MCP and UI syntax checks:** https://github.com/Iniwura/firstread/actions/runs/37928108573
+- **Independent live SEC-versus-Bitget MCP data validation:** https://github.com/Iniwura/firstread/actions/runs/37927430868
+- **Real user research protocol (pending actual participants):** [USER_TEST_PROTOCOL.md](USER_TEST_PROTOCOL.md)
+
+This video shows a scripted research workflow, not a working Qwen response. The Bitget Qwen credit request has been submitted by the builder but a provider token and live model validation remain pending.
+
 ## Engineering and source evidence
 
 - Three SEC exhibits and the verified factual anchors: [`data/sec-exhibits.json`](data/sec-exhibits.json)

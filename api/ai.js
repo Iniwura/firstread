@@ -65,7 +65,7 @@ export function createAiHandler({ research = runResearch, transport = fetch, env
     const isQwen = Boolean(env.BITGET_QWEN_API_KEY);
     const baseUrl = (isQwen ? (env.BITGET_QWEN_BASE_URL || 'https://hackathon.bitgetops.com/v1') :
       (env.OPENAI_BASE_URL || 'https://api.openai.com/v1')).replace(/\/$/, '');
-    const model = isQwen ? (env.BITGET_QWEN_MODEL || 'qwen3.6-plus') : (env.OPENAI_MODEL || 'gpt-4o-mini');
+    const model = isQwen ? (env.BITGET_QWEN_MODEL || 'qwen3.8-max') : (env.OPENAI_MODEL || 'gpt-4o-mini');
     const system = [
       'You are FIRSTREAD, a source-constrained US equities research assistant, not an execution agent.',
       'Use only facts and time-verified candles from the supplied server-built packet; do not use external market knowledge.',

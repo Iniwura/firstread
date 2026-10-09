@@ -1,50 +1,69 @@
 {
-  "checkedAt": "2026-10-09T07:30:57.266Z",
+  "checkedAt": "2026-10-09T08:17:17.494Z",
   "form": {
     "shortUrl": "https://forms.gle/GyWZCMCPocgJdJon6",
-    "finalUrl": "https://docs.google.com/forms/d/e/1FAIpQLScojKm9H2xDNFL3ijcDcKxwG-_PvkmyimiAB-SEFOx_WsqGNA/viewform?usp=send_form",
-    "httpStatus": 200,
     "title": "Bitget AI Trading Competition Submission Form",
-    "deadlineShown": "October 8, 23:59 (UTC+8)",
-    "acceptanceConfirmed": false,
+    "visibleFieldsConfirmed": true,
+    "publishedDeadlineText": "October 8, 23:59 (UTC+8)",
+    "newerSocialAnnouncementDeadline": "October 11, 2026 (not reconciled by the form)",
     "submissionAttempted": false,
-    "deadlineConflict": "Form audit earlier showed Oct 8 23:59 UTC+8; newer Bitget X announcement showed Oct 11; direct acceptance still unverified."
-  },
-  "officialActivityPage": {
-    "url": "https://www.bitget.com/zh-CN/activity-hub/hackathon",
-    "observedTimeline": "9/3 start; 9/21 submission deadline; 10/8 winners announced",
-    "conflictsWithForm": true
+    "acceptanceConfirmed": false,
+    "status": "Fields visible; cannot infer organizer acceptance or deadline extension"
   },
   "publication": {
     "repository": "https://github.com/Iniwura/firstread",
-    "repositoryCommit": "e1564d53b0e702b55dab0708759aa995fbf8c0be",
+    "verifiedProductionCodeCommit": "2f4e88a403c7155fb7ef2523128a482c6da34a65",
     "productionUrl": "https://firstread-psi.vercel.app/",
-    "deploymentId": "dpl_4sGRH5ntDwPyLQomtZKvRb2Wk51t",
+    "productionDeploymentId": "dpl_5pyCtndFLevnW8JbrU8ZqDQboAvR",
     "deploymentState": "READY",
-    "deploymentCommitMatch": true,
-    "githubCi": {
-      "status": "completed",
-      "conclusion": "success",
-      "commit": "e1564d53b0e702b55dab0708759aa995fbf8c0be"
+    "automatedTests": {
+      "total": 42,
+      "passed": 42,
+      "failed": 0,
+      "reference": "https://github.com/Iniwura/firstread/actions/runs/37903867350"
     },
-    "postUpgradeAnonymousBrowserSmoke": "NOT_YET_REVERIFIED"
+    "productionBrowser": {
+      "status": "PASS",
+      "failures": 0,
+      "caseCount": 3,
+      "formReadOnlyCheck": "FORM_FIELDS_VISIBLE_NOT_PROOF_OF_ACCEPTANCE",
+      "reference": "https://github.com/Iniwura/firstread/actions/runs/37903867098"
+    }
+  },
+  "researchEvidence": {
+    "src": "data/sec-exhibits.json",
+    "secExhibits": [
+      "E3-NVDA",
+      "E3-AAPL",
+      "E3-MSFT"
+    ],
+    "priceSources": [
+      "RNVDAUSDT",
+      "RAAPLUSDT",
+      "RMSFTUSDT"
+    ],
+    "sourceRetrievalLimitation": "SEC issuer pages may be blocked from the production runtime, source URLs and verification records visible",
+    "contemporaneousAnalystConsensusAvailable": false,
+    "bitgetMcpFundamentals": "Transport/catalog discovered; backend HTTP 503 at recorded probe"
   },
   "ai": {
     "productionProviderConfigured": false,
-    "mode": "rules-only fallback until a provider key is added",
-    "liveModelResponseVerified": false
+    "realModelResponseVerified": false,
+    "modelTransportImplemented": true,
+    "strictEvidenceBoundaryTested": true,
+    "activationInstructions": "AI_ACTIVATION.md",
+    "liveCheck": "https://github.com/Iniwura/firstread/actions/workflows/live-ai.yml"
   },
-  "remainingEvidence": [
-    "A real cited Qwen/OpenAI model result in the public demo",
-    "Fresh post-upgrade anonymous browser run on desktop/mobile",
-    "Independent user task completion data",
-    "Confirmation of form acceptance and deadline"
-  ],
-  "requiredUserActions": [
-    "Confirm Google Form accepts submissions and exact cutoff",
-    "Configure AI provider secret in encrypted Vercel production env; do not share secrets in chat",
-    "Approve and publish the required X quote post",
-    "Provide or confirm team identity and Bitget UID; submit the form"
-  ],
-  "status": "engineering upgrade deployed with passing CI; submission and four validation gates outstanding"
+  "userValidation": {
+    "completed": false,
+    "testers": 0,
+    "protocol": "EVALUATION.md",
+    "note": "Do not invent participants or completion rates"
+  },
+  "externalActions": {
+    "compliantXQuotePublished": false,
+    "googleFormSubmitted": false,
+    "teamIdentityProvidedForSubmission": false
+  },
+  "status": "Engineering and public browser verification complete; real AI provider, actual user trials, and eligible form submission still outstanding."
 }

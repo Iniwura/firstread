@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/source-recheck.yml'
+      - 'scripts/probe-sources.mjs'
 jobs:
   source-audit:
     runs-on: ubuntu-latest

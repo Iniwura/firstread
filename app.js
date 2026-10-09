@@ -113,8 +113,14 @@ function renderMarket(data) {
   $('#candle-count').textContent = String(market.preWindow.visibleCount);
   $('#reaction-count').textContent = String(market.reactionWindow.length);
   $('#gap-count').textContent = String(market.preWindow.gaps.length);
-  const statusText = market.status?.unavailable ? `Session state unavailable: ${market.status.error}` : `US sessions and calendar checked · ${market.status.states?.data?.market || 'US'} market`;
-  $('#market-audit').textContent = `${statusText}. ${market.preWindow.gaps.length ? `${market.preWindow.gaps.length} candle gap(s) detected; inspect before inferring a move.` : 'No pre-decision interval gaps detected.'} Reaction candles are separated from the pre-decision information set.`;
+  const statusText = market.status?.unavailable ? 'Current session state unavailable' :
+    'Current market session schedule checked (not historical session evidence)';
+  const sessionInfo = market.stockInfo ?
+    'Bitget stock-info today: ' + (market.stockInfo.tradingPeriod?.join(', ') || 'periods unspecified') +
+      '; weekend access: ' + (market.stockInfo.weekendTradable ? 'reported as supported' : 'not reported as supported') +
+      '. Current metadata cannot prove tradeability at the historical cutoff.' :
+    'Bitget stock-info unavailable; no assumption about historical tradeable sessions.';
+  $('#market-audit').textContent = `${statusText}. ${sessionInfo} ${market.preWindow.gaps.length ? `${market.preWindow.gaps.length} candle gap(s) detected; inspect before inferring a move.` : 'No pre-decision interval gaps detected.'} Reaction candles are separated from the pre-decision information set.`;
   renderChart(data);
 }
 
@@ -216,7 +222,7 @@ async function runDesk() {
     $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
     $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
     $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
-    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
+    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, stockInfo: data.market.stockInfo, stockInfoSource: data.market.stockInfoSource, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
     $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
   } catch (error) {
     if (requestId !== state.requestId) return;

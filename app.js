@@ -361,7 +361,29 @@ document.querySelectorAll('[data-research-question]').forEach((button) => button
   $('#ai-question').value = button.dataset.researchQuestion;
   $('#ai-question').focus();
 }));
-$('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
+$('#copy-receipt').addEventListener('click', async () => {
+  const button = $('#copy-receipt');
+  const original = 'Copy receipt';
+  if (!state.research) {
+    button.textContent = 'Run research first';
+    window.setTimeout(() => { button.textContent = original; }, 2200);
+    return;
+  }
+  if (!navigator.clipboard?.writeText) {
+    document.querySelector('.receipt-details').open = true;
+    button.textContent = 'Select receipt text to copy';
+    window.setTimeout(() => { button.textContent = original; }, 2600);
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText($('#receipt-json').textContent);
+    button.textContent = 'Copied to clipboard ✓';
+  } catch {
+    document.querySelector('.receipt-details').open = true;
+    button.textContent = 'Clipboard unavailable · copy below';
+  }
+  window.setTimeout(() => { button.textContent = original; }, 2600);
+});
 document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
 
 try {

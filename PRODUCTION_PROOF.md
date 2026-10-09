@@ -5,7 +5,7 @@
 ## Anonymous production browser
 
 - Public URL: https://firstread-psi.vercel.app/
-- GitHub Actions runner: [production Chromium verification](https://github.com/Iniwura/firstread/actions/runs/37903207802)
+- GitHub Actions runner: [production Chromium verification](https://github.com/Iniwura/firstread/actions/runs/37903867098)
 - Result: **PASS**, zero recorded browser test failures. The combined tests exercise all three companies, research briefs, chart and temporal controls, mobile rendering, no-key fallback, and a simulated network failure.
 - Title: `FIRSTREAD — Evidence before reaction`.
 - Filing replay: `3 visible · 0 held out` at the NVIDIA SEC acceptance cutoff (issuer schedule, SEC 8-K acceptance, SEC Exhibit 99.1).
@@ -20,6 +20,13 @@
 - Screenshots: workflow artifact `firstread-production-browser`.
 
 The production browser captured a source-status caveat: `Issuer page access caveat · SEC source unavailable`, reflecting that primary-source webpages were not directly fetched by the server in that run. The exhibit data and links were independently verified against SEC EDGAR; first-public earnings timestamps are not claimed. The browser test confirms real app behavior at the tested time. It does not prove a live Qwen response, market profit, historical analyst consensus, user adoption, or acceptance of an external submission.
+
+## Automated research proof
+
+- [Latest quality run](https://github.com/Iniwura/firstread/actions/runs/37903867350): **42/42 passed**, zero failed; JavaScript syntax and static build checks also passed.
+- Server-authoritative AI packet tests isolate input, exclude future price candles, and reject client evidence and invalid source IDs.
+- Public production at this proof date: Vercel deployment `dpl_5pyCtndFLevnW8JbrU8ZqDQboAvR`, commit `2f4e88a403c7155fb7ef2523128a482c6da34a65`; canonical URL remains `https://firstread-psi.vercel.app/`.
+- No AI provider key was configured in the project during the test; this is not a real LLM response benchmark.
 
 ## Submission-form status (read-only)
 

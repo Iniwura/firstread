@@ -389,7 +389,7 @@ async function runCrosscheck() {
     if(token!==state.crosscheckId || ticker!==state.selected?.ticker)return;
     const note=body.sourceNote||'Current third-party data, not as-of evidence.';
     if(body.status==='UNAVAILABLE'||!Array.isArray(body.differences)||!body.differences.length) {
-      $('#crosscheck-status').textContent = 'Unavailable · ' + (body.summary||'No validated comparison available.');
+      $('#crosscheck-status').textContent = (body.status === 'INCOMPARABLE_PERIOD' ? 'Different reporting periods · ' : 'Unavailable · ') + (body.summary||'No validated comparison available.');
       $('#crosscheck-output').textContent = note;
       return;
     }

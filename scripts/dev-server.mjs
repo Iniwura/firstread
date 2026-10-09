@@ -10,6 +10,7 @@ const handlers = {
   events: (await import(pathToFileURL(path.join(root, 'api/events.js')))).default,
   research: (await import(pathToFileURL(path.join(root, 'api/research.js')))).default,
   ai: (await import(pathToFileURL(path.join(root, 'api/ai.js')))).default,
+  crosscheck: (await import(pathToFileURL(path.join(root, 'api/crosscheck.js')))).default,
 };
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
 

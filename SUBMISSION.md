@@ -1,6 +1,6 @@
 # FIRSTREAD submission materials
 
-Status: upgraded research engine is deployed and independent production Chromium tests have passed. Live provider verification, independent user trials and form acceptance remain unproven. The X post and form have NOT been submitted.
+Status: production deployed; 42/42 automated tests passed and independent full-browser research checks passed for all three SEC exhibits. Live provider verification, independent user trials and form acceptance remain unproven. The X post and form have NOT been submitted.
 
 ## Track
 
@@ -23,7 +23,7 @@ Observed engineering results:
 - 3/3 candidate Reality instruments discovered with candle coverage near SEC anchors.
 - 3/3 end-to-end research workflows completed locally and three distinct SEC EX-99.1 financial-exhibit cases independently verified in production Chromium.
 - GitHub CI passed the expanded automated suite covering original temporal rules, server-authoritative AI, decision dossiers, filed earnings exhibits, research briefs, and timing attacks.
-- [Production Chromium proof](https://github.com/Iniwura/firstread/actions/runs/37903207802): pass for NVIDIA/Apple/Microsoft financial facts, time-locked replay, rules-only AI fallback, simulated offline abstention, and mobile no-overflow.
+- [Production Chromium proof](https://github.com/Iniwura/firstread/actions/runs/37903867098): pass for NVIDIA/Apple/Microsoft financial facts, time-locked replay, rules-only AI fallback, simulated offline abstention, and mobile no-overflow.
 
 These are engineering observations, not user adoption or trading-performance metrics. No return, Sharpe, drawdown, fill, backtest, paper-trading, or profitability claim is made. No historical analyst-consensus snapshot is claimed because one was not provided as an as-of artifact.
 
@@ -44,7 +44,7 @@ The LLM receives only the typed packet assembled server-side after the as-of fil
 ## Links and external submission status
 
 - Repository: `https://github.com/Iniwura/firstread`
-- Production demo: `https://firstread-psi.vercel.app/` (validated deployed version `dpl_wADZL6VcD6Ph8CTwxYtoUsvvQ5xP`; independent Chromium passed with three earnings cases).
+- Production demo: `https://firstread-psi.vercel.app/` (validated deployed version `dpl_5pyCtndFLevnW8JbrU8ZqDQboAvR`; independent Chromium passed with three earnings cases).
 - Form checked, not submitted: `https://forms.gle/GyWZCMCPocgJdJon6`
 - Required Bitget S2 promotional post to quote: `https://x.com/Bitget_AI/status/2100519318824055159?s=20`
 
@@ -64,4 +64,4 @@ See [EVALUATION.md](EVALUATION.md) for the full judge walkthrough, observed engi
 - Independent browser proof: [`PRODUCTION_PROOF.md`](PRODUCTION_PROOF.md)
 - No-lookahead/adversarial tests: [`tests/`](tests/)
 - Limitations and blind-user protocol: [`EVALUATION.md`](EVALUATION.md)
-- The rules-only fallback is NOT a successful AI model demonstration; mark as pending until a live provider is configured and tested.
+- The rules-only fallback is NOT a successful AI model demonstration; mark as pending until a live provider is configured and tested. See [AI_ACTIVATION.md](AI_ACTIVATION.md) for the exact secure setup and an opt-in automated real-model test.

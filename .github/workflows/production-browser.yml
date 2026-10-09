@@ -13,6 +13,11 @@ on:
       - 'index.html'
       - 'styles.css'
       - 'design.css'
+      - 'desk.html'
+      - 'desk-polish.css'
+      - 'landing.css'
+      - 'landing.js'
+      - 'scripts/landing-smoke.mjs'
       - '.github/workflows/production-browser.yml'
 jobs:
   production-browser:
@@ -35,6 +40,11 @@ jobs:
           FIRSTREAD_URL: https://firstread-psi.vercel.app
           FIRSTREAD_SCREENSHOT_DIR: artifacts
         run: node scripts/browser-smoke.mjs
+      - name: Audit editorial site and research deep links in production
+        env:
+          FIRSTREAD_URL: https://firstread-psi.vercel.app
+          FIRSTREAD_SCREENSHOT_DIR: artifacts/landing
+        run: node scripts/landing-smoke.mjs
       - name: Check Bitget submission form without submitting
         run: node scripts/check-submission-form.mjs
       - name: Save browser screenshots

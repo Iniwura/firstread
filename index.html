@@ -75,6 +75,15 @@
             <p class="financial-caveat" id="financial-note">This research uses time-qualified SEC Exhibit 99.1 comparisons, not current analyst consensus.</p>
             <div id="financial-content" class="financial-content"><p class="empty-state">Choose a verified filing cutoff to unlock financial comparisons.</p></div>
             <div class="financial-drivers" id="financial-drivers"></div>
+            <section class="source-reconcile" aria-labelledby="reconcile-title">
+              <div class="reconcile-head">
+                <div><h3 id="reconcile-title">Independent source check</h3>
+                  <p>Compare the SEC-filed quarter with Bitget's equity MCP income records retrieved today. This audit is excluded from historical trading decisions and from the AI replay packet.</p></div>
+                <button type="button" id="run-crosscheck" class="ghost-button">Reconcile SEC ↔ Bitget</button>
+              </div>
+              <p class="reconcile-status" id="crosscheck-status">Not checked. Independent Bitget source verification is optional.</p>
+              <div id="crosscheck-output"></div>
+            </section>
           </section>
 
           <section class="grid-two">

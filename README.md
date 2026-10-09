@@ -129,6 +129,17 @@ A captioned real-browser video demonstrates all three issuer cases, historical e
 
 The video is a scripted product demonstration, not a successful live Qwen response or an independent human usability study. Actual Qwen access has been applied for by the builder and remains unverified until the key is issued and a real response passes the live-model test.
 
+## Public website and research workspace (October 9 redesign)
+
+- **Public editorial website:** [firstread-psi.vercel.app](https://firstread-psi.vercel.app/) — custom, art-directed standalone presentation.
+- **Working research desk:** [firstread-psi.vercel.app/desk.html](https://firstread-psi.vercel.app/desk.html) — original SEC and Bitget workflows retained.
+- **Deep-linked cases:** `/desk.html?ticker=NVDA`, `/desk.html?ticker=AAPL`, and `/desk.html?ticker=MSFT`.
+- **Time-specific demo:** `/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z` holds SEC-filed exhibits out one second before acceptance.
+
+The site intentionally separates a designed first impression from a high-density analyst workspace. The public reference behind the visual direction was Monodrift; its branding, code and images were **not** copied. FIRSTREAD uses its own typography, content and locally packaged public-domain photograph of New York Stock Exchange ticker equipment from the [Library of Congress, c.1922](https://www.loc.gov/item/2013647237/).
+
+Visual QA verifies five breakpoints (1440, 1100, 820, 390 and 375px), the historical cut-off toggle, source isolation, accessible mobile menu, case links, and the unchanged Bitget research journeys. Both pages have separate responsive styles and intentionally share the same product identity.
+
 ## Competition materials
 
 - [Submission description and role of LLM](SUBMISSION.md)

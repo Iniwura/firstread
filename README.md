@@ -1,4 +1,4 @@
-# FIRSTREAD — evidence-timed earnings intelligence (feasibility starter)
+# FIRSTREAD — evidence-timed earnings intelligence
 
 FIRSTREAD is an evidence-timed earnings desk for Bitget Reality rTokens, built for **Bitget AI Base Camp S2, AI Trading Desk → Information Extraction & Signal Generation**. It helps an active rToken trader ask: after this disclosure, what was actually knowable at the decision time, what did the rToken market show, what conflicts remain, and should a human investigate, wait, or reject the idea?
 
@@ -68,6 +68,20 @@ Bitget equity MCP ───┘             │                         │
 
 Optional AI configuration uses `BITGET_QWEN_API_KEY`, `BITGET_QWEN_BASE_URL=https://hackathon.bitgetops.com/v1`, and `BITGET_QWEN_MODEL=qwen3.8-max`. OpenAI-compatible variables are supported as a fallback. Keys are server-only.
 
+## Primary SEC earnings exhibits for three companies
+
+The following exact SEC 8-K exhibits were independently inspected and added as time-qualified `E3` evidence. They are included **only from their respective SEC acceptance timestamps** (never before). Apple and Microsoft publisher pages remain date-only, so FIRSTREAD does not invent their earlier public release times.
+
+| Case | Accepted at (UTC) | Filed exhibit | Verified reported data |
+|---|---|---|---|
+| NVIDIA | 2026-08-26 20:21:19 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm) | $96.2B quarterly revenue; $2.46 GAAP EPS; $108B ±2% forward revenue outlook |
+| Apple | 2026-07-30 20:30:28 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm) | $109.4B quarterly revenue; $2.02 diluted EPS; 50.1% gross margin |
+| Microsoft | 2026-07-29 20:04:53 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/msft-ex99_1.htm) | $90B quarterly revenue; $4.81 GAAP EPS; +43% Azure growth |
+
+The `data/sec-exhibits.json` records the source URLs, reported facts, quotes, SEC acceptance anchors and verification date. The application distinguishes a publisher's first-public time from later filing availability and never infers first public release solely from SEC acceptance. A filed source may be web-inspectable independently even when SEC blocks a particular live server request; that retrieval failure is disclosed, not hidden.
+
+Research reports now include an **actionable human brief**: which financial facts are time-qualified, what remains unverified, what the historical rToken prices actually establish, and what evidence or checks a trader must obtain next. The future/hindsight market response stays outside the pre-decision model packet. Five additional SEC timing tests guard against false historical availability.
+
 ## Competition-grade research improvements (October 9)
 
 FIRSTREAD now includes a **decision dossier** in the research response and in the UI. It calculates pre-cutoff price drift, observed intrawindow range, candle-age/gap quality, source-timing precision, and a separate outcome-only market observation. It does not label returns, fills, historical consensus comparisons, or profitability. Later price observations are never included in the model's pre-decision packet.
@@ -88,7 +102,7 @@ For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATIO
 - No causal claim from simple price movement; no simulated fills labelled real.
 - Zero fabricated credentials, customers, outcomes, metrics, reviews, or API results.
 
-Observed validation includes 13 automated temporal/research tests, live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
+Observed validation initially included 13 automated temporal/research tests; further research-brief, SEC-exhibit and AI-boundary tests have since been added, live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
 
 ## Competition materials
 
@@ -96,7 +110,7 @@ Observed validation includes 13 automated temporal/research tests, live API prob
 - [Submission status](reports/submission-status.json)
 - Live demo: https://firstread-psi.vercel.app/
 
-The live form was checked but not submitted. It currently states an October 8, 23:59 (UTC+8) deadline; the official activity page shows a conflicting earlier timeline. Acceptance and any extension are not claimed. The X promotional draft is in `SUBMISSION.md` and requires user approval before posting.
+The live form was checked and appeared fillable, but was not submitted. It currently states an October 8, 23:59 (UTC+8) deadline; the official activity page shows a conflicting earlier timeline. Acceptance and any extension are not claimed. The X promotional draft is in `SUBMISSION.md` and requires user approval before posting.
 
 ## Primary references
 

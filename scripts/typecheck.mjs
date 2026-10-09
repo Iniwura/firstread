@@ -13,4 +13,7 @@ for (const dir of dirs) {
     if (result.status !== 0) { failed = true; process.stderr.write(result.stderr); }
   }
 }
+// Root browser entrypoint must be checked as well; production previously failed here.
+const browserEntrypoint = spawnSync(process.execPath, ['--check', path.join(root, 'app.js')], { encoding: 'utf8' });
+if (browserEntrypoint.status !== 0) { failed = true; process.stderr.write(browserEntrypoint.stderr); }
 if (failed) process.exitCode = 1; else console.log('PASS: JavaScript syntax/type boundary checks passed');

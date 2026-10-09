@@ -115,18 +115,28 @@ function renderMarket(data) {
 }
 
 function renderContradictions(data) {
-  const items = [
-    ['Timing precision', data.case.release.precision === 'date-only' ? 'Issuer release is date-only; this replay is SEC-availability anchored.' : 'Issuer schedule supplies an approximate first-public time; do not treat it as tick precision.'],
-    ['Market linkage', 'rToken candles describe the Bitget Reality market response, not the underlying US-stock exchange tape.'],
-    ['Forecasts', 'No historical analyst-consensus snapshot was supplied to the replay; future estimates are excluded.'],
-    ['Human decision', 'A research-ready receipt is not a buy, sell, or execution instruction.'],
-  ];
-  $('#contradictions').innerHTML = items.map(([label, text]) => `<div class="bullet-item"><div><strong>${label}</strong><br />${text}</div></div>`).join('');
+  const checks = data.dossier?.checks ?? [];
+  const observed = data.dossier?.metrics;
+  if (!checks.length) {
+    $('#contradictions').textContent = 'The decision dossier is not available.';
+    return;
+  }
+  $('#contradictions').innerHTML = checks.map((check) => {
+    const label = check.phase === 'after' ? ' · hindsight only' : '';
+    return '<div class="bullet-item"><div><strong>' + escapeHtml(check.title) +
+      ' · ' + escapeHtml(check.category) + label +
+      '</strong><br />' + escapeHtml(check.detail) + '</div></div>';
+  }).join('');
+  $('#dossier-summary').textContent = data.dossier.researchPosture +
+    ' · ' + (data.dossier.blockingTopics.length ?
+      data.dossier.blockingTopics.length + ' unresolved checks' : 'all defined checks passed') +
+    ' · ' + (observed?.completePreCandles ?? 0) + ' completed pre-decision candles';
 }
 
 async function runDesk() {
   if (!state.selected) return;
   const asOf = fromInputValue($('#as-of-input').value);
+  state.research = null;
   $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
   try {
     const data = await getJSON(`/api/research?ticker=${state.selected.ticker}&asOf=${encodeURIComponent(asOf)}`);
@@ -139,7 +149,7 @@ async function runDesk() {
     $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
     $('#ai-answer').innerHTML = '<span class="spark">✦</span><span>Receipt ready. Ask a question and the model will be constrained to the visible evidence.</span>';
   } catch (error) {
-    $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${error.message}</span>`;
+    $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
   } finally { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; }
 }
 
@@ -157,6 +167,10 @@ async function askAI(event) {
 $('#run-button').addEventListener('click', runDesk);
 $('#refresh-button').addEventListener('click', runDesk);
 $('#ai-form').addEventListener('submit', askAI);
+document.querySelectorAll('[data-research-question]').forEach((button) => button.addEventListener('click', () => {
+  $('#ai-question').value = button.dataset.researchQuestion;
+  $('#ai-question').focus();
+}));
 $('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
 document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
 

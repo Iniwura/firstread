@@ -56,6 +56,7 @@ try {
   if (!details.msftBrief.includes('E3-MSFT')) failures.push('Microsoft SEC Exhibit 99.1 was not used');
 
   const status = await page.evaluate(async () => (await (await fetch('/api/ai')).json()));
+  if (status.mode !== 'server-verified-evidence') failures.push('AI server evidence isolation mode missing');
   if (!status.configured) {
     await page.locator('#ai-question').fill('What is verifiably known at this time?');
     await page.getByRole('button', { name: /Review verified evidence/ }).click();

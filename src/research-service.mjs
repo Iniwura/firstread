@@ -9,6 +9,7 @@ import { buildResearchBrief } from './research-brief.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const anchors = JSON.parse(await readFile(path.join(root, 'data/verified-sec-anchors.json'), 'utf8'));
 const releases = JSON.parse(await readFile(path.join(root, 'data/release-evidence.json'), 'utf8'));
+const secExhibits = JSON.parse(await readFile(path.join(root, 'data/sec-exhibits.json'), 'utf8'));
 
 function exactTimestamp(value) {
   if (typeof value !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{3})?Z$/.test(value)) throw new Error('asOf requires an exact UTC timestamp such as 2026-08-26T20:21:19.000Z');
@@ -27,7 +28,7 @@ async function sourceCheck(url) {
 }
 
 export function getCases() {
-  return anchors.map((anchor) => ({ ...anchor, release: releases.find((item) => item.ticker === anchor.ticker) ?? null, symbol: `R${anchor.ticker}USDT` }));
+  return anchors.map((anchor) => ({ ...anchor, release: releases.find((item) => item.ticker === anchor.ticker) ?? null, secExhibit: secExhibits.find((item) => item.ticker === anchor.ticker) ?? null, symbol: `R${anchor.ticker}USDT` }));
 }
 
 export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {}) {
@@ -35,13 +36,14 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
   if (!caseData) throw new Error(`Unsupported case ${ticker}; choose NVDA, AAPL, or MSFT`);
   const asOf = exactTimestamp(requestedAsOf ?? caseData.secAcceptedAt);
   const retrievedAt = new Date().toISOString();
-  const evidence = buildEvidence(caseData, caseData.release, retrievedAt, asOf);
-  const [instrumentResult, quoteResult, candleResult, issuerFetch, secFetch] = await Promise.all([
+  const evidence = buildEvidence(caseData, caseData.release, retrievedAt, asOf, caseData.secExhibit);
+  const [instrumentResult, quoteResult, candleResult, issuerFetch, secFetch, exhibitFetch] = await Promise.all([
     getRealityInstrument(caseData.symbol),
     getRealityQuote(caseData.symbol),
     getRealityCandles(caseData.symbol, asOf),
     sourceCheck(caseData.release.issuerReleaseUrl),
     sourceCheck(caseData.sourceDocument),
+    sourceCheck(caseData.secExhibit.sourceURL),
   ]);
   let statusResult;
   try { statusResult = await getRealityStatus(); } catch (error) { statusResult = { unavailable: true, error: error.message }; }
@@ -49,7 +51,7 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
   const reaction = candleResult.candles.filter((row) => Number(row[0]) >= Date.parse(asOf) && Number(row[0]) < Date.parse(asOf) + 6 * 3600000);
   const baseline = buildRulesBaseline({ evidence, candles: pre, reactionCandles: reaction, asOf, intervalMs: 3600000 });
   const dossier = buildDecisionDossier({ evidence, preWindow: pre, reactionWindow: reaction, asOf });
-  const brief = buildResearchBrief({ caseData, evidence, dossier, sourceChecks: { issuer: issuerFetch, sec: secFetch } });
+  const brief = buildResearchBrief({ caseData, evidence, dossier, sourceChecks: { issuer: issuerFetch, sec: secFetch, exhibit: exhibitFetch } });
   const precisionWarning = caseData.release.precision !== 'second' && caseData.release.precision !== 'minute-approximate';
   return {
     status: 'ok',
@@ -73,7 +75,7 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
     dossier,
     brief,
     aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline }),
-    sourceChecks: { issuer: issuerFetch, sec: secFetch },
+    sourceChecks: { issuer: issuerFetch, sec: secFetch, exhibit: exhibitFetch },
     integrity: { evidenceHashed: true, evidenceHash: JSON.stringify(evidence.visible).length ? sha256(evidence.visible) : null, futureCandlesExcluded: true, sourceGrounded: true },
   };
 }

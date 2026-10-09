@@ -124,3 +124,11 @@ input:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px r
 .research-prompts { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
 .research-prompts button { border: 1px solid var(--line); border-radius: 3px; background: #f9f9f5; color: var(--ink); padding: 7px 9px; text-align: left; font: inherit; font-size: 10px; cursor: pointer; }
 .research-prompts button:hover, .research-prompts button:focus-visible { background: #e8eee9; border-color: var(--green); outline-offset: 2px; }
+
+
+/* Short replay path for first-time judges */
+.control-clock { flex-wrap: wrap; }
+.time-presets { display: flex; flex-wrap: wrap; flex-basis: 100%; gap: 6px; }
+.time-presets button { cursor: pointer; padding: 7px 10px; border-radius: 2px; border: 1px solid var(--line); background: #f7f7f2; color: var(--ink); font: inherit; font-size: 10px; }
+.time-presets button[aria-pressed="true"] { color: var(--green); border-color: var(--green); background: #e9f0e9; font-weight: 700; }
+.time-presets button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }

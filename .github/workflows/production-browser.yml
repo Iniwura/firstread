@@ -49,6 +49,11 @@ jobs:
           FIRSTREAD_URL: https://firstread-psi.vercel.app
           FIRSTREAD_SCREENSHOT_DIR: artifacts/landing
         run: node scripts/landing-smoke.mjs
+      - name: Test public desk guided tour on mobile and desktop
+        env:
+          FIRSTREAD_URL: https://firstread-psi.vercel.app
+          FIRSTREAD_SCREENSHOT_DIR: artifacts/tour
+        run: node scripts/desk-tour-smoke.mjs
       - name: Check Bitget submission form without submitting
         run: node scripts/check-submission-form.mjs
       - name: Save browser screenshots

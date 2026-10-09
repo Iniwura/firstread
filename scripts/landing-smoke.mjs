@@ -62,13 +62,13 @@ for(const [name,width,height] of [['desktop',1440,900],['laptop',1100,800],['tab
 }
 const page=await browser.newPage({viewport:{width:1440,height:900}});
 try{
- await page.goto(base+'/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z',{waitUntil:'domcontentloaded',timeout:45000});
+ await page.goto(base+'/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z&tour=off',{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForFunction(()=>document.querySelector('#evidence-count')?.textContent.includes('visible'),{timeout:45000});
  const early=await page.locator('#evidence-count').textContent();
  const earlyState=await page.locator('#financial-state').textContent();
  if(!earlyState.includes('Held out'))failures.push('early SEC exhibit leaked: '+earlyState);
  report.functional.early=early;
- await page.goto(base+'/desk.html?ticker=AAPL',{waitUntil:'domcontentloaded',timeout:45000});
+ await page.goto(base+'/desk.html?ticker=AAPL&tour=off',{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForFunction(()=>document.querySelector('#selected-case')?.textContent.includes('AAPL'),{timeout:45000});
  report.functional.apple=await page.locator('#selected-case').textContent();
 }catch(e){failures.push('desk deep-link '+e.message)}

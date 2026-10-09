@@ -15,7 +15,7 @@ const details = {};
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   page.on('pageerror', (error) => failures.push('browser error: ' + error.message));
-  await page.goto(baseUrl + '/desk.html', { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await page.goto(baseUrl + '/desk.html?tour=off', { waitUntil: 'domcontentloaded', timeout: 45000 });
   await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
   details.title = await page.title();
   details.case = await page.locator('#selected-case').textContent();
@@ -101,7 +101,7 @@ try {
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   mobile.on('pageerror', (error) => failures.push('mobile browser error: ' + error.message));
-  await mobile.goto(baseUrl + '/desk.html', { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await mobile.goto(baseUrl + '/desk.html?tour=off', { waitUntil: 'domcontentloaded', timeout: 45000 });
   await mobile.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
   details.mobileNoOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
   if (!details.mobileNoOverflow) failures.push('mobile horizontal overflow');

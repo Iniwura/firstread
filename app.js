@@ -37,7 +37,7 @@ function renderCases() {
   }
 }
 
-function selectCase(ticker) {
+function selectCase(ticker, initialAsOf = null) {
   state.selected = state.cases.find((item) => item.ticker === ticker) || state.cases[0];
   state.posture = null;
   state.crosscheckId++;
@@ -46,7 +46,11 @@ function selectCase(ticker) {
   $('#run-crosscheck').disabled = true;
   $('#selected-case').textContent = `${state.selected.ticker} · ${state.selected.company}`;
   $('#selected-event').textContent = state.selected.event;
-  $('#as-of-input').value = toInputValue(state.selected.secAcceptedAt);
+  const verifiedOverride = typeof initialAsOf === 'string' &&
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(initialAsOf) &&
+    Number.isFinite(Date.parse(initialAsOf)) &&
+    Math.abs(Date.parse(initialAsOf) - Date.parse(state.selected.secAcceptedAt)) <= 24 * 3600 * 1000;
+  $('#as-of-input').value = toInputValue(verifiedOverride ? initialAsOf : state.selected.secAcceptedAt);
   document.querySelectorAll('[data-replay-offset]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.replayOffset === '0')));
   $('#replay-status').textContent = 'Ready';
   $('#replay-note').textContent = `Default anchor · ${formatUTC(state.selected.secAcceptedAt)}`;
@@ -322,7 +326,14 @@ try {
 
 try {
   state.cases = await getJSON('/api/events').then((body) => body.cases);
-  selectCase('NVDA');
+  const params = new URLSearchParams(window.location.search);
+  const initialTicker = ['NVDA', 'AAPL', 'MSFT'].includes(params.get('ticker')) ? params.get('ticker') : 'NVDA';
+  const offset = params.get('offset');
+  const row = state.cases.find((item) => item.ticker === initialTicker);
+  const requestedAsOf = params.get('asOf') ||
+    (offset === '-15' || offset === '0' || offset === '120'
+      ? new Date(Date.parse(row.secAcceptedAt) + Number(offset) * 60000).toISOString() : null);
+  selectCase(initialTicker, requestedAsOf);
 } catch (error) {
   $('#ingestion-status').textContent = 'Unable to load cases'; $('#replay-note').textContent = error.message;
 }

@@ -28,6 +28,12 @@ for(const [label,width,height] of [['desktop',1440,900],['laptop',1100,800],['ta
     cyan:getComputedStyle(document.documentElement).getPropertyValue('--cyan').trim(),
     headlineH:Math.round(masthead.getBoundingClientRect().height),
     navBackground:getComputedStyle(nav).backgroundColor,
+    heroBackground:getComputedStyle(document.querySelector('.desk-masthead')).backgroundColor,
+    featureBackground:getComputedStyle(document.querySelector('.masthead-aside')).backgroundColor,
+    selectedBackground:getComputedStyle(selected).backgroundColor,
+    markBackground:getComputedStyle(document.querySelector('#page-title mark')).backgroundColor,
+    financialBackground:getComputedStyle(document.querySelector('.financial-zone')).backgroundColor,
+    briefBackground:getComputedStyle(document.querySelector('.brief-zone')).backgroundColor,
     availableBindings:originalIDs.every(id=>document.querySelector(id)!==null)
   };
  });
@@ -35,6 +41,14 @@ for(const [label,width,height] of [['desktop',1440,900],['laptop',1100,800],['ta
  if(!view.noOverflow)failures.push(label+': horizontal overflow');
  if(!view.fontFamily.includes('Chakra Petch'))failures.push(label+': missing display typeface');
  if(view.cyan.toUpperCase()!=='#00F0FF')failures.push(label+': wrong accent');
+ if(view.navBackground!=='rgb(8, 8, 8)'||view.heroBackground!=='rgb(8, 8, 8)')
+  failures.push(label+': page foundation not neutral black');
+ if(view.featureBackground!=='rgb(22, 22, 22)' || view.selectedBackground!=='rgb(32, 32, 32)')
+  failures.push(label+': giant cyan feature or selected surface still present');
+ if(view.markBackground!=='rgba(0, 0, 0, 0)')
+  failures.push(label+': giant cyan headline background remains');
+ if(!['rgb(12, 12, 12)','rgb(17, 17, 17)'].includes(view.financialBackground))
+  failures.push(label+': research surfaces are blue tinted');
  if(!view.availableBindings)failures.push(label+': missing dynamic controls');
  if(view.selectedTicker!=='NVDA')failures.push(label+': NVDA selection missing');
  if(label==='desktop'||label==='phone'){

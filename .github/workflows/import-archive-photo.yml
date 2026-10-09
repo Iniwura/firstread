@@ -1,0 +1,44 @@
+name: Import public-domain archival ticker image
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/import-archive-photo.yml'
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Library of Congress source and optimize
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl --fail --location --retry 2 --max-time 35 --silent --show-error \
+            "https://tile.loc.gov/storage-services/service/pnp/ds/06700/06719v.jpg" -o /tmp/ticker-photo.jpg
+          python3 -m pip install --quiet Pillow
+          python3 - <<'PY'
+          from PIL import Image, ImageOps, ImageEnhance
+          im = Image.open('/tmp/ticker-photo.jpg').convert('RGB')
+          print('Library of Congress photo size:', im.size)
+          assert im.width >= 600 and im.height >= 450, 'source photograph too small'
+          im = ImageOps.grayscale(im)
+          im = ImageEnhance.Contrast(im).enhance(1.25)
+          if im.width > 1700: im.thumbnail((1700,1700),Image.Resampling.LANCZOS)
+          im.save('assets/stock-ticker-archive.webp',format='WEBP',quality=84,method=6)
+          print('Saved locally served image:',im.size)
+          PY
+          file assets/stock-ticker-archive.webp
+      - name: Commit and publish archival design asset
+        run: |
+          set -euo pipefail
+          git config user.name "FIRSTREAD Design Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/stock-ticker-archive.webp
+          if git diff --cached --quiet; then
+            echo "Asset already identical"; exit 0
+          fi
+          git commit -m "design: package locally served public-domain 1922 NYSE ticker photograph"
+          git push origin HEAD:main

@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/desk-v3.css">
   <link rel="stylesheet" href="/desk-edition.css">
+  <link rel="stylesheet" href="/desk-tour.css">
 </head>
 <body>
   <a class="skip-link" href="#clock">Skip to research controls</a>
@@ -19,6 +20,7 @@
     <div class="nav-edition">BITGET REALITY <b>/</b> SEC EARNINGS <b>/</b> RESEARCH ROOM</div>
     <div class="nav-right">
       <span class="nav-status"><i></i><span id="ingestion-status">Connecting to live sources</span></span>
+      <button type="button" class="tour-launch" id="tour-launch" aria-label="Take a guided tour of the research desk"><span aria-hidden="true">?</span><b>DESK TOUR</b></button>
       <button type="button" class="nav-refresh" id="refresh-button">REFRESH <span>↻</span></button>
       <a href="/" class="back-link">EXIT DESK <span>↗</span></a>
     </div>
@@ -69,6 +71,7 @@
     </section>
     <div class="case-nav">
       <div class="case-nav-head"><span>SELECT AN EARNINGS FILE</span><span>01 — 03</span></div>
+      <p class="case-help">New here? Pick a company, then use the <strong>decision clock</strong> to see which evidence was available. <button type="button" id="quickstart-tour">Show me how ↗</button></p>
       <nav id="case-list" class="case-list" aria-label="Research cases"><span>Loading available filings…</span></nav>
     </div>
     <div class="research-main">
@@ -88,6 +91,7 @@
             <div class="control-clock"><label for="as-of-input"><span class="section-label">02 / DECISION TIMESTAMP · UTC</span><input id="as-of-input" type="datetime-local" step="1" /></label><button class="primary-button" id="run-button">Run research <span>↗</span></button><div class="time-presets" aria-label="Quick replay times"><button type="button" data-replay-offset="-15" title="15 minutes before the SEC filing">Before filing</button><button type="button" data-replay-offset="0" title="At the verified SEC acceptance">Filing available</button><button type="button" data-replay-offset="120" title="Two hours after SEC acceptance">+2 hours</button></div></div>
             <div class="control-status"><span class="section-label">03 / REPLAY STATE</span><strong id="replay-status">Waiting</strong><span id="replay-note" class="muted">Select a case to begin</span></div>
           </section>
+        <div class="replay-help"><strong>TRY THIS</strong><span>Click <b>Before filing</b>, then <b>Filing available</b>. Watch what changes in the evidence and financial results.</span></div>
         <div class="below-clock-note"><span>↳</span> Filing acceptance does not necessarily equal first public earnings release. Reaction data stays outside the model's historical context.</div>
       </section>
       <section class="assessment-zone" id="assessment">
@@ -177,6 +181,27 @@
     </div>
   </main>
   <footer class="desk-footer"><a href="/" class="footer-mark">FIRSTREAD<span>///</span>®</a><span>NO ACCOUNT ACCESS. NO EXECUTION.</span><span>SEC × BITGET / INDEPENDENT RESEARCH</span><a href="/">BACK TO SITE ↑</a></footer>
-  <script type="module" src="/app.js"></script>
+
+  <div class="desk-tour" id="desk-tour" hidden>
+    <div class="tour-shade tour-shade-top"></div>
+    <div class="tour-shade tour-shade-left"></div>
+    <div class="tour-shade tour-shade-right"></div>
+    <div class="tour-shade tour-shade-bottom"></div>
+    <div class="tour-target-outline" id="tour-target-outline" aria-hidden="true"></div>
+    <section class="tour-card" id="tour-card" role="dialog" aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-description" tabindex="-1">
+      <div class="tour-card-top"><span>FIRSTREAD® / FIELD GUIDE</span><button class="tour-close" type="button" id="tour-close" aria-label="Close guided tour">×</button></div>
+      <div class="tour-progress"><span id="tour-step-count">01 / 07</span><span id="tour-step-section">START HERE</span></div>
+      <div class="tour-progress-track"><span id="tour-progress-fill"></span></div>
+      <h2 id="tour-title">Your research desk.</h2>
+      <p id="tour-description">Learn the controls and the evidence trail.</p>
+      <div class="tour-card-actions">
+        <button type="button" class="tour-skip" id="tour-skip">SKIP TOUR</button>
+        <div class="tour-button-group"><button type="button" id="tour-back">BACK</button><button type="button" class="tour-next" id="tour-next">NEXT <span>→</span></button></div>
+      </div>
+      <div class="tour-tip">ESC TO CLOSE <span>•</span> TAB TO NAVIGATE</div>
+    </section>
+  </div>
+    <script type="module" src="/app.js"></script>
+  <script type="module" src="/desk-tour.js"></script>
 </body>
 </html>

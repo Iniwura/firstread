@@ -174,3 +174,15 @@ input:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px r
 .financial-argument p { margin: 0 0 14px; color: #656d68; font-size: 11px; line-height: 1.55; }
 .financial-argument small { color: var(--muted); font-size: 10px; }
 @media (max-width:900px) { .financial-drivers { grid-template-columns: 1fr; } .financial-panel { padding: 17px; } }
+
+
+/* Independent source reconciliation */
+.source-reconcile { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+.reconcile-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.reconcile-head > div { max-width: 690px; }
+.reconcile-head h3 { margin: 0 0 6px; color: var(--ink); font-family: Georgia, serif; font-weight: 500; font-size: 20px; }
+.reconcile-head p, .reconcile-status, .reconcile-source { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 0; }
+.reconcile-head .ghost-button { flex-shrink: 0; cursor: pointer; }
+.reconcile-head .ghost-button:disabled { cursor: not-allowed; opacity: .55; }
+.reconcile-status { padding: 10px 12px; margin: 12px 0; background: #f1f3ef; border-left: 3px solid var(--amber); color: var(--ink); }
+.reconcile-source { padding: 11px 0; }

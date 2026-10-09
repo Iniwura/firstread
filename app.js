@@ -1,4 +1,4 @@
-const state = { cases: [], selected: null, research: null, posture: null, aiConfigured: null, requestId: 0 };
+const state = { cases: [], selected: null, research: null, posture: null, aiConfigured: null, requestId: 0, crosscheckId: 0 };
 const $ = (selector) => document.querySelector(selector);
 
 function fmt(value, options = {}) {
@@ -40,6 +40,10 @@ function renderCases() {
 function selectCase(ticker) {
   state.selected = state.cases.find((item) => item.ticker === ticker) || state.cases[0];
   state.posture = null;
+  state.crosscheckId++;
+  $('#crosscheck-status').textContent = 'Independent source check not yet requested.';
+  $('#crosscheck-output').replaceChildren();
+  $('#run-crosscheck').disabled = true;
   $('#selected-case').textContent = `${state.selected.ticker} · ${state.selected.company}`;
   $('#selected-event').textContent = state.selected.event;
   $('#as-of-input').value = toInputValue(state.selected.secAcceptedAt);
@@ -152,6 +156,7 @@ function renderBrief(data) {
 
 function renderFinancial(data) {
   const financial = data.financial;
+  $('#run-crosscheck').disabled = financial?.status !== 'AVAILABLE';
   if (!financial || financial.status !== 'AVAILABLE') {
     $('#financial-state').textContent = financial?.status === 'INVALID_PROVENANCE' ? 'Provenance rejected' : 'Held out at this time';
     $('#financial-note').textContent = 'The SEC earnings exhibit was not source-qualified by this cutoff. Historical comparison unavailable.';
@@ -184,6 +189,233 @@ function renderFinancial(data) {
     $('#financial-drivers').innerHTML += '<div class="financial-argument financial-watch"><h3>Quantitative stress check</h3>' +
       financial.signals.map((x) => '<strong>' + escapeHtml(x.label) +
       '</strong><p>' + escapeHtml(x.explanation) + '</p>').join('') + '</div>';
+  }
+}
+
+function displayReconcileValue(value, unit) {
+  if (value == null || !Number.isFinite(Number(value))) return '—';
+  return unit === 'usd_per_share' ? '
+  const checks = data.dossier?.checks ?? [];
+  const observed = data.dossier?.metrics;
+  if (!checks.length) {
+    $('#contradictions').textContent = 'The decision dossier is not available.';
+    return;
+  }
+  $('#contradictions').innerHTML = checks.map((check) => {
+    const label = check.phase === 'after' ? ' · hindsight only' : '';
+    return '<div class="bullet-item"><div><strong>' + escapeHtml(check.title) +
+      ' · ' + escapeHtml(check.category) + label +
+      '</strong><br />' + escapeHtml(check.detail) + '</div></div>';
+  }).join('');
+  $('#dossier-summary').textContent = data.dossier.researchPosture +
+    ' · ' + (data.dossier.blockingTopics.length ?
+      data.dossier.blockingTopics.length + ' unresolved checks' : 'all defined checks passed') +
+    ' · ' + (observed?.completePreCandles ?? 0) + ' completed pre-decision candles';
+}
+
+async function runDesk() {
+  if (!state.selected) return;
+  const requestId = ++state.requestId;
+  const ticker = state.selected.ticker;
+  const asOf = fromInputValue($('#as-of-input').value);
+  state.research = null;
+  $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
+  try {
+    const data = await getJSON(`/api/research?ticker=${ticker}&asOf=${encodeURIComponent(asOf)}`);
+    if (requestId !== state.requestId || ticker !== state.selected?.ticker) return;
+    state.research = data;
+    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderFinancial(data); renderContradictions(data);
+    $('#retrieval-clock').textContent = formatUTC(data.generatedAt);
+    $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
+    $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
+    $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
+    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, stockInfo: data.market.stockInfo, stockInfoSource: data.market.stockInfoSource, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
+    $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
+  } catch (error) {
+    if (requestId !== state.requestId) return;
+    $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
+  } finally { if (requestId === state.requestId) { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; } }
+}
+
+async function askAI(event) {
+  event.preventDefault();
+  if (!state.research) return;
+  const answer = $('#ai-answer'); answer.innerHTML = '<span class="spark">✦</span><span>Checking the evidence packet…</span>';
+  try {
+    const data = await getJSON('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: $('#ai-question').value || 'What should a human investigate next?', ticker: state.research.case.ticker, asOf: state.research.replay.asOf }) });
+    if (!data.configured) { answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.message)}</span>`; return; }
+    answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.answer || data.message || data.error || 'AI abstained.').replace(/\n/g, '<br />')}</span>`;
+  } catch (error) { answer.innerHTML = `<span class="spark">!</span><span>AI review unavailable: ${escapeHtml(error.message)}</span>`; }
+}
+
+document.querySelectorAll('[data-replay-offset]').forEach((button) => button.addEventListener('click', () => {
+  if (!state.selected) return;
+  const minutes = Number(button.dataset.replayOffset);
+  if (![-15, 0, 120].includes(minutes)) return;
+  const asOf = new Date(Date.parse(state.selected.secAcceptedAt) + minutes * 60000);
+  $('#as-of-input').value = toInputValue(asOf.toISOString());
+  document.querySelectorAll('[data-replay-offset]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+  runDesk();
+}));
+$('#run-button').addEventListener('click', runDesk);
+$('#refresh-button').addEventListener('click', runDesk);
+$('#ai-form').addEventListener('submit', askAI);
+$('#run-crosscheck').addEventListener('click', runCrosscheck);
+document.querySelectorAll('[data-research-question]').forEach((button) => button.addEventListener('click', () => {
+  $('#ai-question').value = button.dataset.researchQuestion;
+  $('#ai-question').focus();
+}));
+$('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
+document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
+
+try {
+  const status = await getJSON('/api/ai');
+  state.aiConfigured = Boolean(status.configured);
+  $('#ai-provider-status').textContent = state.aiConfigured ? 'Live AI configured' : 'Rules only · AI needs key';
+} catch {
+  state.aiConfigured = false;
+  $('#ai-provider-status').textContent = 'AI provider status unavailable';
+}
+
+try {
+  state.cases = await getJSON('/api/events').then((body) => body.cases);
+  selectCase('NVDA');
+} catch (error) {
+  $('#ingestion-status').textContent = 'Unable to load cases'; $('#replay-note').textContent = error.message;
+}
+ + Number(value).toFixed(2) + '/share' :
+    '
+  const checks = data.dossier?.checks ?? [];
+  const observed = data.dossier?.metrics;
+  if (!checks.length) {
+    $('#contradictions').textContent = 'The decision dossier is not available.';
+    return;
+  }
+  $('#contradictions').innerHTML = checks.map((check) => {
+    const label = check.phase === 'after' ? ' · hindsight only' : '';
+    return '<div class="bullet-item"><div><strong>' + escapeHtml(check.title) +
+      ' · ' + escapeHtml(check.category) + label +
+      '</strong><br />' + escapeHtml(check.detail) + '</div></div>';
+  }).join('');
+  $('#dossier-summary').textContent = data.dossier.researchPosture +
+    ' · ' + (data.dossier.blockingTopics.length ?
+      data.dossier.blockingTopics.length + ' unresolved checks' : 'all defined checks passed') +
+    ' · ' + (observed?.completePreCandles ?? 0) + ' completed pre-decision candles';
+}
+
+async function runDesk() {
+  if (!state.selected) return;
+  const requestId = ++state.requestId;
+  const ticker = state.selected.ticker;
+  const asOf = fromInputValue($('#as-of-input').value);
+  state.research = null;
+  $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
+  try {
+    const data = await getJSON(`/api/research?ticker=${ticker}&asOf=${encodeURIComponent(asOf)}`);
+    if (requestId !== state.requestId || ticker !== state.selected?.ticker) return;
+    state.research = data;
+    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderFinancial(data); renderContradictions(data);
+    $('#retrieval-clock').textContent = formatUTC(data.generatedAt);
+    $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
+    $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
+    $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
+    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, stockInfo: data.market.stockInfo, stockInfoSource: data.market.stockInfoSource, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
+    $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
+  } catch (error) {
+    if (requestId !== state.requestId) return;
+    $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
+  } finally { if (requestId === state.requestId) { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; } }
+}
+
+async function askAI(event) {
+  event.preventDefault();
+  if (!state.research) return;
+  const answer = $('#ai-answer'); answer.innerHTML = '<span class="spark">✦</span><span>Checking the evidence packet…</span>';
+  try {
+    const data = await getJSON('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: $('#ai-question').value || 'What should a human investigate next?', ticker: state.research.case.ticker, asOf: state.research.replay.asOf }) });
+    if (!data.configured) { answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.message)}</span>`; return; }
+    answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.answer || data.message || data.error || 'AI abstained.').replace(/\n/g, '<br />')}</span>`;
+  } catch (error) { answer.innerHTML = `<span class="spark">!</span><span>AI review unavailable: ${escapeHtml(error.message)}</span>`; }
+}
+
+document.querySelectorAll('[data-replay-offset]').forEach((button) => button.addEventListener('click', () => {
+  if (!state.selected) return;
+  const minutes = Number(button.dataset.replayOffset);
+  if (![-15, 0, 120].includes(minutes)) return;
+  const asOf = new Date(Date.parse(state.selected.secAcceptedAt) + minutes * 60000);
+  $('#as-of-input').value = toInputValue(asOf.toISOString());
+  document.querySelectorAll('[data-replay-offset]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+  runDesk();
+}));
+$('#run-button').addEventListener('click', runDesk);
+$('#refresh-button').addEventListener('click', runDesk);
+$('#ai-form').addEventListener('submit', askAI);
+document.querySelectorAll('[data-research-question]').forEach((button) => button.addEventListener('click', () => {
+  $('#ai-question').value = button.dataset.researchQuestion;
+  $('#ai-question').focus();
+}));
+$('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
+document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
+
+try {
+  const status = await getJSON('/api/ai');
+  state.aiConfigured = Boolean(status.configured);
+  $('#ai-provider-status').textContent = state.aiConfigured ? 'Live AI configured' : 'Rules only · AI needs key';
+} catch {
+  state.aiConfigured = false;
+  $('#ai-provider-status').textContent = 'AI provider status unavailable';
+}
+
+try {
+  state.cases = await getJSON('/api/events').then((body) => body.cases);
+  selectCase('NVDA');
+} catch (error) {
+  $('#ingestion-status').textContent = 'Unable to load cases'; $('#replay-note').textContent = error.message;
+}
+ + new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(Number(value)) + 'M';
+}
+
+async function runCrosscheck() {
+  const current = state.research;
+  if (!current || current.financial?.status !== 'AVAILABLE') return;
+  const token=++state.crosscheckId;
+  const ticker=current.case.ticker;
+  const button=$('#run-crosscheck');
+  button.disabled=true;
+  $('#crosscheck-status').textContent = 'Fetching independent Bitget MCP income data…';
+  $('#crosscheck-output').replaceChildren();
+  try {
+    const body=await getJSON('/api/crosscheck?ticker='+encodeURIComponent(ticker));
+    if(token!==state.crosscheckId || ticker!==state.selected?.ticker)return;
+    const note=body.sourceNote||'Current third-party data, not as-of evidence.';
+    if(body.status==='UNAVAILABLE'||!Array.isArray(body.differences)||!body.differences.length) {
+      $('#crosscheck-status').textContent = 'Unavailable · ' + (body.summary||'No validated comparison available.');
+      $('#crosscheck-output').textContent = note;
+      return;
+    }
+    $('#crosscheck-status').textContent = body.status==='DISCREPANCY' ?
+      'DISCREPANCY · ' + body.summary : 'Compared · ' + body.summary;
+    const lines=body.differences.map((item)=>
+      '<tr><th scope="row">'+escapeHtml(item.label)+'</th>' +
+      '<td>'+escapeHtml(displayReconcileValue(item.sec,item.unit))+'</td>' +
+      '<td>'+escapeHtml(displayReconcileValue(item.mcp,item.unit))+'</td>' +
+      '<td class="'+(item.verdict==='DISAGREES'?'financial-down':'')+'">'+
+      escapeHtml(item.verdict)+'</td></tr>').join('');
+    const period=body.matchedPeriod;
+    const periodText=period ?
+      ('SEC period end '+period.secQuarterEnded+' · Bitget period end '+period.mcpPeriodEnding+
+       ' ('+(period.dayOffset===0?'same day':period.dayOffset+' day offset')+')') : 'Period match unavailable';
+    $('#crosscheck-output').innerHTML = '<p class="reconcile-source">'+escapeHtml(periodText)+
+      '</p><div class="financial-scroll"><table class="financial-table"><thead><tr>' +
+      '<th>Filed line</th><th>SEC EX-99.1</th><th>Bitget MCP (now)</th><th>Check</th></tr></thead><tbody>'+
+      lines+'</tbody></table></div><p class="reconcile-source">'+escapeHtml(note)+'</p>';
+  } catch(error) {
+    if(token===state.crosscheckId) {
+      $('#crosscheck-status').textContent = 'Provider unavailable · SEC source is unchanged.';
+      $('#crosscheck-output').textContent = 'Current source reconciliation could not complete. No agreement is implied.';
+    }
+  } finally {
+    if(token===state.crosscheckId)button.disabled=false;
   }
 }
 

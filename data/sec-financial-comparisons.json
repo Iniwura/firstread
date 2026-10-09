@@ -1,0 +1,203 @@
+[
+  {
+    "ticker": "NVDA",
+    "sourceURL": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm",
+    "secAcceptedAt": "2026-08-26T20:21:19.000Z",
+    "period": "Q2 FY2027 vs Q2 FY2026",
+    "comparisons": [
+      {
+        "id": "revenue",
+        "label": "Revenue",
+        "unit": "usd_millions",
+        "current": 96221,
+        "prior": 46743,
+        "sourceQuote": "Revenue $96,221 $81,615 $46,743",
+        "importance": "Total reported revenue growth."
+      },
+      {
+        "id": "gaap_eps",
+        "label": "GAAP diluted EPS",
+        "unit": "usd_per_share",
+        "current": 2.46,
+        "prior": 1.08,
+        "sourceQuote": "Diluted earnings per share $2.46 $2.39 $1.08",
+        "importance": "GAAP EPS increased, but this is not a surprise versus analyst expectations."
+      },
+      {
+        "id": "gaap_gross_margin",
+        "label": "GAAP gross margin",
+        "unit": "percent",
+        "current": 75,
+        "prior": 72.4,
+        "sourceQuote": "Gross margin 75.0% 74.9% 72.4%",
+        "importance": "Change measured in percentage points, not percent growth."
+      },
+      {
+        "id": "operating_income",
+        "label": "GAAP operating income",
+        "unit": "usd_millions",
+        "current": 63734,
+        "prior": 28440,
+        "sourceQuote": "Operating income $63,734 $53,536 $28,440",
+        "importance": "Operating-income growth alongside revenue."
+      }
+    ],
+    "drivers": [
+      {
+        "kind": "support",
+        "label": "Data Center expansion",
+        "finding": "Data Center revenue was $89.0B, up 117% year over year, making AI infrastructure a major reported growth driver.",
+        "quote": "Data Center revenue of $89.0 billion, up 117% from a year ago"
+      },
+      {
+        "kind": "challenge",
+        "label": "Guidance includes China exclusion",
+        "finding": "The $108B ±2% next-quarter revenue outlook does not assume any Data Center compute revenue from China. Assess exposure before extrapolating.",
+        "quote": "NVIDIA is not assuming any Data Center compute revenue from China in its outlook."
+      }
+    ]
+  },
+  {
+    "ticker": "AAPL",
+    "sourceURL": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm",
+    "secAcceptedAt": "2026-07-30T20:30:28.000Z",
+    "period": "Q3 FY2026 vs Q3 FY2025",
+    "comparisons": [
+      {
+        "id": "revenue",
+        "label": "Revenue",
+        "unit": "usd_millions",
+        "current": 109417,
+        "prior": 94036,
+        "sourceQuote": "Total net sales 109,417 94,036",
+        "importance": "Total sales grew, but source one-offs matter for earnings quality."
+      },
+      {
+        "id": "gaap_eps",
+        "label": "Diluted EPS",
+        "unit": "usd_per_share",
+        "current": 2.02,
+        "prior": 1.57,
+        "sourceQuote": "Diluted 2.02 1.57",
+        "importance": "Reported EPS includes $0.11 favorable tariff refund impact disclosed by Apple."
+      },
+      {
+        "id": "gross_profit",
+        "label": "Gross profit",
+        "unit": "usd_millions",
+        "current": 54770,
+        "prior": 43718,
+        "sourceQuote": "Gross margin 54,770 43,718",
+        "importance": "Gross profit in dollars; not a reported margin rate."
+      },
+      {
+        "id": "operating_income",
+        "label": "Operating income",
+        "unit": "usd_millions",
+        "current": 35695,
+        "prior": 28202,
+        "sourceQuote": "Operating income 35,695 28,202",
+        "importance": "Operating earnings growth adjusted for no extra assumptions."
+      },
+      {
+        "id": "services_revenue",
+        "label": "Services revenue",
+        "unit": "usd_millions",
+        "current": 30739,
+        "prior": 27423,
+        "sourceQuote": "Services 30,739 27,423",
+        "importance": "A distinct revenue stream that can grow more slowly than hardware."
+      },
+      {
+        "id": "iphone_revenue",
+        "label": "iPhone revenue",
+        "unit": "usd_millions",
+        "current": 54252,
+        "prior": 44582,
+        "sourceQuote": "iPhone 54,252 44,582",
+        "importance": "A concentration and demand sensitivity factor."
+      }
+    ],
+    "drivers": [
+      {
+        "kind": "challenge",
+        "label": "Tariff refunds boost headline results",
+        "finding": "Apple states its 50.1% reported gross margin benefited by approximately 2 percentage points from tariff refunds and its $2.02 EPS benefited by $0.11. These are reported impacts, not independently calculated normalized results.",
+        "quote": "Company gross margin was 50.1 percent, including a favorable impact of approximately 2 percentage points from tariff refunds."
+      },
+      {
+        "kind": "support",
+        "label": "Hardware and Services both contributed",
+        "finding": "iPhone and Services revenues grew year-over-year, but at different rates. Compare their relative growth rather than assuming the same driver explains both.",
+        "quote": "iPhone 54,252 44,582; Services 30,739 27,423"
+      }
+    ]
+  },
+  {
+    "ticker": "MSFT",
+    "sourceURL": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/msft-ex99_1.htm",
+    "secAcceptedAt": "2026-07-29T20:04:53.000Z",
+    "period": "Q4 FY2026 vs Q4 FY2025",
+    "comparisons": [
+      {
+        "id": "revenue",
+        "label": "Revenue",
+        "unit": "usd_millions",
+        "current": 90007,
+        "prior": 76441,
+        "sourceQuote": "Total revenue 90,007 76,441",
+        "importance": "Reported top-line expansion."
+      },
+      {
+        "id": "gaap_eps",
+        "label": "GAAP diluted EPS",
+        "unit": "usd_per_share",
+        "current": 4.81,
+        "prior": 3.65,
+        "sourceQuote": "Diluted Earnings per Share $4.81 $3.65",
+        "importance": "GAAP per-share result; distinct from non-GAAP EPS."
+      },
+      {
+        "id": "operating_income",
+        "label": "GAAP operating income",
+        "unit": "usd_millions",
+        "current": 40603,
+        "prior": 34323,
+        "sourceQuote": "Operating Income $40,603 $34,323",
+        "importance": "Core operating comparison, separate from other income."
+      },
+      {
+        "id": "intelligent_cloud_revenue",
+        "label": "Intelligent Cloud revenue",
+        "unit": "usd_millions",
+        "current": 39306,
+        "prior": 29878,
+        "sourceQuote": "Intelligent Cloud Revenue $39,306 $29,878",
+        "importance": "Cloud segment growth driver."
+      },
+      {
+        "id": "personal_computing_revenue",
+        "label": "More Personal Computing revenue",
+        "unit": "usd_millions",
+        "current": 12854,
+        "prior": 13451,
+        "sourceQuote": "More Personal Computing Revenue $12,854 $13,451",
+        "importance": "A contracting segment despite company-wide expansion."
+      }
+    ],
+    "drivers": [
+      {
+        "kind": "challenge",
+        "label": "EPS includes discrete benefits",
+        "finding": "Microsoft disclosed $0.27 per share of benefit relative to April guidance from several discrete items, including a $3.2B Anthropic investment gain. Do not treat all GAAP EPS growth as recurring operating improvement.",
+        "quote": "Several discrete items impacted our financial results ... resulting in a benefit of $0.27 on diluted earnings per share."
+      },
+      {
+        "kind": "support",
+        "label": "Cloud growth alongside consumer pressure",
+        "finding": "Azure and other cloud services grew 43% year over year while More Personal Computing segment sales declined. A strong consolidated quarter can mask segment divergence.",
+        "quote": "Azure and other cloud services revenue increased 43%"
+      }
+    ]
+  }
+]

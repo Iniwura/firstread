@@ -1,0 +1,40 @@
+name: FIRSTREAD competition demo capture
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/demo-video.yml'
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Capture real demonstration on production
+        env:
+          FIRSTREAD_URL: https://firstread-psi.vercel.app
+          FIRSTREAD_DEMO_DIR: artifacts/demo
+        run: node scripts/record-demo.mjs
+      - name: Convert to shareable MP4
+        run: |
+          if command -v ffmpeg >/dev/null 2>&1; then
+            src="$(find artifacts/demo -maxdepth 1 -name '*.webm' -print -quit)"
+            if [ -n "$src" ]; then
+              ffmpeg -hide_banner -loglevel error -y -i "$src" -c:v libx264 -preset veryfast -crf 24 -pix_fmt yuv420p -movflags +faststart artifacts/demo/FIRSTREAD-demo.mp4
+            fi
+          fi
+      - name: Archive real demo and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: FIRSTREAD-captioned-product-demo
+          path: artifacts/demo/

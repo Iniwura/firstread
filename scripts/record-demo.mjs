@@ -46,16 +46,31 @@ try {
  await focus('#financial-drivers');
  await caption('Every thesis gets a counterargument · Demand, guidance, and missing historical consensus');
  await hold(6500);
+ await page.locator('#run-crosscheck').click();
+ await page.waitForFunction(()=>document.querySelector('#crosscheck-status')?.textContent.includes('DISCREPANCY'),{timeout:45000});
+ await focus('#crosscheck-output');
+ await caption('Bitget MCP agrees on NVIDIA revenue and EPS, but operating income differs by $269M');
+ await hold(7000);
 
  await page.getByRole('button',{name:/AAPL/}).first().click();
  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-AAPL'),{timeout:45000});
  await focus('#financial-content');await caption('3/6 · Apple · Compare the same fiscal quarter one year earlier');await hold(5500);
  await focus('#financial-drivers');await caption('Apple · Reported tariff-refund benefits change the interpretation of EPS');await hold(5500);
+ await page.locator('#run-crosscheck').click();
+ await page.waitForFunction(()=>document.querySelector('#crosscheck-status')?.textContent.includes('Different reporting periods'),{timeout:45000});
+ await focus('#crosscheck-status');
+ await caption('Apple · The vendor returns cumulative totals; FIRSTREAD refuses a false quarterly comparison');
+ await hold(6500);
 
  await page.getByRole('button',{name:/MSFT/}).first().click();
  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-MSFT'),{timeout:45000});
  await focus('#financial-content');await caption('4/6 · Microsoft · Cloud growth versus declining Personal Computing');await hold(6000);
  await focus('#financial-drivers');await caption('5/6 · Challenge the headline · Discrete earnings benefits and segment divergence');await hold(6500);
+ await page.locator('#run-crosscheck').click();
+ await page.waitForFunction(()=>document.querySelector('#crosscheck-status')?.textContent.startsWith('Compared'),{timeout:45000});
+ await focus('#crosscheck-output');
+ await caption('Microsoft · Three separately reported quarterly measures agree with Bitget MCP');
+ await hold(7000);
 
  await focus('#receipt');
  await caption('6/6 · Every read has evidence IDs, timestamps and reproducible source receipts');

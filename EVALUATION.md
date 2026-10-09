@@ -38,6 +38,8 @@
 
 ## Five-tester protocol (fill only after real tests)
 
+A refined, reproducible participant script with the newly tested SEC-versus-Bitget discrepancy task is in [USER_TEST_PROTOCOL.md](USER_TEST_PROTOCOL.md). Do not count scripted Playwright sessions as human testers.
+
 Give each tester a fresh demo link and the task: “For NVIDIA at the SEC filing acceptance time, identify one verified fact, one uncertainty, and one reason to wait before acting.” Do not give navigation hints.
 
 Record tester identifier (non-sensitive), completion time, whether all three answers have valid sources, confusing UI elements, and whether the result changed the tester's interpretation. Summarize actual observed n/N, median completion time and most common failure mode. Record 'not conducted' rather than putting in placeholder scores.
@@ -56,6 +58,10 @@ Record tester identifier (non-sensitive), completion time, whether all three ans
 - [Submission draft](SUBMISSION.md)
 - [Real market feasibility](reports/bitget-feasibility.json)
 - [Source feasibility](reports/source-feasibility.json)
+
+## Additional current verification
+
+The independent [production browser run](https://github.com/Iniwura/firstread/actions/runs/37928241804) passed with three earnings filings, source-linked YoY comparisons, current MCP crosschecks, historical time-gating, offline abstention and mobile no-overflow. The [63/63 unit suite](https://github.com/Iniwura/firstread/actions/runs/37928108573) includes root app syntax coverage. The [competition video](https://github.com/Iniwura/firstread/actions/runs/37927622231/artifacts/11614679622) is a real-browser recording with annotations, not evidence of real-user study or live LLM responses.
 
 ## Verified engineering artifacts
 

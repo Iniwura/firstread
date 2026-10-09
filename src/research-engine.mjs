@@ -117,13 +117,23 @@ export function validateModelCitations(text, visibleIds = []) {
   return { valid: true, citations, invalid: [], reason: citations.length ? 'All cited evidence IDs are visible' : 'No evidence citations supplied' };
 }
 
-export function buildAiPacket({ caseData, asOf, evidence, market, baseline }) {
+export function buildAiPacket({ caseData, asOf, evidence, market, baseline, financial = null }) {
   return {
     thesis: 'Keep the decision attached to what was knowable at the selected time; separate the rToken market response from the underlying US-stock evidence, and abstain when provenance is thin.',
     company: caseData.company,
     ticker: caseData.ticker,
     asOf,
     evidence: evidence.visible.map(({ id, sourceURL, publisher, publishedAt, firstObservedAt, availabilityBasis, facts, quoteLocations }) => ({ id, sourceURL, publisher, publishedAt, firstObservedAt, availabilityBasis, facts, quoteLocations })),
+    financial: financial?.status === 'AVAILABLE' && evidence.visible.some((item) =>
+      item.id === financial.sourceId && item.sourceURL === financial.sourceURL) ? {
+      period: financial.period,
+      sourceId: financial.sourceId,
+      comparisons: financial.comparisons.map(({id,label,priorValue,currentValue,unit,changePct,changeLabel,explanation}) =>
+        ({id,label,priorValue,currentValue,unit,changePct,changeLabel,explanation})),
+      drivers: financial.drivers.map(({kind,label,finding,sourceId,quote})=>({kind,label,finding,sourceId,quote})),
+      signals: financial.signals.map(({type,severity,label,explanation,sourceId})=>({type,severity,label,explanation,sourceId})),
+      method: financial.method,
+    } : null,
     completedCandles: market.visible.slice(-24).map((row) => ({ timestamp: new Date(Number(row[0])).toISOString(), open: row[1], high: row[2], low: row[3], close: row[4], volume: row[5] })),
     rulesBaseline: { decision: baseline.decision, reasons: baseline.reasons, preWindowMovePct: baseline.preWindowMovePct },
     forbidden: ['future evidence', 'reactionWindow candles', 'unsupported forecasts', 'profitability claims', 'automatic buy/sell instructions'],

@@ -1,4 +1,4 @@
-import { runResearch } from '../src/research-service.mjs';
+import { buildAiResearchPacket } from '../src/research-service.mjs';
 import { validateModelCitations } from '../src/research-engine.mjs';
 
 function modelText(body) {
@@ -17,7 +17,7 @@ function parseBody(body) {
  * Research is independently assembled server-side on every model call.
  * Dependency injection allows fully offline, adversarial tests.
  */
-export function createAiHandler({ research = runResearch, transport = fetch, env = process.env } = {}) {
+export function createAiHandler({ research = buildAiResearchPacket, transport = fetch, env = process.env } = {}) {
   return async function aiHandler(req, res) {
     const key = env.BITGET_QWEN_API_KEY || env.OPENAI_API_KEY;
     if (req.method === 'GET') {
@@ -73,6 +73,8 @@ export function createAiHandler({ research = runResearch, transport = fetch, env
       'Cite exact evidence IDs in square brackets, e.g. [E2-NVDA], after factual assertions.',
       'A citation is required. Do not cite source IDs not in the packet. Separate observed facts from inference.',
       'Never claim beat/miss versus analyst consensus without a dated consensus record.',
+      'SEC acceptance proves availability of a filed exhibit at that time, NOT that earnings first became public then.',
+      'If an exact first-public issuer release time is missing, state that it remains unknown.',
       'Never present post-decision market movement as information knowable before asOf.',
       'Do not claim returns, executions, trading profitability or guaranteed results.',
       'Close with one research posture: INVESTIGATE, WAIT, or REJECT. The human decides.',

@@ -66,7 +66,19 @@ Bitget equity MCP ───┘             │                         │
 - `api/ai.js` keeps the LLM behind a typed packet and rejects citations to evidence not visible at the selected `asOf`.
 - `index.html`, `styles.css`, and `app.js` are a zero-build editorial finance-terminal UI; no frontend package installation is required.
 
-Optional AI configuration uses `BITGET_QWEN_API_KEY`, `BITGET_QWEN_BASE_URL=https://hackathon.bitgetops.com/v1`, and `BITGET_QWEN_MODEL=qwen3.6-plus`. OpenAI-compatible variables are supported as a fallback. Keys are server-only.
+Optional AI configuration uses `BITGET_QWEN_API_KEY`, `BITGET_QWEN_BASE_URL=https://hackathon.bitgetops.com/v1`, and `BITGET_QWEN_MODEL=qwen3.8-max`. OpenAI-compatible variables are supported as a fallback. Keys are server-only.
+
+## Competition-grade research improvements (October 9)
+
+FIRSTREAD now includes a **decision dossier** in the research response and in the UI. It calculates pre-cutoff price drift, observed intrawindow range, candle-age/gap quality, source-timing precision, and a separate outcome-only market observation. It does not label returns, fills, historical consensus comparisons, or profitability. Later price observations are never included in the model's pre-decision packet.
+
+The optional AI endpoint is server-authoritative: the browser submits only the company, exact UTC cutoff, and natural-language question. The server reconstructs the evidence independently, rejects client evidence payloads, and requires model evidence IDs to match the time-filtered packet. An unconfigured provider is shown clearly as rules-only mode; it is **not** represented as live AI analysis.
+
+Historical research is reconstructed from issuer/SEC publication anchors. `firstObservedAt` is **not** fabricated to equal historical publication time. These reconstructed sources do not establish that FIRSTREAD actually observed a release in 2026 at the displayed historical time. Approximate and date-only publisher timestamps remain labeled accordingly.
+
+[Automated quality checks](https://github.com/Iniwura/firstread/actions) now run on push. The GitHub checks cover Node tests, JavaScript syntax, and build verification; a passing workflow does not substitute for a live provider test, an independent external-user study, or production-browser validation.
+
+For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATION.md). Real AI answers in the public demo require a configured `BITGET_QWEN_API_KEY` (or `OPENAI_API_KEY`) on the Vercel project. A provider key must remain in Vercel encrypted environment variables, never committed to this repository or submitted in chat.
 
 ## Scope and responsible proof
 

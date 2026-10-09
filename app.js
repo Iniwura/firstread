@@ -1,4 +1,4 @@
-const state = { cases: [], selected: null, research: null, posture: null };
+const state = { cases: [], selected: null, research: null, posture: null, aiConfigured: null };
 const $ = (selector) => document.querySelector(selector);
 
 function fmt(value, options = {}) {
@@ -147,7 +147,7 @@ async function runDesk() {
     $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
     $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
     $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
-    $('#ai-answer').innerHTML = '<span class="spark">✦</span><span>Receipt ready. Ask a question and the model will be constrained to the visible evidence.</span>';
+    $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
   } catch (error) {
     $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
   } finally { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; }
@@ -173,6 +173,15 @@ document.querySelectorAll('[data-research-question]').forEach((button) => button
 }));
 $('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
 document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
+
+try {
+  const status = await getJSON('/api/ai');
+  state.aiConfigured = Boolean(status.configured);
+  $('#ai-provider-status').textContent = state.aiConfigured ? 'Live AI configured' : 'Rules only · AI needs key';
+} catch {
+  state.aiConfigured = false;
+  $('#ai-provider-status').textContent = 'AI provider status unavailable';
+}
 
 try {
   state.cases = await getJSON('/api/events').then((body) => body.cases);

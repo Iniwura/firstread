@@ -1,0 +1,80 @@
+[
+  {
+    "ticker": "NVDA",
+    "accession": "0001045810-26-000073",
+    "exhibit": "EX-99.1",
+    "sourceURL": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm",
+    "sourceIndex": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/0001045810-26-000073-index.html",
+    "acceptedAt": "2026-08-26T20:21:19.000Z",
+    "verifiedAt": "2026-10-09",
+    "facts": [
+      {
+        "label": "Q2 FY2027 revenue",
+        "value": "$96.2B",
+        "quote": "revenue ... of $96.2 billion"
+      },
+      {
+        "label": "GAAP diluted EPS",
+        "value": "$2.46",
+        "quote": "earnings per diluted share were $2.46"
+      },
+      {
+        "label": "Q3 revenue outlook",
+        "value": "$108.0B ±2%",
+        "quote": "Revenue is expected to be $108.0 billion, plus or minus 2%"
+      }
+    ]
+  },
+  {
+    "ticker": "AAPL",
+    "accession": "0000320193-26-000018",
+    "exhibit": "EX-99.1",
+    "sourceURL": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm",
+    "sourceIndex": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/0000320193-26-000018-index.htm",
+    "acceptedAt": "2026-07-30T20:30:28.000Z",
+    "verifiedAt": "2026-10-09",
+    "facts": [
+      {
+        "label": "Q3 FY2026 revenue",
+        "value": "$109.4B",
+        "quote": "quarterly revenue of $109.4 billion"
+      },
+      {
+        "label": "Diluted EPS",
+        "value": "$2.02",
+        "quote": "Diluted earnings per share was $2.02"
+      },
+      {
+        "label": "Gross margin",
+        "value": "50.1%",
+        "quote": "Company gross margin was 50.1 percent"
+      }
+    ]
+  },
+  {
+    "ticker": "MSFT",
+    "accession": "0001193125-26-323632",
+    "exhibit": "EX-99.1",
+    "sourceURL": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/msft-ex99_1.htm",
+    "sourceIndex": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/0001193125-26-323632-index.htm",
+    "acceptedAt": "2026-07-29T20:04:53.000Z",
+    "verifiedAt": "2026-10-09",
+    "facts": [
+      {
+        "label": "Q4 FY2026 revenue",
+        "value": "$90.0B",
+        "quote": "Revenue was $90.0 billion and increased 18%"
+      },
+      {
+        "label": "GAAP diluted EPS",
+        "value": "$4.81",
+        "quote": "Diluted earnings per share was $4.81"
+      },
+      {
+        "label": "Azure revenue growth",
+        "value": "+43% YoY",
+        "quote": "Azure and other cloud services revenue increased 43%"
+      }
+    ]
+  }
+]

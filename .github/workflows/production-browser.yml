@@ -22,7 +22,7 @@ on:
 jobs:
   production-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:

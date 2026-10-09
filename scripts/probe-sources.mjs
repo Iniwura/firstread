@@ -72,5 +72,12 @@ const report = {
 await mkdir(path.join(root, 'reports'), { recursive: true });
 const reportPath = path.join(root, 'reports/source-feasibility.json');
 await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
-console.log(JSON.stringify({ report: reportPath, realityPass: report.directReality.allSuccessful, mcpTransport: report.fundamentalsMcp.transportReachable, mcpCatalog: report.fundamentalsMcp.catalogReachable, mcpBackend: report.fundamentalsMcp.backendQuerySuccessful }, null, 2));
+const profileText = mcp.liveQuery?.result?.content?.find((entry)=>entry.type==='text')?.text ?? '';
+console.log(JSON.stringify({ report: reportPath, realityPass: report.directReality.allSuccessful,
+  mcpTransport: report.fundamentalsMcp.transportReachable,
+  mcpCatalog: report.fundamentalsMcp.catalogReachable,
+  mcpBackend: report.fundamentalsMcp.backendQuerySuccessful,
+  profileResponseSample: typeof profileText === 'string' ? profileText.slice(0,900) : '',
+  resultShape: mcp.liveQuery?.result ? Object.keys(mcp.liveQuery.result) : [],
+}, null, 2));
 if (!report.directReality.allSuccessful || !report.fundamentalsMcp.transportReachable || !report.fundamentalsMcp.catalogReachable) process.exitCode = 1;

@@ -104,6 +104,21 @@ For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATIO
 
 Observed validation includes a GitHub CI run with **42 of 42 tests passing**, plus live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
 
+## Financial comparison and independent source reconciliation
+
+FIRSTREAD compares **reported financial metrics year over year using three SEC-filed Exhibit 99.1 records**. It calculates revenue, EPS, operating income and relevant line-item changes. The engine labels earnings-quality caveats such as Apple's tariff-refund benefits, Microsoft discrete gains and cloud/consumer segment divergence, and NVIDIA's Data Center growth. No historical analyst expectations or surprise percentages are invented.
+
+A separate **Reconcile SEC ↔ Bitget** control queries public Bitget Equity MCP income statements at the present time (`equity_fundamental_income`); it is NOT included in any historical AI packet. The reconciliation requires matching symbol, fiscal year and a **standalone fiscal-quarter record**. It refuses year-to-date or annual records as incomparable rather than reporting spurious differences.
+
+The [independent live verification](https://github.com/Iniwura/firstread/actions/runs/37927430868) observed:
+- NVIDIA: revenue and diluted EPS agree; reported operating income differs by $269 million. Metric definition mismatch remains unresolved.
+- Apple: provider has a cumulative three-quarter record rather than a standalone Q3 row; correctly marks it **INCOMPARABLE_PERIOD**.
+- Microsoft: the standalone Q4 income row matches revenue, operating income and diluted EPS; the unrelated annual total is ignored.
+
+A later [live provider check](https://github.com/Iniwura/firstread/actions/runs/37927430868) verifies the abstention and agreements. This is a **post-hoc source audit**, not a historical trading signal, model benchmark, profitability proof or evidence of user adoption.
+
+The `scripts/typecheck.mjs` checks the root browser entrypoint `app.js` in addition to API/scripts/source JavaScript. This was added after the production browser check exposed malformed JavaScript that the earlier source-only CI did not catch.
+
 ## Competition materials
 
 - [Submission description and role of LLM](SUBMISSION.md)

@@ -66,7 +66,7 @@
               <div id="contradictions" class="bullet-stack"><div class="empty-state">Evidence-backed conflicts will appear here.</div></div>
             </article>
             <article class="panel ai-panel" id="ai">
-              <div class="panel-head"><div><p class="kicker">05 · LLM review</p><h2>Ask the evidence</h2></div><span class="ai-tag">Structured reasoning</span></div>
+              <div class="panel-head"><div><p class="kicker">05 · LLM review</p><h2>Ask the evidence</h2></div><span class="ai-tag" id="ai-provider-status">Checking AI provider</span></div>
               <p class="ai-copy">The model receives only the visible receipt and completed pre-decision candles. It must cite evidence IDs and abstain on unsupported claims.</p>
               <div class="research-prompts" aria-label="Example research questions"><button type="button" data-research-question="What facts were knowable by the selected cutoff, and which remained unavailable?">Available evidence</button><button type="button" data-research-question="What evidence conflicts with the thesis, and what would make you abstain?">Challenge the thesis</button><button type="button" data-research-question="Explain the market data limitations without citing any information from after the cutoff.">Market limitations</button></div>
               <form id="ai-form"><label class="sr-only" for="ai-question">Question for the AI</label><textarea id="ai-question" maxlength="500" rows="3" placeholder="Ask a source-grounded research question…"></textarea><button class="secondary-button" type="submit">Review verified evidence <span>✦</span></button></form>

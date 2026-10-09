@@ -9,7 +9,7 @@ const failures=[];const checks=[];
 for(const [label,width,height] of [['desktop',1440,900],['laptop',1100,800],['tablet',820,1050],['phone',390,844],['small-phone',375,812]]){
  const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1});
  page.on('pageerror',err=>failures.push(label+': '+err.message));
- await page.goto(origin+'/desk.html',{waitUntil:'domcontentloaded',timeout:45000});
+ await page.goto(origin+'/desk.html?tour=off',{waitUntil:'domcontentloaded',timeout:45000});
  await page.evaluate(()=>document.fonts.ready);
  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'),{timeout:45000});
  const view=await page.evaluate(()=>{

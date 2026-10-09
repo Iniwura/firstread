@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - '.github/workflows/design-qa.yml'
+      - 'design.css'
+      - 'index.html'
+      - 'scripts/dev-server.mjs'
   workflow_dispatch:
 jobs:
   visual-and-functional:
@@ -19,14 +22,23 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright
           npx playwright install --with-deps chromium
-      - name: Check full research workflow on preview
+      - name: Start local research app with real Bitget APIs
+        run: |
+          node scripts/dev-server.mjs > /tmp/firstread-dev.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4174/api/events > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/firstread-dev.log
+          exit 1
+      - name: Check full research workflow on local build
         env:
-          FIRSTREAD_URL: https://firstread-me4djd5fh-iniwura-akurus-projects.vercel.app
+          FIRSTREAD_URL: http://127.0.0.1:4174
           FIRSTREAD_SCREENSHOT_DIR: artifacts/redesign-preview
         run: node scripts/browser-smoke.mjs
       - name: Audit visual hierarchy and device responsiveness
         env:
-          FIRSTREAD_URL: https://firstread-me4djd5fh-iniwura-akurus-projects.vercel.app
+          FIRSTREAD_URL: http://127.0.0.1:4174
         run: |
           node --input-type=module <<'NODE'
           import { chromium } from 'playwright';
@@ -61,6 +73,9 @@ jobs:
           } finally {await browser.close()}
           if(count)process.exit(1);
           NODE
+      - name: Print server errors on failure
+        if: failure()
+        run: tail -n 100 /tmp/firstread-dev.log || true
       - name: Archive screenshots
         if: always()
         uses: actions/upload-artifact@v4

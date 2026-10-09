@@ -92,7 +92,7 @@ Historical research is reconstructed from issuer/SEC publication anchors. `first
 
 [Automated quality checks](https://github.com/Iniwura/firstread/actions) now run on push. The GitHub checks cover Node tests, JavaScript syntax, and build verification; a passing workflow does not substitute for a live provider test, an independent external-user study, or production-browser validation.
 
-For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATION.md). Real AI answers in the public demo require a configured `BITGET_QWEN_API_KEY` (or `OPENAI_API_KEY`) on the Vercel project. A provider key must remain in Vercel encrypted environment variables, never committed to this repository or submitted in chat.
+For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATION.md), [PRODUCTION_PROOF.md](PRODUCTION_PROOF.md), and [AI_ACTIVATION.md](AI_ACTIVATION.md). Real AI answers in the public demo require a configured `BITGET_QWEN_API_KEY` (or `OPENAI_API_KEY`) on the Vercel project. A provider key must remain in Vercel encrypted environment variables, never committed to this repository or submitted in chat.
 
 ## Scope and responsible proof
 
@@ -102,7 +102,7 @@ For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATIO
 - No causal claim from simple price movement; no simulated fills labelled real.
 - Zero fabricated credentials, customers, outcomes, metrics, reviews, or API results.
 
-Observed validation initially included 13 automated temporal/research tests; further research-brief, SEC-exhibit and AI-boundary tests have since been added, live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
+Observed validation includes a GitHub CI run with **42 of 42 tests passing**, plus live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
 
 ## Competition materials
 

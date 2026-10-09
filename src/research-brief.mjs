@@ -3,7 +3,7 @@
  * a visible publication anchor or completed pre-cutoff Bitget candles.
  * This does not attempt to reconstruct historical analyst consensus.
  */
-export function buildResearchBrief({ caseData, evidence, dossier, sourceChecks = {} }) {
+export function buildResearchBrief({ caseData, evidence, dossier, financial = null, sourceChecks = {} }) {
   const visible = evidence?.visible ?? [];
   const issuer = visible.find((item) => item.id === 'E1-' + caseData.ticker);
   const secExhibit = visible.find((item) => item.id === 'E3-' + caseData.ticker);
@@ -33,6 +33,22 @@ export function buildResearchBrief({ caseData, evidence, dossier, sourceChecks =
   } else {
     limitations.push('Earnings figures are not time-qualified at this cutoff. Date-only issuer pages cannot be assigned invented publication times.');
   }
+  if (financial?.status === 'AVAILABLE' &&
+    financial.sourceId === secExhibit?.id &&
+    financial.sourceURL === secExhibit?.sourceURL) {
+    const figures = financial.comparisons.filter((item) =>
+      ['revenue','operating_income','gaap_eps'].includes(item.id));
+    if (figures.length) verified.push({
+      label: 'Deterministic year-over-year comparisons', citation: secExhibit.id,
+      detail: 'Compared with the same fiscal quarter one year earlier. Not compared with market expectations.',
+      facts: figures.map((item) => ({label:item.label,value:item.changeLabel})),
+      sourceURL: secExhibit.sourceURL,
+    });
+    const watch = financial.drivers.filter((driver) => driver.kind === 'challenge');
+    for (const item of watch) {
+      limitations.push('SEC-filed earnings-quality watch: ' + item.finding);
+    }
+  }
   if ((m.completePreCandles ?? 0) >= 2 && Number.isFinite(m.priorDriftPct)) {
     verified.push({
       label: 'Bitget pre-decision rToken tape', citation: null,
@@ -47,6 +63,14 @@ export function buildResearchBrief({ caseData, evidence, dossier, sourceChecks =
   if (!sourceChecks?.issuer?.ok) limitations.push('The original issuer webpage could not be checked successfully during this live request; refer to its primary link.');
   if (!sourceChecks?.sec?.ok) limitations.push('The original SEC webpage could not be checked successfully during this live request; the recorded acceptance anchor remains a historical reconstruction.');
   if (secExhibit && !sourceChecks?.exhibit?.ok) limitations.push('The SEC earnings exhibit link is archival-source verified, but the SEC server did not return its contents to the live application during this request.');
+  if (financial?.status === 'AVAILABLE' && financial.drivers.some((item)=>item.kind==='challenge')) {
+    actions.push({
+      label: 'Stress-test the filing’s earnings drivers',
+      detail: financial.drivers.filter((item)=>item.kind==='challenge').map((item)=>item.label).join('; ') +
+        '. Verify how much of the reported change is recurring before placing any trade.',
+      status: 'REQUIRED',
+    });
+  }
   actions.push({
     label: 'Confirm first-public release time',
     detail: 'Compare issuer dissemination time, SEC acceptance, and credible archived timestamps before interpreting price movement as an earnings reaction.',

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-09T08:17:17.494Z",
+  "checkedAt": "2026-10-09",
   "form": {
     "shortUrl": "https://forms.gle/GyWZCMCPocgJdJon6",
     "title": "Bitget AI Trading Competition Submission Form",
@@ -12,22 +12,24 @@
   },
   "publication": {
     "repository": "https://github.com/Iniwura/firstread",
-    "verifiedProductionCodeCommit": "2f4e88a403c7155fb7ef2523128a482c6da34a65",
+    "verifiedProductionCodeCommit": "260ddfcc97155588b3b0b5d5a6a0395e2d681029",
     "productionUrl": "https://firstread-psi.vercel.app/",
-    "productionDeploymentId": "dpl_5pyCtndFLevnW8JbrU8ZqDQboAvR",
+    "productionDeploymentId": "dpl_CrdhZcbkdDTpNkTVvkPLMGixisF2",
     "deploymentState": "READY",
     "automatedTests": {
-      "total": 42,
-      "passed": 42,
+      "total": 63,
+      "passed": 63,
       "failed": 0,
-      "reference": "https://github.com/Iniwura/firstread/actions/runs/37903867350"
+      "reference": "https://github.com/Iniwura/firstread/actions/runs/37928108573",
+      "rootBrowserSyntaxIncluded": true
     },
     "productionBrowser": {
       "status": "PASS",
       "failures": 0,
       "caseCount": 3,
+      "includesSourceReconciliation": true,
       "formReadOnlyCheck": "FORM_FIELDS_VISIBLE_NOT_PROOF_OF_ACCEPTANCE",
-      "reference": "https://github.com/Iniwura/firstread/actions/runs/37903867098"
+      "reference": "https://github.com/Iniwura/firstread/actions/runs/37928241804"
     }
   },
   "researchEvidence": {
@@ -44,7 +46,13 @@
     ],
     "sourceRetrievalLimitation": "SEC issuer pages may be blocked from the production runtime, source URLs and verification records visible",
     "contemporaneousAnalystConsensusAvailable": false,
-    "bitgetMcpFundamentals": "Transport/catalog discovered; backend HTTP 503 at recorded probe"
+    "bitgetMcpFundamentals": "Backend recovered: live equity profile/income/metrics/quote returned HTTP 200. Independent SEC reconciliation uses current-source data only.",
+    "independentSourceChecks": {
+      "nvidia": "Revenue+EPS agree, operating income differs $269M; metric definition unresolved",
+      "apple": "INCOMPARABLE_PERIOD cumulative report, standalone quarter not found",
+      "microsoft": "Standalone Q4 revenue+operating income+EPS agree",
+      "proof": "https://github.com/Iniwura/firstread/actions/runs/37927430868"
+    }
   },
   "ai": {
     "productionProviderConfigured": false,
@@ -65,5 +73,5 @@
     "googleFormSubmitted": false,
     "teamIdentityProvidedForSubmission": false
   },
-  "status": "Engineering and public browser verification complete; real AI provider, actual user trials, and eligible form submission still outstanding."
+  "status": "Research engine, real SEC/MCP recon, 63 unit tests and production Chromium verified. Pending Qwen key/live-model proof, actual users, X post and form submission."
 }

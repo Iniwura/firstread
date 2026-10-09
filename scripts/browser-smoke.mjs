@@ -44,6 +44,11 @@ try {
   const nvdaFinancial = await page.locator('#financial-content').textContent();
   if (!nvdaFinancial.includes('Revenue') || !nvdaFinancial.includes('105.85%')) failures.push('NVIDIA verified YoY growth table missing');
   if (!(await page.locator('#financial-drivers').textContent()).includes('Data Center expansion')) failures.push('NVIDIA sourced operating driver missing');
+  await page.locator('#run-crosscheck').click();
+  await page.waitForFunction(() => !document.querySelector('#crosscheck-status')?.textContent.includes('Fetching'), { timeout: 45000 });
+  details.nvdaCrosscheck = await page.locator('#crosscheck-status').textContent();
+  if (details.nvdaCrosscheck.includes('DISCREPANCY') &&
+      !(await page.locator('#crosscheck-output').textContent()).includes('DISAGREES')) failures.push('MCP discrepancy not explained in user-facing table');
   await page.screenshot({ path: path.join(outputDir, 'firstread-desktop.png'), fullPage: true });
 
   await page.locator('[data-replay-offset="120"]').click();
@@ -58,6 +63,10 @@ try {
   if (!details.aaplBrief.includes('E3-AAPL')) failures.push('Apple SEC Exhibit 99.1 was not used');
   await page.waitForFunction(() => document.querySelector('#financial-state')?.textContent.includes('E3-AAPL'), { timeout: 45000 });
   if (!(await page.locator('#financial-drivers').textContent()).includes('Tariff refunds')) failures.push('Apple reported earnings-quality caveat missing');
+  await page.locator('#run-crosscheck').click();
+  await page.waitForFunction(() => !document.querySelector('#crosscheck-status')?.textContent.includes('Fetching'), { timeout: 45000 });
+  details.aaplCrosscheck = await page.locator('#crosscheck-status').textContent();
+  if (details.aaplCrosscheck.includes('DISCREPANCY')) failures.push('Apple cumulative records falsely represented as quarterly mismatch');
   await page.getByRole('button', { name: /MSFT/ }).first().click();
   await page.waitForFunction(() => document.querySelector('#brief-verified')?.textContent.includes('$90.0B'), { timeout: 45000 });
   details.msftBrief = await page.locator('#brief-verified').textContent();
@@ -66,6 +75,9 @@ try {
   const msftFinancial = await page.locator('#financial-content').textContent();
   if (!msftFinancial.includes('More Personal Computing')) failures.push('Microsoft segment-divergence table missing');
   if (!(await page.locator('#financial-drivers').textContent()).includes('Anthropic')) failures.push('Microsoft discrete-gain caveat missing');
+  await page.locator('#run-crosscheck').click();
+  await page.waitForFunction(() => !document.querySelector('#crosscheck-status')?.textContent.includes('Fetching'), { timeout: 45000 });
+  details.msftCrosscheck = await page.locator('#crosscheck-status').textContent();
 
   const status = await page.evaluate(async () => (await (await fetch('/api/ai')).json()));
   if (status.mode !== 'server-verified-evidence') failures.push('AI server evidence isolation mode missing');

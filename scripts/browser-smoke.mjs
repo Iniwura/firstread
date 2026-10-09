@@ -23,6 +23,7 @@ try {
   details.provider = await page.locator('#ai-provider-status').textContent();
   if (details.title !== 'FIRSTREAD — Evidence before reaction') failures.push('wrong page title');
   if (!details.case.includes('NVDA')) failures.push('NVDA case failed to initialize');
+  if (!(await page.locator('#run-crosscheck').count())) failures.push('reconciliation action missing from production DOM');
 
   await page.locator('[data-replay-offset="-15"]').click();
   await page.waitForFunction(() => document.querySelector('#replay-status')?.textContent !== 'Fetching', { timeout: 45000 });

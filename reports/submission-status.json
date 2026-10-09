@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-08T22:30:00.000Z",
+  "checkedAt": "2026-10-09T07:30:57.266Z",
   "form": {
     "shortUrl": "https://forms.gle/GyWZCMCPocgJdJon6",
     "finalUrl": "https://docs.google.com/forms/d/e/1FAIpQLScojKm9H2xDNFL3ijcDcKxwG-_PvkmyimiAB-SEFOx_WsqGNA/viewform?usp=send_form",
@@ -7,7 +7,8 @@
     "title": "Bitget AI Trading Competition Submission Form",
     "deadlineShown": "October 8, 23:59 (UTC+8)",
     "acceptanceConfirmed": false,
-    "submissionAttempted": false
+    "submissionAttempted": false,
+    "deadlineConflict": "Form audit earlier showed Oct 8 23:59 UTC+8; newer Bitget X announcement showed Oct 11; direct acceptance still unverified."
   },
   "officialActivityPage": {
     "url": "https://www.bitget.com/zh-CN/activity-hub/hackathon",
@@ -16,18 +17,34 @@
   },
   "publication": {
     "repository": "https://github.com/Iniwura/firstread",
-    "repositoryCommit": "e43deb124f92f5954d5055ebd540e31bb0a31189",
+    "repositoryCommit": "e1564d53b0e702b55dab0708759aa995fbf8c0be",
     "productionUrl": "https://firstread-psi.vercel.app/",
-    "deploymentId": "dpl_E5or9WbFhY9adFg9EuSLSHnUKGkR",
+    "deploymentId": "dpl_4sGRH5ntDwPyLQomtZKvRb2Wk51t",
     "deploymentState": "READY",
-    "anonymousHttpStatus": 200,
-    "browserSmoke": "PASS"
+    "deploymentCommitMatch": true,
+    "githubCi": {
+      "status": "completed",
+      "conclusion": "success",
+      "commit": "e1564d53b0e702b55dab0708759aa995fbf8c0be"
+    },
+    "postUpgradeAnonymousBrowserSmoke": "NOT_YET_REVERIFIED"
   },
-  "requiredUserActions": [
-    "Provide or confirm team identity and Bitget UID",
-    "Approve final project description and public links",
-    "Approve and publish the required X quote post",
-    "Submit the form manually; this agent does not submit it"
+  "ai": {
+    "productionProviderConfigured": false,
+    "mode": "rules-only fallback until a provider key is added",
+    "liveModelResponseVerified": false
+  },
+  "remainingEvidence": [
+    "A real cited Qwen/OpenAI model result in the public demo",
+    "Fresh post-upgrade anonymous browser run on desktop/mobile",
+    "Independent user task completion data",
+    "Confirmation of form acceptance and deadline"
   ],
-  "status": "materials prepared; external submission and acceptance remain unconfirmed"
+  "requiredUserActions": [
+    "Confirm Google Form accepts submissions and exact cutoff",
+    "Configure AI provider secret in encrypted Vercel production env; do not share secrets in chat",
+    "Approve and publish the required X quote post",
+    "Provide or confirm team identity and Bitget UID; submit the form"
+  ],
+  "status": "engineering upgrade deployed with passing CI; submission and four validation gates outstanding"
 }

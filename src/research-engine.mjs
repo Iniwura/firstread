@@ -6,13 +6,13 @@ export function sha256(value) {
 }
 
 export function evidenceAvailability(item, asOf) {
-  if (!item.publishedAt || !item.firstObservedAt) return { visible: false, reason: 'precision-sensitive replay requires exact publishedAt and firstObservedAt' };
+  if (!item.publishedAt) return { visible: false, reason: 'precision-sensitive replay requires an exact publication timestamp' };
   try {
     const cutoff = parseKnownTimestamp(asOf, 'asOf');
     const published = parseKnownTimestamp(item.publishedAt, 'publishedAt');
-    const observed = parseKnownTimestamp(item.firstObservedAt, 'firstObservedAt');
+    const observed = item.firstObservedAt ? parseKnownTimestamp(item.firstObservedAt, 'firstObservedAt') : published;
     if (Math.max(published, observed) > cutoff) return { visible: false, reason: 'not yet available at asOf' };
-    return { visible: true, reason: 'available at asOf' };
+    return { visible: true, reason: item.firstObservedAt ? 'publication and first observation verified' : 'publication-anchored reconstruction; historical first observation not recorded' };
   } catch (error) {
     return { visible: false, reason: error.message };
   }
@@ -26,7 +26,8 @@ export function buildEvidence(caseData, releaseData, retrievedAt, asOf) {
     companyTicker: caseData.ticker,
     documentID: `${caseData.ticker}-${releaseData.publicDate}-issuer-release`,
     publishedAt: releaseData.firstPublicAt,
-    firstObservedAt: releaseData.firstPublicAt,
+    firstObservedAt: null,
+    availabilityBasis: 'Issuer release time inferred from publisher scheduling; not a captured historical observation',
     retrievedAt,
     sections: ['earnings release'],
     facts: releaseData.facts,
@@ -41,7 +42,8 @@ export function buildEvidence(caseData, releaseData, retrievedAt, asOf) {
     companyTicker: caseData.ticker,
     documentID: caseData.sourceDocument.split('/').at(-1),
     publishedAt: caseData.secAcceptedAt,
-    firstObservedAt: caseData.secAcceptedAt,
+    firstObservedAt: null,
+    availabilityBasis: 'SEC acceptance time; not an archived first-observation timestamp',
     retrievedAt,
     sections: ['Form 8-K / exhibit'],
     facts: [{ label: 'Availability anchor', value: 'SEC filing accepted', quote: `SEC acceptance timestamp ${caseData.secAcceptedAt}` }],
@@ -103,7 +105,7 @@ export function buildAiPacket({ caseData, asOf, evidence, market, baseline }) {
     company: caseData.company,
     ticker: caseData.ticker,
     asOf,
-    evidence: evidence.visible.map(({ id, sourceURL, publisher, publishedAt, firstObservedAt, facts, quoteLocations }) => ({ id, sourceURL, publisher, publishedAt, firstObservedAt, facts, quoteLocations })),
+    evidence: evidence.visible.map(({ id, sourceURL, publisher, publishedAt, firstObservedAt, availabilityBasis, facts, quoteLocations }) => ({ id, sourceURL, publisher, publishedAt, firstObservedAt, availabilityBasis, facts, quoteLocations })),
     completedCandles: market.visible.slice(-24).map((row) => ({ timestamp: new Date(Number(row[0])).toISOString(), open: row[1], high: row[2], low: row[3], close: row[4], volume: row[5] })),
     rulesBaseline: { decision: baseline.decision, reasons: baseline.reasons, preWindowMovePct: baseline.preWindowMovePct },
     forbidden: ['future evidence', 'reactionWindow candles', 'unsupported forecasts', 'profitability claims', 'automatic buy/sell instructions'],

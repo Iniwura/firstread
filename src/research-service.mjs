@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getRealityCandles, getRealityInstrument, getRealityQuote, getRealityStatus } from './bitget-client.mjs';
+import { getRealityCandles, getRealityInstrument, getRealityQuote, getRealityStatus, getRealityStockInfo } from './bitget-client.mjs';
 import { auditCandles, buildAiPacket, buildEvidence, buildRulesBaseline, sha256 } from './research-engine.mjs';
 import { buildDecisionDossier } from './decision-dossier.mjs';
 import { buildResearchBrief } from './research-brief.mjs';
@@ -39,13 +39,14 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
   const asOf = exactTimestamp(requestedAsOf ?? caseData.secAcceptedAt);
   const retrievedAt = new Date().toISOString();
   const evidence = buildEvidence(caseData, caseData.release, retrievedAt, asOf, caseData.secExhibit);
-  const [instrumentResult, quoteResult, candleResult, issuerFetch, secFetch, exhibitFetch] = await Promise.all([
+  const [instrumentResult, quoteResult, candleResult, issuerFetch, secFetch, exhibitFetch, stockInfoResult] = await Promise.all([
     getRealityInstrument(caseData.symbol),
     getRealityQuote(caseData.symbol),
     getRealityCandles(caseData.symbol, asOf),
     sourceCheck(caseData.release.issuerReleaseUrl),
     sourceCheck(caseData.sourceDocument),
     sourceCheck(caseData.secExhibit.sourceURL),
+    getRealityStockInfo(caseData.symbol).catch((error)=>({unavailable:true,error:error.message})),
   ]);
   let statusResult;
   try { statusResult = await getRealityStatus(); } catch (error) { statusResult = { unavailable: true, error: error.message }; }
@@ -66,6 +67,9 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
       symbol: caseData.symbol,
       instrument: instrumentResult.instrument,
       instrumentSource: instrumentResult.url,
+      stockInfo: stockInfoResult.stockInfo ?? null,
+      stockInfoSource: stockInfoResult.url ?? null,
+      stockInfoError: stockInfoResult.unavailable ? stockInfoResult.error : null,
       quote: quoteResult.ticker,
       quoteSource: quoteResult.url,
       preWindow: pre,

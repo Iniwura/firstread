@@ -35,7 +35,7 @@
 
           <section class="control-bar panel" aria-label="Replay controls">
             <div class="control-case"><span class="section-label">Selected case</span><strong id="selected-case">—</strong><span id="selected-event" class="muted">—</span></div>
-            <div class="control-clock"><label for="as-of-input"><span class="section-label">Decision time · UTC</span><input id="as-of-input" type="datetime-local" step="1" /></label><button class="primary-button" id="run-button">Run the desk <span>↗</span></button></div>
+            <div class="control-clock"><label for="as-of-input"><span class="section-label">Decision time · UTC</span><input id="as-of-input" type="datetime-local" step="1" /></label><button class="primary-button" id="run-button">Run the desk <span>↗</span></button><div class="time-presets" aria-label="Quick replay times"><button type="button" data-replay-offset="-15" title="15 minutes before the SEC filing">Before filing</button><button type="button" data-replay-offset="0" title="At the verified SEC acceptance">Filing available</button><button type="button" data-replay-offset="120" title="Two hours after SEC acceptance">+2 hours</button></div></div>
             <div class="control-status"><span class="section-label">Replay status</span><strong id="replay-status">Waiting</strong><span id="replay-note" class="muted">Select a case to begin</span></div>
           </section>
 

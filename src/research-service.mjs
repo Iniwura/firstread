@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getRealityCandles, getRealityInstrument, getRealityQuote, getRealityStatus } from './bitget-client.mjs';
 import { auditCandles, buildAiPacket, buildEvidence, buildRulesBaseline, sha256 } from './research-engine.mjs';
+import { buildDecisionDossier } from './decision-dossier.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const anchors = JSON.parse(await readFile(path.join(root, 'data/verified-sec-anchors.json'), 'utf8'));
@@ -46,6 +47,7 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
   const pre = auditCandles(candleResult.candles, asOf, 3600000);
   const reaction = candleResult.candles.filter((row) => Number(row[0]) >= Date.parse(asOf) && Number(row[0]) < Date.parse(asOf) + 6 * 3600000);
   const baseline = buildRulesBaseline({ evidence, candles: pre, reactionCandles: reaction, asOf, intervalMs: 3600000 });
+  const dossier = buildDecisionDossier({ evidence, preWindow: pre, reactionWindow: reaction, asOf });
   const precisionWarning = caseData.release.precision !== 'second' && caseData.release.precision !== 'minute-approximate';
   return {
     status: 'ok',
@@ -66,6 +68,7 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
       sourceEndpoints: { candles: candleResult.url, quote: quoteResult.url },
     },
     baseline,
+    dossier,
     aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline }),
     sourceChecks: { issuer: issuerFetch, sec: secFetch },
     integrity: { evidenceHashed: true, evidenceHash: JSON.stringify(evidence.visible).length ? sha256(evidence.visible) : null, futureCandlesExcluded: true, sourceGrounded: true },

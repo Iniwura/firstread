@@ -15,13 +15,13 @@ const details = {};
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   page.on('pageerror', (error) => failures.push('browser error: ' + error.message));
-  await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await page.goto(baseUrl + '/desk.html', { waitUntil: 'domcontentloaded', timeout: 45000 });
   await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
   details.title = await page.title();
   details.case = await page.locator('#selected-case').textContent();
   details.source = await page.locator('#source-status').textContent();
   details.provider = await page.locator('#ai-provider-status').textContent();
-  if (details.title !== 'FIRSTREAD — Evidence before reaction') failures.push('wrong page title');
+  if (details.title !== 'FIRSTREAD / Research workspace') failures.push('wrong page title');
   if (!details.case.includes('NVDA')) failures.push('NVDA case failed to initialize');
   if (!(await page.locator('#run-crosscheck').count())) failures.push('reconciliation action missing from production DOM');
 
@@ -101,7 +101,7 @@ try {
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   mobile.on('pageerror', (error) => failures.push('mobile browser error: ' + error.message));
-  await mobile.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await mobile.goto(baseUrl + '/desk.html', { waitUntil: 'domcontentloaded', timeout: 45000 });
   await mobile.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
   details.mobileNoOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
   if (!details.mobileNoOverflow) failures.push('mobile horizontal overflow');

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/live-reconciliation.yml'
+      - 'scripts/verify-live-crosscheck.mjs'
 jobs:
   live-reconciliation:
     runs-on: ubuntu-latest

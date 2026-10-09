@@ -14,7 +14,7 @@ for (const dir of dirs) {
   }
 }
 // Root browser entrypoint must be checked as well; production previously failed here.
-for (const file of ['app.js','landing.js']) {
+for (const file of ['app.js','landing.js','desk-tour.js']) {
  const result=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8'});
  if(result.status!==0){failed=true;process.stderr.write(result.stderr);}
 }

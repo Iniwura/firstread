@@ -23,7 +23,7 @@ test('pre-filing case holds earnings assertions out',()=>{
 test('date-only issuer evidence never introduces reported numbers',()=>{
  const result=buildResearchBrief({...base,evidence:{visible:[sec]}});
  assert.equal(result.verified.some(x=>x.label==='Issuer-reported financials'),false);
- assert.match(result.limitations.join(' '),/exact publication time/);
+ assert.match(result.limitations.join(' '),/Date-only issuer pages/);
 });
 test('unavailable live source checks are disclosed and cannot be counted as confirmation',()=>{
  const result=buildResearchBrief({...base,sourceChecks:{sec:{ok:false},issuer:{ok:false}}});

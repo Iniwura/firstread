@@ -1,0 +1,22 @@
+name: FIRSTREAD quality gates
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Automated research tests
+        run: npm test
+      - name: JavaScript syntax checks
+        run: npm run typecheck
+      - name: Build verification
+        run: npm run build

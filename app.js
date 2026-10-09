@@ -148,7 +148,7 @@ async function askAI(event) {
   if (!state.research) return;
   const answer = $('#ai-answer'); answer.innerHTML = '<span class="spark">✦</span><span>Checking the evidence packet…</span>';
   try {
-    const data = await getJSON('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: $('#ai-question').value || 'What should a human investigate next?', packet: state.research.aiPacket }) });
+    const data = await getJSON('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: $('#ai-question').value || 'What should a human investigate next?', ticker: state.research.case.ticker, asOf: state.research.replay.asOf }) });
     if (!data.configured) { answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.message)}</span>`; return; }
     answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.answer || data.message || data.error || 'AI abstained.').replace(/\n/g, '<br />')}</span>`;
   } catch (error) { answer.innerHTML = `<span class="spark">!</span><span>AI review unavailable: ${escapeHtml(error.message)}</span>`; }

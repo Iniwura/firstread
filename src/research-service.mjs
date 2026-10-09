@@ -5,11 +5,13 @@ import { getRealityCandles, getRealityInstrument, getRealityQuote, getRealitySta
 import { auditCandles, buildAiPacket, buildEvidence, buildRulesBaseline, sha256 } from './research-engine.mjs';
 import { buildDecisionDossier } from './decision-dossier.mjs';
 import { buildResearchBrief } from './research-brief.mjs';
+import { buildFinancialIntelligence } from './financial-intelligence.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const anchors = JSON.parse(await readFile(path.join(root, 'data/verified-sec-anchors.json'), 'utf8'));
 const releases = JSON.parse(await readFile(path.join(root, 'data/release-evidence.json'), 'utf8'));
 const secExhibits = JSON.parse(await readFile(path.join(root, 'data/sec-exhibits.json'), 'utf8'));
+const financialContexts = JSON.parse(await readFile(path.join(root, 'data/sec-financial-comparisons.json'), 'utf8'));
 
 function exactTimestamp(value) {
   if (typeof value !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{3})?Z$/.test(value)) throw new Error('asOf requires an exact UTC timestamp such as 2026-08-26T20:21:19.000Z');
@@ -28,7 +30,7 @@ async function sourceCheck(url) {
 }
 
 export function getCases() {
-  return anchors.map((anchor) => ({ ...anchor, release: releases.find((item) => item.ticker === anchor.ticker) ?? null, secExhibit: secExhibits.find((item) => item.ticker === anchor.ticker) ?? null, symbol: `R${anchor.ticker}USDT` }));
+  return anchors.map((anchor) => ({ ...anchor, release: releases.find((item) => item.ticker === anchor.ticker) ?? null, secExhibit: secExhibits.find((item) => item.ticker === anchor.ticker) ?? null, financialContext: financialContexts.find((item) => item.ticker === anchor.ticker) ?? null, symbol: `R${anchor.ticker}USDT` }));
 }
 
 export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {}) {
@@ -51,7 +53,8 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
   const reaction = candleResult.candles.filter((row) => Number(row[0]) >= Date.parse(asOf) && Number(row[0]) < Date.parse(asOf) + 6 * 3600000);
   const baseline = buildRulesBaseline({ evidence, candles: pre, reactionCandles: reaction, asOf, intervalMs: 3600000 });
   const dossier = buildDecisionDossier({ evidence, preWindow: pre, reactionWindow: reaction, asOf });
-  const brief = buildResearchBrief({ caseData, evidence, dossier, sourceChecks: { issuer: issuerFetch, sec: secFetch, exhibit: exhibitFetch } });
+  const financial = buildFinancialIntelligence({ caseData, evidence, context: caseData.financialContext });
+  const brief = buildResearchBrief({ caseData, evidence, dossier, financial, sourceChecks: { issuer: issuerFetch, sec: secFetch, exhibit: exhibitFetch } });
   const precisionWarning = caseData.release.precision !== 'second' && caseData.release.precision !== 'minute-approximate';
   return {
     status: 'ok',
@@ -73,8 +76,9 @@ export async function runResearch({ ticker = 'NVDA', asOf: requestedAsOf } = {})
     },
     baseline,
     dossier,
+    financial,
     brief,
-    aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline }),
+    aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline, financial }),
     sourceChecks: { issuer: issuerFetch, sec: secFetch, exhibit: exhibitFetch },
     integrity: { evidenceHashed: true, evidenceHash: JSON.stringify(evidence.visible).length ? sha256(evidence.visible) : null, futureCandlesExcluded: true, sourceGrounded: true },
   };
@@ -96,8 +100,9 @@ export async function buildAiResearchPacket({ ticker = 'NVDA', asOf: requestedAs
   if (!Array.isArray(price?.candles)) throw new Error('Historical Bitget candle data unavailable');
   const pre = auditCandles(price.candles, asOf, 3600000);
   const baseline = buildRulesBaseline({ evidence, candles: pre, asOf, intervalMs: 3600000 });
+  const financial = buildFinancialIntelligence({ caseData, evidence, context: caseData.financialContext });
   return {
-    aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline }),
+    aiPacket: buildAiPacket({ caseData, asOf, evidence, market: pre, baseline, financial }),
     baselineDecision: baseline.decision,
     context: 'server-verified-primary-sources-and-completed-prior-candles',
   };

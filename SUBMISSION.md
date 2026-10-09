@@ -1,6 +1,6 @@
 # FIRSTREAD submission materials
 
-Status: implementation and local verification complete; public acceptance, form submission, and open production access remain unconfirmed.
+Status: engineering upgrades pushed with GitHub CI. New production deployment, live AI provider verification, external user testing and Google Form acceptance remain separate checks. Form and X post have not been submitted.
 
 ## Track
 
@@ -22,16 +22,16 @@ Observed engineering results:
 
 - 3/3 candidate Reality instruments discovered with candle coverage near SEC anchors.
 - 3/3 end-to-end live research workflows completed locally.
-- 13/13 temporal/research tests passing.
+- 13/13 original temporal/research tests passed at the earlier baseline; additional adversarial AI and decision-dossier tests were added and run in GitHub CI.
 - Chromium desktop and narrow-mobile smoke checks passing, with case switching, date-only evidence holdout, simulated offline abstention, and no console errors.
 
 These are engineering observations, not user adoption or trading-performance metrics. No return, Sharpe, drawdown, fill, backtest, paper-trading, or profitability claim is made. No historical analyst-consensus snapshot is claimed because one was not provided as an as-of artifact.
 
 ## 4. Progress and limitations
 
-Implemented: real Bitget Reality instrument/quote/candle/status/calendar reads; SEC and issuer evidence objects; point-in-time visibility gates; completed-candle and gap audit; deterministic rules-only baseline; evidence IDs and integrity hash; typed AI packet; responsive full UI; local API routes; tests; browser screenshots; README and deployment configuration.
+Implemented: real Bitget Reality instrument/quote/candle/status/calendar reads; SEC and issuer evidence objects; point-in-time visibility gates; completed-candle and gap audit; quantified evidence-and-market decision dossier (pre-decision drift, price range, freshness, gaps, missing consensus, hindsight-only results); deterministic baseline; source hashes; server-authoritative typed AI packet that rejects client evidence and invalid citations; responsive UI and natural-language question starters; automated CI, local API routes, tests, browser screenshots and deployment configuration.
 
-Known limitations: NVIDIA’s issuer timing is only minute-approximate; Apple and Microsoft issuer pages are date-only and are held out of precision-sensitive issuer replay. The public Bitget MCP transport and catalog work, but its backend returned 503 for the tested equity queries. The app has no account connection, order execution, trade recommendation, live funds, historical forecast archive, or claimed performance. The local verification is real; final judge-accessible production verification still depends on deployment access.
+Known limitations: NVIDIA’s issuer timing is only minute-approximate; Apple and Microsoft issuer pages are date-only and are held out of precision-sensitive issuer replay. The public Bitget MCP transport and catalog work, but its backend returned 503 for the tested equity queries. The app has no account connection, order execution, trade recommendation, live funds, historical forecast archive, or claimed performance. Code review and automated CI are reproducible; a successful fresh anonymous production-browser run on the latest commit remains required.
 
 ## 5. Take on AI Trading
 
@@ -39,7 +39,7 @@ AI should compress and explain a source-grounded research packet, not manufactur
 
 ## 6. Role of the LLM
 
-The LLM receives only the typed packet assembled after the as-of filter. It may summarize visible facts, compare contradictions, propose what a human should investigate next, and choose among INVESTIGATE / WAIT / REJECT as a research posture. The server validates every returned evidence citation against the packet and rejects unknown IDs. It must not use future facts, claim a fill or return, turn an rToken move into an underlying-stock claim, or override the human decision. The integration is OpenAI-compatible and supports the Bitget hackathon Qwen endpoint when a server-side key is supplied; without a key it returns an honest not-configured state.
+The LLM receives only the typed packet assembled server-side after the as-of filter; it rejects client-submitted evidence packets. It may summarize visible facts, compare contradictions, propose what a human should investigate next, and choose among INVESTIGATE / WAIT / REJECT as a research posture. The server validates every returned evidence citation against the packet and rejects unknown IDs. It must not use future facts, claim a fill or return, turn an rToken move into an underlying-stock claim, or override the human decision. The integration is OpenAI-compatible and supports the Bitget hackathon Qwen endpoint when a server-side key is supplied; without a key it returns an honest not-configured state.
 
 ## Links and external submission status
 
@@ -48,8 +48,12 @@ The LLM receives only the typed packet assembled after the as-of filter. It may 
 - Form checked, not submitted: `https://forms.gle/GyWZCMCPocgJdJon6`
 - Required Bitget interaction post to quote/reply: `https://x.com/Bitget_AI/status/2062506424085917944?s=20`
 
-Draft X post (requires explicit user approval before publication):
+Draft X **quote post** (requires explicit user approval before publication):
 
-> We built FIRSTREAD for Bitget AI Trading Desk: an evidence-timed earnings research desk for Reality rTokens. It separates what was knowable at a decision time from later filings and future candles, shows the actual rToken response, and keeps AI constrained to cited evidence. Demo: https://firstread-psi.vercel.app/ Repo: https://github.com/Iniwura/firstread #BitgetAI #AITrading
+> An earnings release isn't a trading signal until you know what was available when the price moved. We built FIRSTREAD for @Bitget_AI: an evidence-timed rToken research desk using Bitget Reality candles, SEC filing timestamps, source receipts and transparent reasons to wait. Human makes the final call. https://firstread-psi.vercel.app/ #BitgetHackathon
 
-The current form text showed an October 8, 23:59 (UTC+8) deadline while the official activity page showed an earlier timeline. Team identity, Bitget UID, university, acceptance, extension, and successful form submission are not invented here. The user must confirm those fields and submit externally if desired.
+Quote Bitget's designated S2 post: https://x.com/Bitget_AI/status/2100519318824055159?s=20
+
+The project submission requires a complete description, role-of-LLM field, publicly accessible demo, repo/material links, compliant X quote post, and the user's actual Bitget UID/team identity. Select the university field only with confirmed eligibility. The October 11 X extension conflicts with an earlier October 8 form deadline. **Check whether the form accepts responses immediately; do not claim submission or extension without confirmation.**
+
+See [EVALUATION.md](EVALUATION.md) for the full judge walkthrough, observed engineering proof boundaries, and external user-testing protocol.

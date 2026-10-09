@@ -5,7 +5,7 @@
 ## Anonymous production browser
 
 - Public URL: https://firstread-psi.vercel.app/
-- GitHub Actions runner: [production Chromium verification](https://github.com/Iniwura/firstread/actions/runs/37903867098)
+- GitHub Actions runner: [production Chromium verification](https://github.com/Iniwura/firstread/actions/runs/37928241804)
 - Result: **PASS**, zero recorded browser test failures. The combined tests exercise all three companies, research briefs, chart and temporal controls, mobile rendering, no-key fallback, and a simulated network failure.
 - Title: `FIRSTREAD — Evidence before reaction`.
 - Filing replay: `3 visible · 0 held out` at the NVIDIA SEC acceptance cutoff (issuer schedule, SEC 8-K acceptance, SEC Exhibit 99.1).
@@ -23,10 +23,21 @@ The production browser captured a source-status caveat: `Issuer page access cave
 
 ## Automated research proof
 
-- [Latest quality run](https://github.com/Iniwura/firstread/actions/runs/37903867350): **42/42 passed**, zero failed; JavaScript syntax and static build checks also passed.
+- [Latest quality run](https://github.com/Iniwura/firstread/actions/runs/37928108573): **63/63 passed**, zero failed; JavaScript syntax and static build checks also passed.
 - Server-authoritative AI packet tests isolate input, exclude future price candles, and reject client evidence and invalid source IDs.
-- Public production at this proof date: Vercel deployment `dpl_5pyCtndFLevnW8JbrU8ZqDQboAvR`, commit `2f4e88a403c7155fb7ef2523128a482c6da34a65`; canonical URL remains `https://firstread-psi.vercel.app/`.
+- Public production at this proof date: Vercel deployment `dpl_CrdhZcbkdDTpNkTVvkPLMGixisF2`, browser code commit `260ddfcc97155588b3b0b5d5a6a0395e2d681029`; canonical URL remains `https://firstread-psi.vercel.app/`.
 - No AI provider key was configured in the project during the test; this is not a real LLM response benchmark.
+
+## Source reconciliation and data correctness
+
+Bitget's public US equity MCP is working after an earlier 503 outage. [Current provider schema study](https://github.com/Iniwura/firstread/actions/runs/37926356094) independently confirmed company profile, financial income statements, ratios and quote data. These are current records retrieved on October 9, NOT first-observed historical evidence.
+
+The [live SEC-to-Bitget reconciliation proof](https://github.com/Iniwura/firstread/actions/runs/37927430868) reports:
+- **NVIDIA**: revenue and EPS agreed with the SEC exhibit; operating income differed by $269M and is flagged for source-definition review.
+- **Apple**: the sampled third-quarter vendor record is **cumulative**, so it is marked **INCOMPARABLE_PERIOD** instead of a false mismatch.
+- **Microsoft**: a standalone fourth-quarter vendor statement matched revenue, operating income and EPS; annual totals were excluded.
+
+The [production Chromium proof](https://github.com/Iniwura/firstread/actions/runs/37928241804) exercised all three reconciliations, earnings comparisons, temporal controls, simulated no-network fallback, and mobile responsiveness. The browser returned **pass=true**, **failures=[]**. Current vendor records are not included in the as-of LLM packet.
 
 ## Submission-form status (read-only)
 

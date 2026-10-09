@@ -18,7 +18,7 @@ const context=await browser.newContext({
 const page=await context.newPage();
 let filename;
 try {
- await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+ await page.goto(url+'/desk.html',{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'),{timeout:45000});
  await page.evaluate(()=>{
    const box=document.createElement('div'); box.id='firstread-demo-caption';

@@ -1,4 +1,4 @@
-const state = { cases: [], selected: null, research: null, posture: null, aiConfigured: null };
+const state = { cases: [], selected: null, research: null, posture: null, aiConfigured: null, requestId: 0 };
 const $ = (selector) => document.querySelector(selector);
 
 function fmt(value, options = {}) {
@@ -115,6 +115,32 @@ function renderMarket(data) {
   renderChart(data);
 }
 
+function renderBrief(data) {
+  const brief = data.brief;
+  if (!brief) {
+    $('#brief-headline').textContent = 'Research brief unavailable for this response.';
+    return;
+  }
+  $('#brief-headline').textContent = brief.headline;
+  const verify = brief.verified.map((item) => {
+    const link = item.sourceURL && /^https:\/\//i.test(item.sourceURL) ?
+      '<a href="' + escapeHtml(item.sourceURL) + '" target="_blank" rel="noopener noreferrer">Primary source ↗</a>' : '';
+    const facts = (item.facts ?? []).map((fact) =>
+      '<span class="brief-fact">' + escapeHtml(fact.label) + ': ' + escapeHtml(fact.value) + '</span>').join('');
+    return '<div class="brief-item"><strong>' + escapeHtml(item.label) +
+      (item.citation ? ' · ' + escapeHtml(item.citation) : ' · Bitget candle data') +
+      '</strong><p>' + escapeHtml(item.detail) + '</p>' + facts + link + '</div>';
+  }).join('');
+  $('#brief-verified').innerHTML = verify || '<p class="brief-empty">No source-qualified evidence at this decision time.</p>';
+  $('#brief-limitations').innerHTML = brief.limitations.map((item) =>
+    '<p class="brief-limitation">' + escapeHtml(item) + '</p>').join('');
+  $('#brief-actions').innerHTML = brief.actions.map((item) =>
+    '<div class="brief-item"><strong>' + escapeHtml(item.label) +
+    '</strong><span class="brief-status">' + escapeHtml(item.status) +
+    '</span><p>' + escapeHtml(item.detail) + '</p></div>').join('');
+  $('#brief-disclaimer').textContent = brief.caveat;
+}
+
 function renderContradictions(data) {
   const checks = data.dossier?.checks ?? [];
   const observed = data.dossier?.metrics;
@@ -136,22 +162,26 @@ function renderContradictions(data) {
 
 async function runDesk() {
   if (!state.selected) return;
+  const requestId = ++state.requestId;
+  const ticker = state.selected.ticker;
   const asOf = fromInputValue($('#as-of-input').value);
   state.research = null;
   $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
   try {
-    const data = await getJSON(`/api/research?ticker=${state.selected.ticker}&asOf=${encodeURIComponent(asOf)}`);
+    const data = await getJSON(`/api/research?ticker=${ticker}&asOf=${encodeURIComponent(asOf)}`);
+    if (requestId !== state.requestId || ticker !== state.selected?.ticker) return;
     state.research = data;
-    renderEvidence(data); renderBaseline(data); renderMarket(data); renderContradictions(data);
+    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderContradictions(data);
     $('#retrieval-clock').textContent = formatUTC(data.generatedAt);
     $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
     $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
     $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
-    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
+    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, dossier: data.dossier, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
     $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
   } catch (error) {
+    if (requestId !== state.requestId) return;
     $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
-  } finally { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; }
+  } finally { if (requestId === state.requestId) { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; } }
 }
 
 async function askAI(event) {

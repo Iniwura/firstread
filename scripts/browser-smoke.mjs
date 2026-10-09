@@ -28,6 +28,8 @@ try {
   await page.waitForFunction(() => document.querySelector('#replay-status')?.textContent !== 'Fetching', { timeout: 45000 });
   const before = await page.locator('#evidence-count').textContent();
   if (!before.includes('0 visible')) failures.push('pre-filing replay unexpectedly exposes evidence');
+  await page.waitForFunction(() => document.querySelector('#financial-state')?.textContent.includes('Held out'), { timeout: 45000 });
+  if ((await page.locator('#financial-content').textContent()).includes('Revenue')) failures.push('financial comparison leaked before SEC filing');
 
   await page.locator('[data-replay-offset="0"]').click();
   await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('3 visible'), { timeout: 45000 });
@@ -38,6 +40,10 @@ try {
   details.nvdaBrief = await page.locator('#brief-verified').textContent();
   if (!details.nvdaBrief.includes('SEC-filed earnings results') ||
       !details.nvdaBrief.includes('$96.2B')) failures.push('NVIDIA financial-source proof missing');
+  await page.waitForFunction(() => document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'), { timeout: 45000 });
+  const nvdaFinancial = await page.locator('#financial-content').textContent();
+  if (!nvdaFinancial.includes('Revenue') || !nvdaFinancial.includes('105.85%')) failures.push('NVIDIA verified YoY growth table missing');
+  if (!(await page.locator('#financial-drivers').textContent()).includes('Data Center expansion')) failures.push('NVIDIA sourced operating driver missing');
   await page.screenshot({ path: path.join(outputDir, 'firstread-desktop.png'), fullPage: true });
 
   await page.locator('[data-replay-offset="120"]').click();
@@ -50,10 +56,16 @@ try {
   await page.waitForFunction(() => document.querySelector('#brief-verified')?.textContent.includes('$109.4B'), { timeout: 45000 });
   details.aaplBrief = await page.locator('#brief-verified').textContent();
   if (!details.aaplBrief.includes('E3-AAPL')) failures.push('Apple SEC Exhibit 99.1 was not used');
+  await page.waitForFunction(() => document.querySelector('#financial-state')?.textContent.includes('E3-AAPL'), { timeout: 45000 });
+  if (!(await page.locator('#financial-drivers').textContent()).includes('Tariff refunds')) failures.push('Apple reported earnings-quality caveat missing');
   await page.getByRole('button', { name: /MSFT/ }).first().click();
   await page.waitForFunction(() => document.querySelector('#brief-verified')?.textContent.includes('$90.0B'), { timeout: 45000 });
   details.msftBrief = await page.locator('#brief-verified').textContent();
   if (!details.msftBrief.includes('E3-MSFT')) failures.push('Microsoft SEC Exhibit 99.1 was not used');
+  await page.waitForFunction(() => document.querySelector('#financial-state')?.textContent.includes('E3-MSFT'), { timeout: 45000 });
+  const msftFinancial = await page.locator('#financial-content').textContent();
+  if (!msftFinancial.includes('More Personal Computing')) failures.push('Microsoft segment-divergence table missing');
+  if (!(await page.locator('#financial-drivers').textContent()).includes('Anthropic')) failures.push('Microsoft discrete-gain caveat missing');
 
   const status = await page.evaluate(async () => (await (await fetch('/api/ai')).json()));
   if (status.mode !== 'server-verified-evidence') failures.push('AI server evidence isolation mode missing');

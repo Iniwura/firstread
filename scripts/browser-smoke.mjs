@@ -30,7 +30,7 @@ try {
   if (!before.includes('0 visible')) failures.push('pre-filing replay unexpectedly exposes evidence');
 
   await page.locator('[data-replay-offset="0"]').click();
-  await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('visible'), { timeout: 45000 });
+  await page.waitForFunction(() => document.querySelector('#evidence-count')?.textContent.includes('2 visible'), { timeout: 45000 });
   await page.waitForFunction(() => document.querySelector('#dossier-summary')?.textContent.includes('completed pre-decision candles'), { timeout: 45000 });
   details.filingEvidence = await page.locator('#evidence-count').textContent();
   details.dossier = await page.locator('#dossier-summary').textContent();
@@ -38,7 +38,7 @@ try {
   await page.screenshot({ path: path.join(outputDir, 'firstread-desktop.png'), fullPage: true });
 
   await page.locator('[data-replay-offset="120"]').click();
-  await page.waitForFunction(() => document.querySelector('#replay-status')?.textContent !== 'Fetching', { timeout: 45000 });
+  await page.waitForFunction(() => document.querySelector('#replay-note')?.textContent.includes('22:21'), { timeout: 45000 });
   if (!(await page.locator('#as-of-input').inputValue()).includes('22:21:19')) failures.push('later replay preset failed');
 
   await page.getByRole('button', { name: /AAPL/ }).first().click();

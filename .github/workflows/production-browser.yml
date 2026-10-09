@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/production-browser.yml'
       - 'scripts/browser-smoke.mjs'
+      - 'scripts/check-submission-form.mjs'
       - 'src/**'
       - 'api/**'
       - 'app.js'
@@ -32,6 +33,8 @@ jobs:
           FIRSTREAD_URL: https://firstread-psi.vercel.app
           FIRSTREAD_SCREENSHOT_DIR: artifacts
         run: node scripts/browser-smoke.mjs
+      - name: Check Bitget submission form without submitting
+        run: node scripts/check-submission-form.mjs
       - name: Save browser screenshots
         if: always()
         uses: actions/upload-artifact@v4

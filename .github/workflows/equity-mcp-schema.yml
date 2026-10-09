@@ -1,0 +1,20 @@
+name: FIRSTREAD equity MCP schema study
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/equity-mcp-schema.yml'
+      - 'scripts/probe-equity-mcp.mjs'
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit real Bitget profile income metrics and quote schemas
+        run: node scripts/probe-equity-mcp.mjs

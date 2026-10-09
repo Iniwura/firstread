@@ -144,6 +144,43 @@ function renderBrief(data) {
   $('#brief-disclaimer').textContent = brief.caveat;
 }
 
+function renderFinancial(data) {
+  const financial = data.financial;
+  if (!financial || financial.status !== 'AVAILABLE') {
+    $('#financial-state').textContent = financial?.status === 'INVALID_PROVENANCE' ? 'Provenance rejected' : 'Held out at this time';
+    $('#financial-note').textContent = 'The SEC earnings exhibit was not source-qualified by this cutoff. Historical comparison unavailable.';
+    $('#financial-content').innerHTML = '<p class="empty-state">No time-qualified financial comparisons. Use “Filing available” to move to the actual SEC acceptance timestamp.</p>';
+    $('#financial-drivers').replaceChildren();
+    return;
+  }
+  $('#financial-state').textContent = financial.sourceId + ' · SEC filed';
+  $('#financial-note').textContent = financial.period + ' · SEC Exhibit 99.1 · Calculated YoY, not consensus surprises.';
+  const rows = financial.comparisons.map((x) =>
+    '<tr><th scope="row">' + escapeHtml(x.label) + '</th><td>' + escapeHtml(x.priorLabel) +
+    '</td><td>' + escapeHtml(x.currentLabel) + '</td><td class="' +
+    (x.direction === 'DOWN' ? 'financial-down' : 'financial-up') + '">' +
+    escapeHtml(x.changeLabel) + '</td></tr>').join('');
+  $('#financial-content').innerHTML = '<div class="financial-scroll"><table class="financial-table"><thead><tr>' +
+    '<th scope="col">Metric</th><th scope="col">Prior year</th><th scope="col">Filed quarter</th>' +
+    '<th scope="col">Change</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+    '<a class="financial-source" href="' + escapeHtml(financial.sourceURL) +
+    '" target="_blank" rel="noopener noreferrer">Inspect underlying SEC filing and numbers ↗</a>';
+  const groups = [
+    ['Supported thesis', financial.drivers.filter((x) => x.kind === 'support')],
+    ['Challenge the thesis', financial.drivers.filter((x) => x.kind === 'challenge')],
+  ];
+  $('#financial-drivers').innerHTML = groups.map(([title, items]) =>
+    '<div class="financial-argument"><h3>' + escapeHtml(title) + '</h3>' +
+    items.map((item) => '<strong>' + escapeHtml(item.label) + '</strong><p>' +
+      escapeHtml(item.finding) + '</p><small>Filed source: ' + escapeHtml(item.sourceId) +
+      '</small>').join('') + '</div>').join('');
+  if (financial.signals?.length) {
+    $('#financial-drivers').innerHTML += '<div class="financial-argument financial-watch"><h3>Quantitative stress check</h3>' +
+      financial.signals.map((x) => '<strong>' + escapeHtml(x.label) +
+      '</strong><p>' + escapeHtml(x.explanation) + '</p>').join('') + '</div>';
+  }
+}
+
 function renderContradictions(data) {
   const checks = data.dossier?.checks ?? [];
   const observed = data.dossier?.metrics;
@@ -174,12 +211,12 @@ async function runDesk() {
     const data = await getJSON(`/api/research?ticker=${ticker}&asOf=${encodeURIComponent(asOf)}`);
     if (requestId !== state.requestId || ticker !== state.selected?.ticker) return;
     state.research = data;
-    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderContradictions(data);
+    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderFinancial(data); renderContradictions(data);
     $('#retrieval-clock').textContent = formatUTC(data.generatedAt);
     $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
     $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
     $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
-    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, dossier: data.dossier, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
+    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
     $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
   } catch (error) {
     if (requestId !== state.requestId) return;

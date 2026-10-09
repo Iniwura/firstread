@@ -117,14 +117,8 @@ function renderMarket(data) {
   $('#candle-count').textContent = String(market.preWindow.visibleCount);
   $('#reaction-count').textContent = String(market.reactionWindow.length);
   $('#gap-count').textContent = String(market.preWindow.gaps.length);
-  const statusText = market.status?.unavailable ? 'Current session state unavailable' :
-    'Current market session schedule checked (not historical session evidence)';
-  const sessionInfo = market.stockInfo ?
-    'Bitget stock-info today: ' + (market.stockInfo.tradingPeriod?.join(', ') || 'periods unspecified') +
-      '; weekend access: ' + (market.stockInfo.weekendTradable ? 'reported as supported' : 'not reported as supported') +
-      '. Current metadata cannot prove tradeability at the historical cutoff.' :
-    'Bitget stock-info unavailable; no assumption about historical tradeable sessions.';
-  $('#market-audit').textContent = `${statusText}. ${sessionInfo} ${market.preWindow.gaps.length ? `${market.preWindow.gaps.length} candle gap(s) detected; inspect before inferring a move.` : 'No pre-decision interval gaps detected.'} Reaction candles are separated from the pre-decision information set.`;
+  const statusText = market.status?.unavailable ? `Session state unavailable: ${market.status.error}` : `US sessions and calendar checked · ${market.status.states?.data?.market || 'US'} market`;
+  $('#market-audit').textContent = `${statusText}. ${market.preWindow.gaps.length ? `${market.preWindow.gaps.length} candle gap(s) detected; inspect before inferring a move.` : 'No pre-decision interval gaps detected.'} Reaction candles are separated from the pre-decision information set.`;
   renderChart(data);
 }
 
@@ -194,185 +188,9 @@ function renderFinancial(data) {
 
 function displayReconcileValue(value, unit) {
   if (value == null || !Number.isFinite(Number(value))) return '—';
-  return unit === 'usd_per_share' ? '
-  const checks = data.dossier?.checks ?? [];
-  const observed = data.dossier?.metrics;
-  if (!checks.length) {
-    $('#contradictions').textContent = 'The decision dossier is not available.';
-    return;
-  }
-  $('#contradictions').innerHTML = checks.map((check) => {
-    const label = check.phase === 'after' ? ' · hindsight only' : '';
-    return '<div class="bullet-item"><div><strong>' + escapeHtml(check.title) +
-      ' · ' + escapeHtml(check.category) + label +
-      '</strong><br />' + escapeHtml(check.detail) + '</div></div>';
-  }).join('');
-  $('#dossier-summary').textContent = data.dossier.researchPosture +
-    ' · ' + (data.dossier.blockingTopics.length ?
-      data.dossier.blockingTopics.length + ' unresolved checks' : 'all defined checks passed') +
-    ' · ' + (observed?.completePreCandles ?? 0) + ' completed pre-decision candles';
-}
-
-async function runDesk() {
-  if (!state.selected) return;
-  const requestId = ++state.requestId;
-  const ticker = state.selected.ticker;
-  const asOf = fromInputValue($('#as-of-input').value);
-  state.research = null;
-  $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
-  try {
-    const data = await getJSON(`/api/research?ticker=${ticker}&asOf=${encodeURIComponent(asOf)}`);
-    if (requestId !== state.requestId || ticker !== state.selected?.ticker) return;
-    state.research = data;
-    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderFinancial(data); renderContradictions(data);
-    $('#retrieval-clock').textContent = formatUTC(data.generatedAt);
-    $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
-    $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
-    $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
-    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, stockInfo: data.market.stockInfo, stockInfoSource: data.market.stockInfoSource, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
-    $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
-  } catch (error) {
-    if (requestId !== state.requestId) return;
-    $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
-  } finally { if (requestId === state.requestId) { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; } }
-}
-
-async function askAI(event) {
-  event.preventDefault();
-  if (!state.research) return;
-  const answer = $('#ai-answer'); answer.innerHTML = '<span class="spark">✦</span><span>Checking the evidence packet…</span>';
-  try {
-    const data = await getJSON('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: $('#ai-question').value || 'What should a human investigate next?', ticker: state.research.case.ticker, asOf: state.research.replay.asOf }) });
-    if (!data.configured) { answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.message)}</span>`; return; }
-    answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.answer || data.message || data.error || 'AI abstained.').replace(/\n/g, '<br />')}</span>`;
-  } catch (error) { answer.innerHTML = `<span class="spark">!</span><span>AI review unavailable: ${escapeHtml(error.message)}</span>`; }
-}
-
-document.querySelectorAll('[data-replay-offset]').forEach((button) => button.addEventListener('click', () => {
-  if (!state.selected) return;
-  const minutes = Number(button.dataset.replayOffset);
-  if (![-15, 0, 120].includes(minutes)) return;
-  const asOf = new Date(Date.parse(state.selected.secAcceptedAt) + minutes * 60000);
-  $('#as-of-input').value = toInputValue(asOf.toISOString());
-  document.querySelectorAll('[data-replay-offset]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-  runDesk();
-}));
-$('#run-button').addEventListener('click', runDesk);
-$('#refresh-button').addEventListener('click', runDesk);
-$('#ai-form').addEventListener('submit', askAI);
-$('#run-crosscheck').addEventListener('click', runCrosscheck);
-document.querySelectorAll('[data-research-question]').forEach((button) => button.addEventListener('click', () => {
-  $('#ai-question').value = button.dataset.researchQuestion;
-  $('#ai-question').focus();
-}));
-$('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
-document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
-
-try {
-  const status = await getJSON('/api/ai');
-  state.aiConfigured = Boolean(status.configured);
-  $('#ai-provider-status').textContent = state.aiConfigured ? 'Live AI configured' : 'Rules only · AI needs key';
-} catch {
-  state.aiConfigured = false;
-  $('#ai-provider-status').textContent = 'AI provider status unavailable';
-}
-
-try {
-  state.cases = await getJSON('/api/events').then((body) => body.cases);
-  selectCase('NVDA');
-} catch (error) {
-  $('#ingestion-status').textContent = 'Unable to load cases'; $('#replay-note').textContent = error.message;
-}
- + Number(value).toFixed(2) + '/share' :
-    '
-  const checks = data.dossier?.checks ?? [];
-  const observed = data.dossier?.metrics;
-  if (!checks.length) {
-    $('#contradictions').textContent = 'The decision dossier is not available.';
-    return;
-  }
-  $('#contradictions').innerHTML = checks.map((check) => {
-    const label = check.phase === 'after' ? ' · hindsight only' : '';
-    return '<div class="bullet-item"><div><strong>' + escapeHtml(check.title) +
-      ' · ' + escapeHtml(check.category) + label +
-      '</strong><br />' + escapeHtml(check.detail) + '</div></div>';
-  }).join('');
-  $('#dossier-summary').textContent = data.dossier.researchPosture +
-    ' · ' + (data.dossier.blockingTopics.length ?
-      data.dossier.blockingTopics.length + ' unresolved checks' : 'all defined checks passed') +
-    ' · ' + (observed?.completePreCandles ?? 0) + ' completed pre-decision candles';
-}
-
-async function runDesk() {
-  if (!state.selected) return;
-  const requestId = ++state.requestId;
-  const ticker = state.selected.ticker;
-  const asOf = fromInputValue($('#as-of-input').value);
-  state.research = null;
-  $('#run-button').disabled = true; $('#run-button').textContent = 'Reading…'; $('#replay-status').textContent = 'Fetching'; $('#replay-note').textContent = 'Holding future evidence out of the packet';
-  try {
-    const data = await getJSON(`/api/research?ticker=${ticker}&asOf=${encodeURIComponent(asOf)}`);
-    if (requestId !== state.requestId || ticker !== state.selected?.ticker) return;
-    state.research = data;
-    renderEvidence(data); renderBaseline(data); renderMarket(data); renderBrief(data); renderFinancial(data); renderContradictions(data);
-    $('#retrieval-clock').textContent = formatUTC(data.generatedAt);
-    $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
-    $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
-    $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
-    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, stockInfo: data.market.stockInfo, stockInfoSource: data.market.stockInfoSource, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
-    $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
-  } catch (error) {
-    if (requestId !== state.requestId) return;
-    $('#ingestion-status').textContent = 'Source error · no fabricated fallback'; $('#replay-status').textContent = 'ABSTAIN'; $('#replay-note').textContent = error.message; $('#ai-answer').innerHTML = `<span class="spark">!</span><span>${escapeHtml(error.message)}</span>`;
-  } finally { if (requestId === state.requestId) { $('#run-button').disabled = false; $('#run-button').innerHTML = 'Run the desk <span>↗</span>'; } }
-}
-
-async function askAI(event) {
-  event.preventDefault();
-  if (!state.research) return;
-  const answer = $('#ai-answer'); answer.innerHTML = '<span class="spark">✦</span><span>Checking the evidence packet…</span>';
-  try {
-    const data = await getJSON('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: $('#ai-question').value || 'What should a human investigate next?', ticker: state.research.case.ticker, asOf: state.research.replay.asOf }) });
-    if (!data.configured) { answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.message)}</span>`; return; }
-    answer.innerHTML = `<span class="spark">✦</span><span>${escapeHtml(data.answer || data.message || data.error || 'AI abstained.').replace(/\n/g, '<br />')}</span>`;
-  } catch (error) { answer.innerHTML = `<span class="spark">!</span><span>AI review unavailable: ${escapeHtml(error.message)}</span>`; }
-}
-
-document.querySelectorAll('[data-replay-offset]').forEach((button) => button.addEventListener('click', () => {
-  if (!state.selected) return;
-  const minutes = Number(button.dataset.replayOffset);
-  if (![-15, 0, 120].includes(minutes)) return;
-  const asOf = new Date(Date.parse(state.selected.secAcceptedAt) + minutes * 60000);
-  $('#as-of-input').value = toInputValue(asOf.toISOString());
-  document.querySelectorAll('[data-replay-offset]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-  runDesk();
-}));
-$('#run-button').addEventListener('click', runDesk);
-$('#refresh-button').addEventListener('click', runDesk);
-$('#ai-form').addEventListener('submit', askAI);
-document.querySelectorAll('[data-research-question]').forEach((button) => button.addEventListener('click', () => {
-  $('#ai-question').value = button.dataset.researchQuestion;
-  $('#ai-question').focus();
-}));
-$('#copy-receipt').addEventListener('click', async () => { if (state.research) { await navigator.clipboard?.writeText($('#receipt-json').textContent); $('#copy-receipt').textContent = 'Copied'; setTimeout(() => { $('#copy-receipt').textContent = 'Copy receipt'; }, 1500); } });
-document.querySelectorAll('[data-posture]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-posture]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); state.posture = button.dataset.posture; }));
-
-try {
-  const status = await getJSON('/api/ai');
-  state.aiConfigured = Boolean(status.configured);
-  $('#ai-provider-status').textContent = state.aiConfigured ? 'Live AI configured' : 'Rules only · AI needs key';
-} catch {
-  state.aiConfigured = false;
-  $('#ai-provider-status').textContent = 'AI provider status unavailable';
-}
-
-try {
-  state.cases = await getJSON('/api/events').then((body) => body.cases);
-  selectCase('NVDA');
-} catch (error) {
-  $('#ingestion-status').textContent = 'Unable to load cases'; $('#replay-note').textContent = error.message;
-}
- + new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(Number(value)) + 'M';
+  return unit === 'usd_per_share'
+    ? '$' + Number(value).toFixed(2) + '/share'
+    : '$' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(Number(value)) + 'M';
 }
 
 async function runCrosscheck() {
@@ -454,7 +272,7 @@ async function runDesk() {
     $('#ingestion-status').textContent = 'Live sources connected'; $('#replay-status').textContent = data.baseline.decision; $('#replay-note').textContent = `As of ${formatUTC(data.replay.asOf)}`;
     $('#evidence-hash').textContent = data.integrity.evidenceHash || '—';
     $('#source-status').textContent = `${data.sourceChecks.issuer.ok ? 'Issuer page fetched' : 'Issuer page access caveat'} · ${data.sourceChecks.sec.ok ? 'SEC filing fetched' : 'SEC source unavailable'}`;
-    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, stockInfo: data.market.stockInfo, stockInfoSource: data.market.stockInfoSource, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
+    $('#receipt-json').textContent = JSON.stringify({ replay: data.replay, evidence: data.evidence, baseline: data.baseline, brief: data.brief, financial: data.financial, dossier: data.dossier, market: { symbol: data.market.symbol, sourceEndpoints: data.market.sourceEndpoints }, integrity: data.integrity }, null, 2);
     $('#ai-answer').textContent = state.aiConfigured === true ? 'Receipt ready. AI questions will be analyzed using a new server-verified evidence packet.' : state.aiConfigured === false ? 'Receipt ready. The live AI provider is not configured; all displayed checks are deterministic.' : 'Receipt ready. Checking AI provider availability.';
   } catch (error) {
     if (requestId !== state.requestId) return;
@@ -485,6 +303,7 @@ document.querySelectorAll('[data-replay-offset]').forEach((button) => button.add
 $('#run-button').addEventListener('click', runDesk);
 $('#refresh-button').addEventListener('click', runDesk);
 $('#ai-form').addEventListener('submit', askAI);
+$('#run-crosscheck').addEventListener('click', runCrosscheck);
 document.querySelectorAll('[data-research-question]').forEach((button) => button.addEventListener('click', () => {
   $('#ai-question').value = button.dataset.researchQuestion;
   $('#ai-question').focus();

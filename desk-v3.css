@@ -542,4 +542,161 @@ a:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible,
   display:block;font:600 9px var(--mono);color:#9fd1d8;padding:9px 0
  }
 }
+
+/* REFINEMENT 04 / BLACK FOUNDATION, CYAN AS AN ACCENT
+   Everything below is limited to the research desk. The approved homepage
+   remains unchanged. Pure neutral near-blacks replace blue-tinted surfaces. */
+:root {
+ --night:#080808;
+ --night-soft:#141414;
+ --ink:#f3f3f1;
+ --paper:#0b0b0b;
+ --pale:#111111;
+ --line:#343434;
+ --muted:#b1b1b0;
+ --light-muted:#a8a8a8;
+ background:#080808;
+ color:#f3f3f1;
+}
+body {background:#080808;color:#f3f3f1}
+.desk-nav,.desk-masthead,.case-nav,.market-zone,.desk-footer {background:#080808}
+.desk-nav {border-bottom-color:#303030}
+.masthead-sup,.masthead-aside-top,.masthead-aside-bottom,
+.section-line,.section-line.inverse {border-color:#454545}
+.masthead-sup,.nav-edition,.nav-status,.case-nav-head {color:#b3b3b3}
+.nav-refresh {background:#111;border-color:#404040;color:#f6f6f6}
+.nav-refresh:hover {background:#262626;border-color:#777;color:#fff}
+.back-link{background:#151515;border-color:#555;color:#fff}
+.back-link:hover{background:#292929;color:#fff;border-color:var(--cyan)}
+.masthead-body .eyebrow{color:#dedede}
+.masthead-body h1 mark{
+ background:transparent;color:#f7f7f5;padding:0 0 3px;
+ border-bottom:6px solid var(--cyan)
+}
+.masthead-copy{color:#bababa}
+.masthead-aside{
+ background:#161616;color:#f6f6f4;
+ border:1px solid #444;
+ border-left:3px solid var(--cyan)
+}
+.masthead-aside-top,.masthead-aside-bottom{border-color:#3c3c3c;color:#c8c8c8}
+.masthead-aside-middle strong{color:#fff}
+.masthead-aside-middle strong span{color:var(--cyan)}
+.case-list {background:#414141;border-color:#414141}
+.case-button,.case-button:hover {background:#141414}
+.case-button:hover {background:#242424}
+.case-button>span:last-child{border-color:#424242}
+.case-button.active,.case-button.active:hover{
+ background:#202020;color:#fafafa;
+ box-shadow:inset 0 4px 0 var(--cyan)
+}
+.case-button.active>span:last-child{border-color:#626262}
+.case-button.active .ticker-chip{color:var(--cyan)}
+.case-button.active small,.case-button.active .case-state{color:#c3c3c3}
+.case-button strong{color:#fafafa}
+.case-button small,.case-state{color:#aaa}
+.research-main{background:#080808}
+.research-main>section:not(.market-zone){background:#0c0c0c;color:#f2f2f2}
+.research-main>.assessment-zone,
+.research-main>.brief-zone,
+.research-main>.receipt-zone{background:#111;color:#f5f5f5}
+.section-line{color:#b2b2b2}
+.section-line span:first-child{color:var(--cyan)}
+.editorial-head h2,.editorial-head h2 em{color:#f8f8f7}
+.editorial-head h2 em{border-bottom:4px solid var(--cyan)}
+.editorial-head p{color:#b1b1b1}
+.clock-instrument{background:#141414;border-top-width:2px}
+.control-case,.control-clock{border-color:#454545}
+.control-clock input{background:#1e1e1e;border-color:#595959;color:#f7f7f7}
+.time-presets{border-color:#4d4d4d}
+.time-presets button{border-color:#4d4d4d;color:#d1d1d1}
+.time-presets button:hover:not([aria-pressed="true"]){background:#292929}
+.control-status .muted,.control-case .muted{color:#b4b4b4}
+.below-clock-note{color:#b4b4b4}
+.assessment-zone .decision-grid{border-color:#424242}
+.thesis-panel{background:#111}
+.evidence-panel{background:#1b1b1b;color:#f0f0f0}
+.evidence-panel .panel-head h2,.panel-head h2{color:#f5f5f3}
+.thesis-panel .panel-head{border-color:#444}
+.evidence-panel .panel-head{border-color:#505050}
+.evidence-item{border-bottom-color:#353535}
+.evidence-item h3{color:#f4f4f4}
+.evidence-copy,.evidence-meta{color:#b2b2b2}
+.evidence-meta a{color:#84dfe9}
+.fact{background:#272727;border-color:#484848;color:#dfdfdf}
+.caveat{background:#242424;color:#dbdbdb;border-left-color:#5ac9d8}
+.receipt-badge,.small-tag,.ai-tag{background:#242424;border-color:#444;color:#d5eff2}
+.decision-pill{background:#1c1c1c;border:1px solid var(--cyan);color:var(--cyan)}
+.decision-pill.abstain{background:#2e241e;border-color:#775546;color:#ffc3a7}
+.financial-panel{background:#141414;border-color:#424242}
+.financial-panel>.panel-head{border-color:#444}
+.financial-panel .financial-caveat{color:#b7b7b7}
+.financial-content{background:#141414}
+.financial-table thead{background:#272727}
+.financial-table tbody tr:nth-child(even){background:#1b1b1b}
+.financial-table tbody th,.financial-table tbody td{border-bottom-color:#373737;color:#ededed}
+.financial-table tbody th{color:#f4f4f4}
+.financial-table .financial-up{color:#8adbe4}
+.financial-table .financial-down{color:#e99d8e}
+.financial-source{color:#8adbe4}
+.financial-drivers{border-top-color:#4a4a4a}
+.financial-argument,.financial-argument:nth-child(2){background:#171717;border-color:#373737}
+.financial-argument:nth-child(2){background:#202020}
+.financial-argument h3,.financial-argument strong{color:#f5f5f5}
+.financial-argument p,.financial-argument small{color:#c1c1c1}
+.source-reconcile{background:#111;color:#fff}
+.reconcile-head p,.reconcile-source{color:#b8b8b8}
+.reconcile-status{background:#1e1e1e;color:#c9c9c9}
+#crosscheck-output .financial-table thead{background:#282828}
+#crosscheck-output .financial-table tbody tr:nth-child(even){background:#171717}
+#crosscheck-output .financial-table tbody th,
+#crosscheck-output .financial-table tbody td{border-color:#3c3c3c}
+.market-panel{background:#080808}
+.market-panel .panel-head h2{color:#fff}
+.market-summary{border-color:#414141}
+.market-summary>div{border-color:#414141}
+.market-summary .section-label,.market-head-meta .muted,
+.chart-legend,.audit-strip{color:#b7b7b7}
+.chart-grid{stroke:#363636}
+.audit-strip{border-color:#474747}
+.research-brief-panel{background:transparent}
+.brief-headline{color:#f4f4f4}
+.brief-grid{border-color:#4a4a4a}
+.brief-grid>div{border-color:#414141}
+.brief-grid h3{color:#ccf3f5}
+.brief-item,.brief-limitation{border-color:#3e3e3e}
+.brief-item strong{color:#f0f0f0}
+.brief-item p,.brief-limitation,.brief-disclaimer{color:#b5b5b5}
+.brief-fact,.brief-item a,.brief-status{color:#84dce5}
+.review-grid{border-color:#424242}
+.contradictions-panel{background:#181818;border-color:#424242}
+.ai-panel{background:#1e1e1e}
+.dossier-summary{background:#272727;border-left-color:var(--cyan);color:#e4e4e4}
+.bullet-item{border-color:#444;color:#bcbcbc}
+.bullet-item strong{color:#f1f1f1}
+.ai-copy{color:#bababa}
+.research-prompts button{background:#2c2c2c;border-color:#555;color:#f0f0f0}
+.research-prompts button:hover{background:#414141}
+.ai-panel textarea{background:#131313;border-color:#525252;color:#f3f3f3}
+.secondary-button{background:#353535;color:#fff}
+.secondary-button:hover{background:#474747}
+.ai-answer{background:#272727;border-color:var(--cyan);color:#dedede}
+.receipt-grid>div{border-color:#494949}
+.receipt-grid p,.receipt-grid .section-label{color:#bebebe}
+.receipt-details{background:#1a1a1a;border-color:#414141}
+.receipt-details summary{color:#b5eef1}
+.receipt-json{background:#161616;color:#c9c9c9;border-color:#404040}
+.ghost-button{background:#252525;color:#fff;border-color:#626262}
+.ghost-button:hover{background:#333}
+.desk-footer{border-top:1px solid #3b3b3b}
+@media(max-width:950px){
+ .control-case{border-color:#454545}
+ .control-status{border-top-color:#454545}
+}
+@media(max-width:650px){
+ .control-case,.control-clock{border-bottom-color:#454545!important}
+ .financial-content .financial-table tbody tr{background:#171717!important;border-color:#4a4a4a}
+ .financial-content .financial-table tbody td::before{color:#a5a5a5}
+}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

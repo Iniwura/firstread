@@ -1,5 +1,8 @@
 # FIRSTREAD production verification · October 9, 2026
 
+> **Latest production addendum (October 10, 2026).** This document below preserves its October 9 historical verification snapshot; those old deployment IDs, `63/63` counts and unconfigured-provider observations are **not** current. Current public deployment commit: `09ac224f8ed6983377879ab82f30e49fb57ea90f` (Vercel deployment `dpl_Ffe8z8fSpUtcQZSHvjBZZXYE254U`, READY). [66 automated tests passed](https://github.com/Iniwura/firstread/actions/runs/38035374514); [production browser passed](https://github.com/Iniwura/firstread/actions/runs/38035374550); [real Qwen 3.8 Max answer passed with `[E3-MSFT]`](https://github.com/Iniwura/firstread/actions/runs/38035417592). [Updated demo](https://github.com/Iniwura/firstread/actions/runs/38040053030) now captures the redesigned desk, time cutoff and a genuinely cited Qwen result. No project submission acceptance, promotional X post or human-user outcomes have been verified. Source-ID checking does not guarantee all LLM prose is numerically true.
+
+
 **Purpose:** independently document the current deployed behavior, not just the author's local test results.
 
 ## Anonymous production browser

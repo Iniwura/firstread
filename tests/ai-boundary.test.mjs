@@ -86,3 +86,55 @@ test('reports no-key fallback truthfully', async () => {
   assert.equal(res.payload.configured, false);
   assert.equal(h.calls, 0);
 });
+
+test('Qwen uses hackathon chat-completions schema and verifies the returned SEC citation', async () => {
+  let upstream = null;
+  const handler = createAiHandler({
+    env: { BITGET_QWEN_API_KEY: 'private-test-token' },
+    research: async () => ({ aiPacket: serverPacket }),
+    transport: async (url, init) => {
+      upstream = { url, body: JSON.parse(init.body), authorization: init.headers.authorization };
+      return { ok: true, json: async () => ({
+        choices: [{ message: { role: 'assistant', content: 'SEC evidence is filed [E2-NVDA]. WAIT.' } }],
+      }) };
+    },
+  });
+  const response = mockRes();
+  await handler({ method: 'POST', body: input }, response);
+  assert.equal(response.code, 200);
+  assert.equal(response.payload.decision, 'AI_REVIEW');
+  assert.equal(response.payload.validation.valid, true);
+  assert.equal(upstream.url, 'https://hackathon.bitgetops.com/v1/chat/completions');
+  assert.equal(upstream.body.model, 'qwen3.8-max');
+  assert.equal(upstream.body.input, undefined);
+  assert.ok(upstream.body.messages[1].content.includes('E2-NVDA'));
+  assert.equal(upstream.authorization, 'Bearer private-test-token');
+  assert.doesNotMatch(JSON.stringify(response.payload), /private-test-token/);
+});
+
+test('Qwen chat responses with fabricated evidence IDs are rejected', async () => {
+  const handler = createAiHandler({
+    env: { BITGET_QWEN_API_KEY: 'private-test-token' },
+    research: async () => ({ aiPacket: serverPacket }),
+    transport: async () => ({
+      ok: true,
+      json: async () => ({ choices: [{ message: { content: 'Real [E2-NVDA], fabricated [E9-NVDA].' } }] }),
+    }),
+  });
+  const response = mockRes();
+  await handler({ method: 'POST', body: input }, response);
+  assert.equal(response.payload.decision, 'ABSTAIN');
+});
+
+test('Qwen chat transport preserves the no-evidence abstention without upstream calls', async () => {
+  let called = false;
+  const handler = createAiHandler({
+    env: { BITGET_QWEN_API_KEY: 'private-test-token' },
+    research: async () => ({ aiPacket: { evidence: [], completedCandles: [] } }),
+    transport: async () => { called = true; throw new Error('must not run'); },
+  });
+  const response = mockRes();
+  await handler({ method: 'POST', body: input }, response);
+  assert.equal(response.payload.decision, 'ABSTAIN');
+  assert.equal(called, false);
+});

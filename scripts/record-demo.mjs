@@ -108,7 +108,7 @@ try {
   await page.waitForFunction(()=>{
     const result=document.querySelector('#ai-answer')?.textContent||'';
     return result.length>90 && !result.includes('Checking the evidence packet');
-  },{timeout:90000});
+  },null,{timeout:95000});
   const modelAnswer=await page.locator('#ai-answer').textContent();
   if(!modelAnswer.includes('[E3-MSFT]') || /AI review unavailable|AI abstained|unverified or future evidence/i.test(modelAnswer))
     throw new Error('Live Qwen answer did not cite approved MSFT SEC exhibit');

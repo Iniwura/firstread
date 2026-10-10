@@ -1,5 +1,8 @@
 # FIRSTREAD · Judge demo and independent evaluation plan
 
+**Current judge proof (October 10):** The [live Bitget Qwen result](https://github.com/Iniwura/firstread/actions/runs/38035417592) passed with exact primary SEC citation `[E3-MSFT]`. The [latest automated tests](https://github.com/Iniwura/firstread/actions/runs/38035374514) passed 66/66 and [production Chromium](https://github.com/Iniwura/firstread/actions/runs/38035374550) passed. The [current captioned production-video capture](https://github.com/Iniwura/firstread/actions/runs/38040053030) also exercised a real cited Qwen answer. User testing, published X link and confirmed form acceptance remain unverified.
+
+
 **Track:** Bitget AI Hackathon S2 → AI Trading Desk → Information Extraction & Signal Generation
 
 **Core research question:** For an event-driven rToken trader, what can be established about an earnings disclosure at a selected historical time, what is missing, and which later observations must stay out of that decision?
@@ -32,7 +35,7 @@
 
 - **Engineering validation**: automated tests, live Bitget source probes, browser-smoke tests, time-boundary tests, simulated provider behavior. These must be accompanied by actual CI/test outputs.
 - **Source coverage**: three historical SEC filing cases, three independently verified SEC EX-99.1 exhibits containing financial figures, and Bitget candidate Reality candle coverage. This is not an earnings-reaction success rate.
-- **Model evaluation**: pending actual provider configuration and a repeatable, evidence-labeled prompt suite. Do not call mocked-provider tests a live model benchmark.
+- **Model evaluation**: one real source-cited provider request independently verified (MSFT), plus mocked adversarial boundary tests. This is **not** a broad model benchmark or proof every prose claim is accurate. More audited prompts and human evaluation remain desirable.
 - **User validation**: pending five independent blind tasks (unless actually conducted). Do not invent participants, completion rates or testimonials.
 - **Trading performance**: not applicable; FIRSTREAD does not execute or backtest trades. No Sharpe, PnL, portfolio results or outperformance claim.
 
@@ -46,8 +49,8 @@ Record tester identifier (non-sensitive), completion time, whether all three ans
 
 ## Production blockers
 
-- **Live provider key:** add `BITGET_QWEN_API_KEY` and optionally `BITGET_QWEN_MODEL=qwen3.8-max`, or an OpenAI-compatible provider key, to Vercel encrypted production environment. Redeploy and verify a real cited answer. Never commit or share API keys.
-- **Bitget MCP fundamentals:** documented transport/catalog pass, backend data call 503 during recorded feasibility probe. Do not count this as working fundamentals integration. Retest and preserve returned timestamps/status.
+- **Live provider:** securely configured and real cited answer passed on October 10; monitor rate/credit limits and recheck after provider changes. Never commit or share API keys.
+- **Bitget MCP fundamentals:** initial 503 recovered; independent current-day earnings data reconciliation passed. Vendor records remain separated from historical cutoff evidence.
 - **Competition cutoff:** Bitget's newer X post claimed October 11; its form audit reported October 8 at 23:59 UTC+8, with older site showing an earlier cutoff. Submission acceptance must be verified from the actual Google Form or organizer, never inferred from a running site.
 - **X post and form:** user approval and identity/UID inputs required; no automatic posting or form submission.
 

@@ -1,0 +1,23 @@
+name: FIRSTREAD real Qwen proof - October 10
+on:
+  push:
+    branches:
+      - ops/qwen-live-proof-20261010
+    paths:
+      - '.github/workflows/qwen-live-proof-20261010.yml'
+  workflow_dispatch:
+jobs:
+  prove-real-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify actual production provider and SEC citations
+        env:
+          FIRSTREAD_URL: https://firstread-psi.vercel.app
+        run: node scripts/verify-live-ai.mjs

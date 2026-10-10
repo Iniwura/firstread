@@ -1,0 +1,32 @@
+name: FIRSTREAD Qwen transport quality gate
+on:
+  push:
+    branches:
+      - fix/qwen-production-response-20261010
+    paths:
+      - 'api/ai.js'
+      - 'vercel.json'
+      - 'tests/ai-boundary.test.mjs'
+      - '.github/workflows/qwen-fix-ci.yml'
+jobs:
+  ai-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: node --check api/ai.js
+      - name: Run complete adversarial research suite
+        run: npm test
+      - name: Lint and build
+        run: |
+          npm run typecheck
+          npm run build
+      - name: Validate Vercel function durations
+        run: |
+          node -e "const v=require('./vercel.json'); if(v.functions['api/ai.js'].maxDuration!==60) process.exit(1)"

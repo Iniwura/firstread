@@ -26,6 +26,17 @@ jobs:
               -w "GET /v1/$endpoint -> HTTP %{http_code}; total %{time_total}s\\n" \
               "https://hackathon.bitgetops.com/v1/$endpoint" || true
           done
+      - name: Compare unauthenticated POST request protocols safely
+        run: |
+          for endpoint in responses chat/completions; do
+            echo "Checking POST /v1/$endpoint without any real key"
+            curl --silent --show-error --location --max-time 12 -o /dev/null \
+              -H 'Content-Type: application/json' \
+              -H 'Authorization: Bearer invalid-diagnostic-key' \
+              -d '{"model":"qwen3.8-max","messages":[{"role":"user","content":"ping"}],"max_tokens":4}' \
+              -w "POST /v1/$endpoint -> HTTP %{http_code}; total %{time_total}s\\n" \
+              "https://hackathon.bitgetops.com/v1/$endpoint" || true
+          done
       - name: Verify actual production provider and SEC citations
         env:
           FIRSTREAD_URL: https://firstread-psi.vercel.app

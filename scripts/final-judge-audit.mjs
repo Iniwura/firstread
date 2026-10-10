@@ -8,7 +8,8 @@ for(const {route,label,viewport} of [
  {route:'/desk.html?tour=off',label:'desk_desktop',viewport:{width:1440,height:900}},
  {route:'/desk.html?tour=off',label:'desk_mobile',viewport:{width:390,height:844}},
 ]){
- const page=await browser.newPage({viewport});
+ const ctx=await browser.newContext({viewport});
+ const page=await ctx.newPage();
  page.on('pageerror',e=>report.failures.push(label+' JS: '+e.message));
  try {
   const response=await page.goto(origin+route,{waitUntil:'domcontentloaded',timeout:45000});
@@ -24,7 +25,7 @@ for(const {route,label,viewport} of [
   if(serious.length)report.failures.push(label+' accessibility serious: '+serious.map(v=>v.rule+'('+v.count+')').join(','));
   report.pages.push({label,route,layout,axe:{violations:findings,passes:axe.passes.length}});
  }catch(e){report.failures.push(label+': '+e.message)}
- await page.close();
+ await ctx.close();
 }
 try {
  const statusRes=await fetch(origin+'/api/ai');

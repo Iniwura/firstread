@@ -1,86 +1,137 @@
 /**
- * Deterministic, read-only public product walkthrough.
- * Produces a captioned WEBM in GitHub Actions for manual competition use.
- * This is a browser recording, NOT a real human test or LLM response.
+ * FIRSTREAD / Final competition judge walkthrough, October 10, 2026.
+ *
+ * Real public production, real Bitget/SEC responses, real Qwen evidence review.
+ * Read-only. No fabricated model answers, simulated trades, or private keys.
+ * Fails if the model does not cite the real SEC source.
  */
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
-const url=(process.env.FIRSTREAD_URL||'https://firstread-psi.vercel.app/').replace(/\/$/,'');
-const out=path.resolve(process.env.FIRSTREAD_DEMO_DIR||'artifacts/demo');
-await mkdir(out,{recursive:true});
+const origin=(process.env.FIRSTREAD_URL||'https://firstread-psi.vercel.app').replace(/\/$/,'');
+const dir=path.resolve(process.env.FIRSTREAD_DEMO_DIR||'artifacts/demo');
+await mkdir(dir,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({
  viewport:{width:1440,height:900},deviceScaleFactor:1,
- recordVideo:{dir:out,size:{width:1440,height:900}}
+ recordVideo:{dir,size:{width:1440,height:900}},
+ reducedMotion:'reduce',
 });
 const page=await context.newPage();
-let filename;
+page.setDefaultTimeout(55000);
+const summary={origin,source:'REAL_PUBLIC_DATA',modelOutput:'PENDING',integrity:'NOT_VERIFIED'};
+let video=null;
+let failed=null;
 try {
- await page.goto(url+'/desk.html',{waitUntil:'domcontentloaded',timeout:45000});
- await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'),{timeout:45000});
- await page.evaluate(()=>{
-   const box=document.createElement('div'); box.id='firstread-demo-caption';
-   box.style.cssText='position:fixed;z-index:9999;bottom:25px;left:50%;transform:translateX(-50%);max-width:min(950px,90vw);padding:14px 23px;color:#f9f9f2;background:rgba(23,35,32,.94);box-shadow:0 6px 35px rgba(0,0,0,.16);text-align:center;font:600 17px/1.4 system-ui,sans-serif;pointer-events:none;border-radius:4px;letter-spacing:.005em';
-   document.body.appendChild(box);
- });
- const caption=async(label)=>page.evaluate((text)=>{document.querySelector('#firstread-demo-caption').textContent=text;},label);
- const hold=async(ms=4500)=>page.waitForTimeout(ms);
- const focus=async(selector)=>{await page.locator(selector).scrollIntoViewIfNeeded();await hold(500);};
- await caption('FIRSTREAD · Evidence-timed earnings intelligence for Bitget rTokens');
- await focus('.hero');await hold(6000);
+  const wait=async(ms=2800)=>page.waitForTimeout(ms);
+  const caption=async(text)=>page.evaluate((value)=>{
+    let banner=document.querySelector('#fr-judge-caption');
+    if(!banner){
+      banner=document.createElement('div');
+      banner.id='fr-judge-caption';
+      banner.style.cssText='position:fixed;z-index:699;right:20px;bottom:22px;max-width:640px;padding:13px 20px;color:#fff;background:#080808ed;border:1px solid #616161;border-left:5px solid #00f0ff;font:600 15px/1.5 system-ui,sans-serif;pointer-events:none';
+      document.body.appendChild(banner);
+    }
+    banner.textContent=value;
+  },text);
+  const focus=async(selector)=>{
+    await page.locator(selector).scrollIntoViewIfNeeded();
+    await wait(600);
+  };
+  await page.goto(origin+'/',{waitUntil:'domcontentloaded',timeout:45000});
+  await page.evaluate(()=>document.fonts.ready);
+  await caption('FIRSTREAD · The information divide. Bitget Reality × SEC earnings research.');
+  await wait(3800);
+  await page.screenshot({path:path.join(dir,'01-homepage.png')});
 
- await caption('1/6 · Travel to 15 minutes BEFORE NVIDIA’s SEC filing');
- await page.locator('[data-replay-offset="-15"]').click();
- await page.waitForFunction(()=>document.querySelector('#evidence-count')?.textContent.includes('0 visible'),{timeout:45000});
- await focus('#evidence-timeline'); await hold(5500);
+  await page.goto(origin+'/desk.html?tour=off',{waitUntil:'domcontentloaded',timeout:45000});
+  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'),{timeout:45000});
+  await caption('A real research desk · Three SEC filing cases · No wallet or order execution');
+  await focus('.desk-masthead');
+  await wait(3600);
+  await page.screenshot({path:path.join(dir,'02-desk.png')});
+  await page.locator('#tour-launch').click();
+  await page.locator('#desk-tour:not([hidden])').waitFor();
+  await caption('First-visit help · A guided tour explains every research step');
+  await wait(2500);
+  await page.screenshot({path:path.join(dir,'03-guided-tour.png')});
+  await page.locator('#tour-skip').click();
 
- await caption('2/6 · At filing acceptance, SEC-reported earnings become available');
- await page.locator('[data-replay-offset="0"]').click();
- await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'),{timeout:45000});
- await focus('#evidence-timeline');await hold(4400);
- await focus('#financial-content');
- await caption('NVIDIA · Year-over-year revenue, EPS and operating income from EX-99.1');
- await hold(7500);
- await focus('#financial-drivers');
- await caption('Every thesis gets a counterargument · Demand, guidance, and missing historical consensus');
- await hold(6500);
- await page.locator('#run-crosscheck').click();
- await page.waitForFunction(()=>document.querySelector('#crosscheck-status')?.textContent.includes('DISCREPANCY'),{timeout:45000});
- await focus('#crosscheck-output');
- await caption('Bitget MCP agrees on NVIDIA revenue and EPS, but operating income differs by $269M');
- await hold(7000);
+  await caption('01 / The decision clock · Rewind to BEFORE the SEC filing');
+  await focus('#clock');
+  await page.locator('[data-replay-offset="-15"]').click();
+  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('Held out'),{timeout:45000});
+  await focus('#evidence');
+  await wait(3100);
+  await page.screenshot({path:path.join(dir,'04-before-filing.png')});
+  if(!(await page.locator('#financial-state').textContent()).includes('Held out')) throw new Error('Evidence exclusion check failed');
 
- await page.getByRole('button',{name:/AAPL/}).first().click();
- await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-AAPL'),{timeout:45000});
- await focus('#financial-content');await caption('3/6 · Apple · Compare the same fiscal quarter one year earlier');await hold(5500);
- await focus('#financial-drivers');await caption('Apple · Reported tariff-refund benefits change the interpretation of EPS');await hold(5500);
- await page.locator('#run-crosscheck').click();
- await page.waitForFunction(()=>document.querySelector('#crosscheck-status')?.textContent.includes('Different reporting periods'),{timeout:45000});
- await focus('#crosscheck-status');
- await caption('Apple · The vendor returns cumulative totals; FIRSTREAD refuses a false quarterly comparison');
- await hold(6500);
+  await caption('02 / At SEC acceptance · The filed earnings exhibit becomes visible');
+  await page.locator('[data-replay-offset="0"]').click();
+  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-NVDA'),{timeout:45000});
+  await focus('#evidence');
+  await wait(2900);
+  await focus('#financial');
+  await caption('Real SEC EX-99.1 · Same-quarter financials and common-scale year-on-year growth');
+  await wait(3400);
+  await page.screenshot({path:path.join(dir,'05-sec-financials.png')});
+  await focus('#financial-drivers');
+  await caption('Every bullish line has a caveat · Read the driver and opposing thesis');
+  await wait(2400);
 
- await page.getByRole('button',{name:/MSFT/}).first().click();
- await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-MSFT'),{timeout:45000});
- await focus('#financial-content');await caption('4/6 · Microsoft · Cloud growth versus declining Personal Computing');await hold(6000);
- await focus('#financial-drivers');await caption('5/6 · Challenge the headline · Discrete earnings benefits and segment divergence');await hold(6500);
- await page.locator('#run-crosscheck').click();
- await page.waitForFunction(()=>document.querySelector('#crosscheck-status')?.textContent.startsWith('Compared'),{timeout:45000});
- await focus('#crosscheck-output');
- await caption('Microsoft · Three separately reported quarterly measures agree with Bitget MCP');
- await hold(7000);
+  await page.locator('#run-crosscheck').click();
+  await page.waitForFunction(()=>!document.querySelector('#crosscheck-status')?.textContent.includes('Fetching'),{timeout:45000});
+  const reconciliation=await page.locator('#crosscheck-status').textContent();
+  summary.sourceReconciliation=reconciliation;
+  await focus('.source-reconcile');
+  await caption('03 / Independent Bitget US equity MCP check · Different source, current-day data');
+  await wait(3100);
+  await page.screenshot({path:path.join(dir,'06-mcp-crosscheck.png')});
+  await focus('#market');
+  await caption('The real rToken market chart keeps later observations OUT of the historical decision');
+  await wait(3100);
+  await page.screenshot({path:path.join(dir,'07-market-replay.png')});
 
- await focus('#receipt');
- await caption('6/6 · Every read has evidence IDs, timestamps and reproducible source receipts');
- await hold(6500);
- await focus('.hero'); await caption('FIRSTREAD · Know what was available. Know what remains unproven.');
- await hold(4500);
+  await page.getByRole('button',{name:/MSFT/}).first().click();
+  await page.waitForFunction(()=>document.querySelector('#financial-state')?.textContent.includes('E3-MSFT'),{timeout:45000});
+  await page.locator('[data-replay-offset="120"]').click();
+  await page.waitForFunction(()=>document.querySelector('#replay-note')?.textContent.includes('22:04'),{timeout:45000});
+  await focus('#ai');
+  const provider=await page.locator('#ai-provider-status').textContent();
+  if(!provider.toLowerCase().includes('live ai configured')) throw new Error('Live Qwen not configured in production');
+  const question='For Microsoft Q4 FY2026, identify two SEC-filed financial figures, a limitation without dated analyst consensus, and the next human research step. Cite exact evidence IDs.';
+  await page.locator('#ai-question').fill(question);
+  await caption('04 / Ask Qwen · The model receives only the server-verified historical packet');
+  await wait(1700);
+  await page.locator('#ai-form button[type="submit"]').click();
+  await page.waitForFunction(()=>{
+    const result=document.querySelector('#ai-answer')?.textContent||'';
+    return result.length>90 && !result.includes('Checking the evidence packet');
+  },{timeout:90000});
+  const modelAnswer=await page.locator('#ai-answer').textContent();
+  if(!modelAnswer.includes('[E3-MSFT]') || /AI review unavailable|AI abstained|unverified or future evidence/i.test(modelAnswer))
+    throw new Error('Live Qwen answer did not cite approved MSFT SEC exhibit');
+  summary.modelOutput='REAL_QWEN_WITH_E3_MSFT_CITATION';
+  await focus('#ai-answer');
+  await caption('Verified live Qwen answer · Primary SEC citation [E3-MSFT] · Human retains control');
+  await wait(5700);
+  await page.screenshot({path:path.join(dir,'08-real-qwen-citation.png')});
+  await focus('#receipt');
+  await caption('05 / Reproducible receipts · Source IDs, exact cutoff, evidence hash');
+  await wait(3000);
+  await page.screenshot({path:path.join(dir,'09-research-receipt.png')});
+  await focus('.desk-masthead');
+  await caption('FIRSTREAD · A complete research task, from question to source-cited next step.');
+  await wait(3400);
+  summary.integrity='PASS';
+} catch(error){
+  failed=error;
+  summary.integrity='FAILED';
+  summary.failure=error.message;
 } finally {
- const video=page.video();
- await context.close();
- if(video)filename=await video.path();
- await browser.close();
+  try{video=page.video();await context.close();}finally{await browser.close();}
 }
-console.log(JSON.stringify({ok:Boolean(filename),source:url,videoPath:filename,notes:'Captioned real-browser walkthrough; not a live LLM demonstration or external human test.'},null,2));
+summary.videoWebm=video?await video.path():null;
+console.log(JSON.stringify(summary,null,2));
+if(failed)process.exitCode=1;

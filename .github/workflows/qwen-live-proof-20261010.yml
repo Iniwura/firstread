@@ -17,6 +17,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Probe provider gateway network and supported paths (no credentials)
+        run: |
+          set +e
+          getent ahostsv4 hackathon.bitgetops.com | head -n 2
+          for endpoint in models responses chat/completions; do
+            curl --silent --show-error --location --max-time 10 -o /dev/null \
+              -w "GET /v1/$endpoint -> HTTP %{http_code}; total %{time_total}s\\n" \
+              "https://hackathon.bitgetops.com/v1/$endpoint" || true
+          done
       - name: Verify actual production provider and SEC citations
         env:
           FIRSTREAD_URL: https://firstread-psi.vercel.app

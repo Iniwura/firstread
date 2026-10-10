@@ -1,5 +1,11 @@
 # FIRSTREAD — evidence-timed earnings intelligence
 
+**Current status (October 10, 2026):** The public app and research desk are live; the protected `BITGET_QWEN_API_KEY` is configured server-side. The latest [live Qwen 3.8 Max proof](https://github.com/Iniwura/firstread/actions/runs/38035417592) confirmed a real source-cited Microsoft SEC exhibit response (`AI_REVIEW`, `[E3-MSFT]`). The [production Chromium suite](https://github.com/Iniwura/firstread/actions/runs/38035374550) and [66-test engineering suite](https://github.com/Iniwura/firstread/actions/runs/38035374514) passed. An updated [captioned real-browser demonstration](https://github.com/Iniwura/firstread/actions/runs/38040037762) was recorded, including a live Qwen answer.
+
+The first-visit tour explains the flow and can be replayed with **DESK TOUR**. The landing page is the editorial introduction; analysis happens at [**/desk.html**](https://firstread-psi.vercel.app/desk.html). Bitget submission acceptance and a published compliant X post are **not confirmed**. See [SUBMISSION.md](SUBMISSION.md). AI citations are checked for source ID and historical visibility, not full independent numerical fact-checking.
+
+
+
 FIRSTREAD is an evidence-timed earnings desk for Bitget Reality rTokens, built for **Bitget AI Base Camp S2, AI Trading Desk → Information Extraction & Signal Generation**. It helps an active rToken trader ask: after this disclosure, what was actually knowable at the decision time, what did the rToken market show, what conflicts remain, and should a human investigate, wait, or reject the idea?
 
 The product is intentionally a research desk, not an execution agent. It does not connect to accounts, place orders, invent performance, or turn a thin record into a confident signal.
@@ -18,7 +24,7 @@ npm run build
 npm run dev
 ```
 
-Open `http://127.0.0.1:4174/` for the full workflow: select NVDA, AAPL, or MSFT; set an exact UTC decision timestamp; run the desk; inspect the visible evidence receipt, completed pre-decision candles, separated reaction window, rules-only baseline, caveats, and reproducible hash; then optionally ask the constrained AI review step.
+Open `http://127.0.0.1:4174/` for the public editorial homepage, or **`http://127.0.0.1:4174/desk.html`** for the functional research workflow: select NVDA, AAPL, or MSFT; set an exact UTC decision timestamp; run the desk; inspect the visible evidence receipt, completed pre-decision candles, separated reaction window, rules-only baseline, caveats, and reproducible hash; then optionally ask the constrained AI review step.
 
 `npm test` checks time-locked evidence/candle handling. `npm run probe` discovers active rToken instruments using Bitget's public `/api/v3/market/instruments` endpoint, queries public historical candlesticks near three **SEC acceptance** times, and writes `reports/bitget-feasibility.json`. If no matching instrument, no coverage, or the API is unreachable, it exits nonzero. No artificial price data are used.
 

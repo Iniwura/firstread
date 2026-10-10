@@ -36,6 +36,17 @@ jobs:
             console.log('title',await page.title());
             console.log('text',(await page.locator('body').innerText()).slice(0,2500));
             console.log('audio',JSON.stringify(await page.locator('audio').evaluateAll(xs=>xs.map(x=>({src:x.src,currentSrc:x.currentSrc})))));
+            const src=await page.locator('audio').first().getAttribute('src');
+            if(!src)throw new Error('Generated voice has no audio URL');
+            const download=await page.request.get(src,{timeout:60000});
+            if(!download.ok())throw new Error('Audio URL returned '+download.status());
+            const audio=await download.body();
+            if(audio.length<50000 || !['ID3','\\xff\\xfb'].some(x=>audio.subarray(0,3).toString('latin1').startsWith(x))) {
+              console.log('audio_bytes',audio.length,'start',audio.subarray(0,16).toString('hex'));
+              if(audio.length<50000)throw new Error('Audio too small');
+            }
+            require('fs').writeFileSync('voice-assets/firstread-voiceover.mp3',audio);
+            console.log('audio_saved_bytes',audio.length);
             console.log('mediaLinks',JSON.stringify(await page.locator('a[href]').evaluateAll(xs=>xs.map(x=>x.href).filter(u=>/audio|mp3|download|record/i.test(u)).slice(0,15))));
             console.log('network',JSON.stringify(captures.slice(-30)));
             await page.screenshot({path:'voice-assets/player.png'});

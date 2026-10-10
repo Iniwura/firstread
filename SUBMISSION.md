@@ -19,7 +19,7 @@ Updated: October 10, 2026
 
 **Open-source repository:** https://github.com/Iniwura/firstread
 
-**Read-only, real-data demo recording:** https://github.com/Iniwura/firstread/actions/runs/38040037762 (artifact: FIRSTREAD-captioned-product-demo; download and publish the MP4 to a publicly accessible video host before submission).
+**Final narrated judging demo (3:28):** https://youtu.be/yZq9-JpuQco (uploaded by the project owner; verify playback in a signed-out window before submission).
 
 **Real Bitget Qwen validation:** https://github.com/Iniwura/firstread/actions/runs/38035417592
 
@@ -39,7 +39,7 @@ Updated: October 10, 2026
 
 **4. Progress and limitations.** Built: public editorial introduction, guided research desk, replayable SEC acceptance cutoff, three source-grounded earnings comparisons, pre-decision market charts, after-cutoff price segregation, completeness/gap audits, deterministic research posture, independent current-day Bitget MCP comparison, source hash receipt and working optional Qwen analysis. The backend rebuilds the AI packet independently; the browser cannot supply facts to the model. Responses with absent/unknown evidence IDs abstain. Limits: only three fixed companies; market candles are one-hour intervals, not tick data; genuine historical analyst consensus is not available; earlier issuer publication may predate the SEC filing; some SEC/issuer sites resist live automated retrieval; Qwen citation validation does not mathematically prove every prose statement. Public AI calls consume limited provider credits, so operating limits should be monitored.
 
-**5. Deliverables.** Working no-login app; public GitHub repo with reproducible Node tests and source data; first-visit tour; engineering/proof notes; real provider proof; independent production-browser proof; fresh captioned product walkthrough. Links are given above. The MP4 should be placed at a stable public viewing URL in this form before final submission.
+**5. Deliverables.** Working no-login app; public GitHub repo with reproducible Node tests and source data; first-visit tour; engineering/proof notes; real provider proof; independent production-browser proof; and a published 3:28 narrated judging demo at https://youtu.be/yZq9-JpuQco. Verify that judges can watch the video without signing in.
 
 **6. View on AI Trading.** AI research is useful when it can identify source-backed financial drivers and uncertainty, challenge assumptions, and recommend a human next research step. It should never fabricate unavailable consensus, imply a historical price move was knowable before a filing, or silently transform commentary into a live order.
 
@@ -50,7 +50,7 @@ FIRSTREAD uses **Bitget Hackathon Qwen 3.8 Max** for a constrained natural-langu
 ## Unfinished external actions — mandatory before eligible submission
 
 1. Publish a substantive X **quote post** of https://x.com/Bitget_AI/status/2100519318824055159?s=20 introducing FIRSTREAD with `@Bitget_AI`, `#BitgetHackathon`, and the live demo URL. Keep the actual resulting X post link.
-2. Download the demo MP4 from the GitHub Actions artifact and place it where judges can view it **without a GitHub login** (X video, public YouTube or public Loom link). Confirm viewability anonymously.
+2. Confirm that the published judging demo https://youtu.be/yZq9-JpuQco is viewable in a signed-out/private browser session, then place that exact link in the Google Form.
 3. Open https://forms.gle/GyWZCMCPocgJdJon6, fill in the complete Project Description **inside the form**, role-of-LLM field, public submission links, X post link, matching Bitget UID and true team details. If eligible as a university entrant, enter your full school name and consider opting into Demo Day.
 4. Submit and retain the success confirmation/receipt. Field visibility alone does **not** confirm entry acceptance.
 5. Check the deadline urgently with Bitget. The public S2 handbook lists September 27; the form read by Chromium on October 10 still printed **October 8 23:59 UTC+8**, whereas a later social announcement had indicated October 11. These remain unresolved; do not assume the newer time was applied.

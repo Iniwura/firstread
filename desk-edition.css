@@ -179,3 +179,4 @@
  .chart-shell svg{height:245px}
 }
 @media(prefers-reduced-motion:reduce){.cutoff-cursor{transition:none}}
+.ai-verification-note{color:#bdbdbd;font:400 10px/1.65 var(--body);margin:12px 0 0;max-width:640px}

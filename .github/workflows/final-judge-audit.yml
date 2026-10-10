@@ -1,0 +1,30 @@
+name: FIRSTREAD final judge audit
+on:
+  push:
+    branches: [main, audit/final-judge-20261010]
+    paths:
+      - 'scripts/final-judge-audit.mjs'
+      - '.github/workflows/final-judge-audit.yml'
+      - 'desk.html'
+      - 'index.html'
+      - 'api/ai.js'
+  workflow_dispatch:
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install audit dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright @axe-core/playwright
+          npx playwright install --with-deps chromium
+      - name: Check public product, security boundaries, and WCAG accessibility
+        env:
+          FIRSTREAD_URL: https://firstread-psi.vercel.app
+        run: node scripts/final-judge-audit.mjs

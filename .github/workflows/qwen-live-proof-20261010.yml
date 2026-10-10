@@ -5,6 +5,7 @@ on:
       - ops/qwen-live-proof-20261010
     paths:
       - '.github/workflows/qwen-live-proof-20261010.yml'
+      - 'scripts/verify-live-ai.mjs'
   workflow_dispatch:
 jobs:
   prove-real-model:

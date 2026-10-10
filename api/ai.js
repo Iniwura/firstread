@@ -90,7 +90,7 @@ export function createAiHandler({ research = buildAiResearchPacket, transport = 
       { role: 'user', content: JSON.stringify({ question, packet }) },
     ];
     const bodyForProvider = isQwen
-      ? { model, max_tokens: 2400, stream: false, messages: qwenMessages }
+      ? { model, max_tokens: 3000, reasoning_effort: 'low', stream: false, messages: qwenMessages }
       : {
           model,
           max_output_tokens: 1100,

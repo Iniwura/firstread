@@ -1,6 +1,7 @@
 {
   "outputDirectory": ".",
   "functions": {
+    "api/ai.js": { "maxDuration": 60 },
     "api/*.js": { "maxDuration": 30 }
   },
   "headers": [

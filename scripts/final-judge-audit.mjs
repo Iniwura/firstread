@@ -20,7 +20,7 @@ for(const {route,label,viewport} of [
   if(layout.documentWidth>layout.viewportWidth+2)report.failures.push(label+' horizontal overflow');
   if(!layout.hasMain||layout.bodyLength<800)report.failures.push(label+' incomplete content');
   const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
-  const findings=axe.violations.map(v=>({rule:v.id,impact:v.impact,count:v.nodes.length,targets:v.nodes.slice(0,4).map(n=>n.target)}));
+  const findings=axe.violations.map(v=>({rule:v.id,impact:v.impact,count:v.nodes.length,targets:v.nodes.slice(0,25).map(n=>({target:n.target,summary:n.failureSummary?.slice(0,180)}))}));
   const serious=findings.filter(v=>v.impact==='serious'||v.impact==='critical');
   if(serious.length)report.failures.push(label+' accessibility serious: '+serious.map(v=>v.rule+'('+v.count+')').join(','));
   report.pages.push({label,route,layout,axe:{violations:findings,passes:axe.passes.length}});

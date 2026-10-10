@@ -4,7 +4,7 @@
  * trigger only after the production AI provider is configured.
  */
 const baseUrl=(process.env.FIRSTREAD_URL||'https://firstread-psi.vercel.app').replace(/\/$/,'');
-const timeout=AbortSignal.timeout(45000);
+const timeout=AbortSignal.timeout(85000);
 const fetchJson=async(url,init={})=>{
  const response=await fetch(url,{...init,signal:timeout,headers:{accept:'application/json',...(init.headers||{})}});
  let body;

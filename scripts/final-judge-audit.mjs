@@ -5,6 +5,7 @@ const browser=await chromium.launch({headless:true});
 const report={origin,generatedAt:new Date().toISOString(),pages:[],security:{},failures:[]};
 for(const {route,label,viewport} of [
  {route:'/',label:'homepage_desktop',viewport:{width:1440,height:900}},
+ {route:'/',label:'homepage_mobile',viewport:{width:390,height:844}},
  {route:'/desk.html?tour=off',label:'desk_desktop',viewport:{width:1440,height:900}},
  {route:'/desk.html?tour=off',label:'desk_mobile',viewport:{width:390,height:844}},
 ]){

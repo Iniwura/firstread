@@ -1,6 +1,9 @@
 # FIRSTREAD · Activate and verify live AI
 
-The public FIRSTREAD app intentionally displays **rules-only mode** until a real server-side AI provider is configured. The source-grounded research workflow works without a key; that is not proof of LLM capability.
+**Verified production status — October 10, 2026.** The private Bitget Qwen key is active on Vercel. The current model is `qwen3.8-max` via Bitget's chat-completions endpoint with bounded low reasoning effort; production returned `configured: true`. The independent real-provider run [38035417592](https://github.com/Iniwura/firstread/actions/runs/38035417592) **passed**, returning `AI_REVIEW` with server-approved citation `[E3-MSFT]` and no exposed key. Latest 66 automated tests and public Chromium checks passed. The information below is retained as operational/rotation instructions; initial activation is no longer pending. The backend rejects invented or missing evidence IDs but does not independently verify every numeric claim in model prose. No model result is a trade instruction.
+
+
+The public FIRSTREAD app supports **rules-only mode** when a real server-side AI provider is not configured. The source-grounded research workflow works without a key; that is not proof of LLM capability.
 
 ## 1. Add private provider credentials (project owner)
 
@@ -47,4 +50,4 @@ An accessible demo and a published X quote-post are required by the Bitget S2 ha
 
 Before submission, add your actual team details and Bitget UID. Publish the X post only with your explicit approval and include the valid X URL. No submission was made by this repository work.
 
-**Do not call FIRSTREAD fully live-AI-verified until step 2 passes.**
+**Step 2 was independently verified on October 10.** Repeat it after any key, model or transport change; do not confuse citation validation with full numeric fact verification.

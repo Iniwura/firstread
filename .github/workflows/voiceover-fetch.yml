@@ -1,4 +1,4 @@
-name: FIRSTREAD voiceover asset fetch
+name: FIRSTREAD long-demo narration fetch
 on:
   push:
     branches:
@@ -8,17 +8,44 @@ on:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     permissions:
       contents: read
     steps:
-      - name: Retrieve short-lived generated voice recording
+      - name: Install Playwright
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install chromium
+      - name: Download generated long-form narration without publishing it
+        shell: bash
         run: |
           mkdir -p voice-assets
-          curl -fL --max-time 28 --connect-timeout 6 -o voice-assets/firstread-natural-narration.mp3 'https://storage.googleapis.com/adm--audio-files--lt--private/9a08c2c6-ec75-4668-a0dc-0ab10777dac8?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=dev-vm%40stockcagr.iam.gserviceaccount.com%2F20261010%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261010T120800Z&X-Goog-Expires=43200&X-Goog-SignedHeaders=host&response-content-type=audio%2Fmpeg&X-Goog-Signature=898430408ce747e141fc240a6b11ba2a6f7be304a9de8d7c8dc834cbd11674e71996ac514291d1d1e739e7a70c555c9811dfa88bd3ad6411cdfa366c939c276b2ce6a9cc2181c0ee50efe2f7f71c863ef0f0fa6b8fa2a7d67abdb97718951eed07f8d8870b6952b9a9cdbd6cb46c1f57f824ded999c9624aa002a3853541a9f07b936c68d48c3fb8fc166e4575962edb64497c9a3f92d0b61482c74d62d2ab67e5c9bbc9934b312dc79efe88df4bfa1e5c578b17b336202e2695fd407fe662d2b3dc287f941ed5b724eb601be9465994adc05f0747bb397bb2c56bbafd66260527f5be5036aa38346470135c21a9c23839a93dc33664835655c9f667f09dd4a1'
-          ffprobe -v error -show_entries format=duration:stream=codec_name -of json voice-assets/firstread-natural-narration.mp3
-      - uses: actions/upload-artifact@v4
+          node - <<'JS'
+          const {chromium}=require('playwright');
+          const {spawnSync}=require('child_process');
+          const fs=require('fs');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            try{
+              const page=await browser.newPage();
+              await page.goto('https://www.aidocmaker.com/g0/audio?name=1991357595064c39a48972ae148e669c',{waitUntil:'domcontentloaded',timeout:35000});
+              let url=null;
+              for(let i=0;i<20;i++){
+                url=await page.locator('audio').first().getAttribute('src').catch(()=>null);
+                if(url?.startsWith('https://'))break;
+                await page.waitForTimeout(1500);
+              }
+              if(!url)throw new Error('Generated narration not available after 30 seconds');
+              const result=spawnSync('curl',['-fL','--silent','--show-error','--retry','2','--max-time','45','--connect-timeout','7','--output','voice-assets/firstread-3min-narration.mp3',url],{encoding:'utf8',timeout:48000});
+              const bytes=fs.existsSync('voice-assets/firstread-3min-narration.mp3')?fs.statSync('voice-assets/firstread-3min-narration.mp3').size:0;
+              console.log('download_result',result.status,'audio_bytes',bytes,'curl_error',result.stderr?.slice(0,120));
+              if(result.status!==0||bytes<100000)throw new Error('Audio transfer failed');
+            }finally{await browser.close()}
+          })().catch(e=>{console.error('NARRATION_FETCH_FAIL',e.name,e.message.slice(0,220));process.exitCode=1});
+          JS
+      - name: Upload generated MP3
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: firstread-natural-narration-mp3
+          name: FIRSTREAD-long-demo-narration
           path: voice-assets/

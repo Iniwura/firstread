@@ -3,6 +3,9 @@ import { validateModelCitations } from '../src/research-engine.mjs';
 
 function modelText(body) {
   if (typeof body?.output_text === 'string') return body.output_text;
+  const chatContent = body?.choices?.[0]?.message?.content;
+  if (typeof chatContent === 'string') return chatContent;
+  if (Array.isArray(chatContent)) return chatContent.map((piece) => piece?.text ?? '').join('\n');
   return (body?.output ?? []).flatMap((item) => item.content ?? [])
     .map((part) => part.text ?? '').filter(Boolean).join('\n');
 }
@@ -82,19 +85,27 @@ export function createAiHandler({ research = buildAiResearchPacket, transport = 
       'Close with one research posture: INVESTIGATE, WAIT, or REJECT. The human decides.',
     ].join(' ');
 
-    try {
-      const response = await transport(baseUrl + '/responses', {
-        method: 'POST',
-        headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
-        signal: AbortSignal.timeout(18000),
-        body: JSON.stringify({
+    const qwenMessages = [
+      { role: 'system', content: system },
+      { role: 'user', content: JSON.stringify({ question, packet }) },
+    ];
+    const bodyForProvider = isQwen
+      ? { model, max_tokens: 2400, stream: false, messages: qwenMessages }
+      : {
           model,
           max_output_tokens: 1100,
           input: [
             { role: 'system', content: [{ type: 'input_text', text: system }] },
             { role: 'user', content: [{ type: 'input_text', text: JSON.stringify({ question, packet }) }] },
           ],
-        }),
+        };
+    const endpoint = isQwen ? '/chat/completions' : '/responses';
+    try {
+      const response = await transport(baseUrl + endpoint, {
+        method: 'POST',
+        headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
+        signal: AbortSignal.timeout(50000),
+        body: JSON.stringify(bodyForProvider),
       });
       if (!response.ok) return res.status(502).json({ configured: true, decision: 'ABSTAIN', message: 'AI provider request failed (HTTP ' + response.status + ').' });
       const data = await response.json();
@@ -107,8 +118,20 @@ export function createAiHandler({ research = buildAiResearchPacket, transport = 
         return res.status(200).json({ configured: true, decision: 'ABSTAIN', message: 'Model response had missing, unverified or future evidence references.', validation });
       }
       return res.status(200).json({ configured: true, decision: 'AI_REVIEW', answer, validation, provider: model, mode: 'server-verified-evidence', asOf });
-    } catch {
-      return res.status(502).json({ configured: true, decision: 'ABSTAIN', message: 'AI provider connection timed out or failed.' });
+    } catch (error) {
+      // Log only the failure category, never the request, response, provider URL or API key.
+      console.error('AI_PROVIDER_TRANSPORT_FAILURE', {
+        protocol: isQwen ? 'qwen-chat' : 'openai-responses',
+        name: error?.name ?? 'unknown',
+        code: error?.cause?.code ?? null,
+      });
+      return res.status(502).json({
+        configured: true,
+        decision: 'ABSTAIN',
+        message: error?.name === 'TimeoutError'
+          ? 'AI provider exceeded the 50-second response timeout.'
+          : 'AI provider connection failed. Research remains available in rules-only mode.',
+      });
     }
   };
 }

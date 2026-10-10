@@ -1,26 +1,26 @@
 {
-  "checkedAt": "2026-10-09",
+  "checkedAt": "2026-10-10",
   "form": {
     "shortUrl": "https://forms.gle/GyWZCMCPocgJdJon6",
     "title": "Bitget AI Trading Competition Submission Form",
     "visibleFieldsConfirmed": true,
-    "publishedDeadlineText": "October 8, 23:59 (UTC+8)",
-    "newerSocialAnnouncementDeadline": "October 11, 2026 (not reconciled by the form)",
+    "publishedDeadlineText": "October 8, 23:59 (UTC+8), still displayed by automated form read on 2026-10-10",
+    "newerSocialAnnouncementDeadline": "October 11, 2026 was reported; organizer/form reconciliation NOT independently confirmed",
     "submissionAttempted": false,
     "acceptanceConfirmed": false,
-    "status": "Fields visible; cannot infer organizer acceptance or deadline extension"
+    "status": "Fields were visible in an anonymous browser on October 10. Acceptance/extension not established; mandatory X post also not confirmed."
   },
   "publication": {
     "repository": "https://github.com/Iniwura/firstread",
-    "verifiedProductionCodeCommit": "260ddfcc97155588b3b0b5d5a6a0395e2d681029",
+    "verifiedProductionCodeCommit": "09ac224f8ed6983377879ab82f30e49fb57ea90f",
     "productionUrl": "https://firstread-psi.vercel.app/",
-    "productionDeploymentId": "dpl_CrdhZcbkdDTpNkTVvkPLMGixisF2",
+    "productionDeploymentId": "dpl_Ffe8z8fSpUtcQZSHvjBZZXYE254U",
     "deploymentState": "READY",
     "automatedTests": {
-      "total": 63,
-      "passed": 63,
+      "total": 66,
+      "passed": 66,
       "failed": 0,
-      "reference": "https://github.com/Iniwura/firstread/actions/runs/37928108573",
+      "reference": "https://github.com/Iniwura/firstread/actions/runs/38035374514",
       "rootBrowserSyntaxIncluded": true
     },
     "productionBrowser": {
@@ -29,7 +29,14 @@
       "caseCount": 3,
       "includesSourceReconciliation": true,
       "formReadOnlyCheck": "FORM_FIELDS_VISIBLE_NOT_PROOF_OF_ACCEPTANCE",
-      "reference": "https://github.com/Iniwura/firstread/actions/runs/37928241804"
+      "reference": "https://github.com/Iniwura/firstread/actions/runs/38035374550"
+    },
+    "captionedDemo": {
+      "recorded": true,
+      "source": "real public production app including cited Qwen",
+      "workflow": "https://github.com/Iniwura/firstread/actions/runs/38040053030",
+      "anonymousVideoLinkConfirmed": false,
+      "notes": "MP4 artifact from GitHub Actions; publish a public streaming link for judges."
     }
   },
   "researchEvidence": {
@@ -55,12 +62,15 @@
     }
   },
   "ai": {
-    "productionProviderConfigured": false,
-    "realModelResponseVerified": false,
+    "productionProviderConfigured": true,
+    "realModelResponseVerified": true,
+    "model": "qwen3.8-max",
+    "provider": "Bitget hackathon gateway",
     "modelTransportImplemented": true,
     "strictEvidenceBoundaryTested": true,
-    "activationInstructions": "AI_ACTIVATION.md",
-    "liveCheck": "https://github.com/Iniwura/firstread/actions/workflows/live-ai.yml"
+    "verifiedCase": "MSFT Q4 FY2026; exact SEC exhibit ID E3-MSFT",
+    "verification": "https://github.com/Iniwura/firstread/actions/runs/38035417592",
+    "notes": "One real cited answer verified. Citation-ID validity does not independently prove all numeric claims. Model may timeout or require retries."
   },
   "userValidation": {
     "completed": false,
@@ -71,7 +81,8 @@
   "externalActions": {
     "compliantXQuotePublished": false,
     "googleFormSubmitted": false,
-    "teamIdentityProvidedForSubmission": false
+    "teamIdentityProvidedForSubmission": false,
+    "notes": "Not independently confirmed. Only the owner can supply real public post URL, UID and submission receipt."
   },
-  "status": "Research engine, real SEC/MCP recon, 63 unit tests and production Chromium verified. Pending Qwen key/live-model proof, actual users, X post and form submission."
+  "status": "Engineering GO: 66 tests, production Chromium and real Qwen pass. Competition submission NOT verified. Public MP4 link, actual X post and form acceptance still pending."
 }

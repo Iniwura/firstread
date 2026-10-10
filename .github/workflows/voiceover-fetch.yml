@@ -1,4 +1,4 @@
-name: FIRSTREAD long-demo narration fetch
+name: FIRSTREAD judge-demo multipart narration
 on:
   push:
     branches:
@@ -6,46 +6,54 @@ on:
     paths:
       - '.github/workflows/voiceover-fetch.yml'
 jobs:
-  fetch:
+  voice:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 5
     permissions:
       contents: read
     steps:
-      - name: Install Playwright
+      - name: Install Chromium for generated narration
         run: |
           npm install --no-save --no-package-lock playwright
           npx playwright install chromium
-      - name: Download generated long-form narration without publishing it
+      - name: Extract three generated voice recordings
         shell: bash
         run: |
           mkdir -p voice-assets
-          node - <<'JS'
-          const {chromium}=require('playwright');
-          const {spawnSync}=require('child_process');
-          const fs=require('fs');
+          timeout 120s node - <<'JS'
+          const {chromium}=require('playwright'),{spawnSync}=require('child_process'),fs=require('fs');
+          const ids=['a409ced158fe4073bcff36ab7b6691b4','f3ecdbd4271d455f8eb895223b724bd1','2b89e5859d5849c18bb395493cd965ac'];
           (async()=>{
             const browser=await chromium.launch({headless:true});
-            try{
+            const clips=await Promise.all(ids.map(async (id,i)=>{
               const page=await browser.newPage();
-              await page.goto('https://www.aidocmaker.com/g0/audio?name=1991357595064c39a48972ae148e669c',{waitUntil:'domcontentloaded',timeout:35000});
-              let url=null;
-              for(let i=0;i<20;i++){
-                url=await page.locator('audio').first().getAttribute('src').catch(()=>null);
-                if(url?.startsWith('https://'))break;
-                await page.waitForTimeout(1500);
-              }
-              if(!url)throw new Error('Generated narration not available after 30 seconds');
-              const result=spawnSync('curl',['-fL','--silent','--show-error','--retry','2','--max-time','45','--connect-timeout','7','--output','voice-assets/firstread-3min-narration.mp3',url],{encoding:'utf8',timeout:48000});
-              const bytes=fs.existsSync('voice-assets/firstread-3min-narration.mp3')?fs.statSync('voice-assets/firstread-3min-narration.mp3').size:0;
-              console.log('download_result',result.status,'audio_bytes',bytes,'curl_error',result.stderr?.slice(0,120));
-              if(result.status!==0||bytes<100000)throw new Error('Audio transfer failed');
-            }finally{await browser.close()}
-          })().catch(e=>{console.error('NARRATION_FETCH_FAIL',e.name,e.message.slice(0,220));process.exitCode=1});
+              try{
+                await page.goto('https://www.aidocmaker.com/g0/audio?name='+id,{waitUntil:'domcontentloaded',timeout:25000});
+                let url='';
+                for(let k=0;k<21;k++){
+                  url=await page.locator('audio').first().getAttribute('src',{timeout:1500}).catch(()=>'');
+                  if(url.startsWith('https://'))break;
+                  await page.waitForTimeout(1500);
+                }
+                console.log('PART',i+1,'ready',!!url);
+                return url;
+              }catch(e){console.log('PART',i+1,'page_error',e.message.slice(0,120));return '';}
+            }));
+            // Immediately force exit to avoid hanging browser background requests.
+            clips.forEach((url,i)=>{
+              if(!url)return;
+              const target='voice-assets/firstread-voice-'+(i+1)+'.mp3';
+              const result=spawnSync('curl',['-fL','--silent','--show-error','--retry','1','--max-time','15','--connect-timeout','5','--output',target,url],{encoding:'utf8',timeout:18000});
+              const bytes=fs.existsSync(target)?fs.statSync(target).size:0;
+              console.log('VOICE',i+1,'bytes',bytes,'result',result.status,'error',result.stderr?.slice(0,130));
+            });
+            const good=ids.every((_,i)=>fs.existsSync('voice-assets/firstread-voice-'+(i+1)+'.mp3')&&fs.statSync('voice-assets/firstread-voice-'+(i+1)+'.mp3').size>50000);
+            process.exit(good?0:1);
+          })().catch(e=>{console.log('FAILED',e.message.slice(0,170));process.exit(1)});
           JS
-      - name: Upload generated MP3
+      - name: Publish private artifact for edit
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: FIRSTREAD-long-demo-narration
+          name: FIRSTREAD-three-part-voiceover
           path: voice-assets/

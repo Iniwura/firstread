@@ -10,27 +10,40 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 5
+    timeout-minutes: 9
     steps:
-      - name: Fetch previously generated voiceover and inspect file
-        shell: bash
+      - name: Prepare browser
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Check public generated recording and download if ready
         run: |
           mkdir -p voice-assets
-          python3 - <<'PY'
-          import urllib.request,urllib.error,os
-          url='https://www.aidocmaker.com/g0/audio?name=8f6959bce03f4ab393cc84b56c1aa937'
-          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
-          try:
-            with urllib.request.urlopen(req,timeout=30) as res:
-              data=res.read(30000000)
-              print('status',res.status,'mime',res.headers.get('Content-Type'),'bytes',len(data),'redirected',res.url)
-              print('firstbytes',repr(data[:70]))
-              open('voice-assets/downloaded.bin','wb').write(data)
-          except Exception as ex: print('retrieval_failure',type(ex).__name__,str(ex)[:350])
-          PY
-          file voice-assets/* 2>/dev/null || true
+          node - <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({acceptDownloads:true});
+            const captures=[];
+            page.on('response',r=>{
+              const u=r.url();
+              if(/audio|tts|mp3|voice|generated|recording|storage|files/i.test(u)){
+                captures.push({url:u.slice(0,240),status:r.status(),mime:r.headers()['content-type']});
+              }
+            });
+            await page.goto('https://www.aidocmaker.com/g0/audio?name=8f6959bce03f4ab393cc84b56c1aa937',{waitUntil:'domcontentloaded',timeout:45000});
+            await page.waitForTimeout(12000);
+            console.log('title',await page.title());
+            console.log('text',(await page.locator('body').innerText()).slice(0,2500));
+            console.log('audio',JSON.stringify(await page.locator('audio').evaluateAll(xs=>xs.map(x=>({src:x.src,currentSrc:x.currentSrc})))));
+            console.log('mediaLinks',JSON.stringify(await page.locator('a[href]').evaluateAll(xs=>xs.map(x=>x.href).filter(u=>/audio|mp3|download|record/i.test(u)).slice(0,15))));
+            console.log('network',JSON.stringify(captures.slice(-30)));
+            await page.screenshot({path:'voice-assets/player.png'});
+            await browser.close();
+          })().catch(e=>{console.log('page_error',e.message);process.exitCode=1})
+          JS
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: firstread-generated-voiceover-probe
+          name: firstread-voice-player-diagnostic
           path: voice-assets

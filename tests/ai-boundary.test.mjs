@@ -106,6 +106,7 @@ test('Qwen uses hackathon chat-completions schema and verifies the returned SEC 
   assert.equal(response.payload.validation.valid, true);
   assert.equal(upstream.url, 'https://hackathon.bitgetops.com/v1/chat/completions');
   assert.equal(upstream.body.model, 'qwen3.8-max');
+  assert.equal(upstream.body.reasoning_effort, 'low');
   assert.equal(upstream.body.input, undefined);
   assert.ok(upstream.body.messages[1].content.includes('E2-NVDA'));
   assert.equal(upstream.authorization, 'Bearer private-test-token');

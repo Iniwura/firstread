@@ -362,3 +362,11 @@ button:focus-visible,a:focus-visible{outline:3px solid #008EA6;outline-offset:4p
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+/* Independent WCAG audit: strengthen only low-contrast editorial microcopy.
+   Typography, content, layout, blue accents and all existing spacing stay intact. */
+.hero-bottom-caption small{color:#5b665c}
+.story-lede .outline{color:#34433e}
+.paper-ruling{color:#4e624f}
+.paper-sub{color:#4f5d50}
+.principles li>span{color:#07596c}

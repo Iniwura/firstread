@@ -1,0 +1,36 @@
+name: FIRSTREAD voiceover asset fetch
+on:
+  push:
+    branches:
+      - ops/firstread-demo-audio-fetch
+    paths:
+      - '.github/workflows/voiceover-fetch.yml'
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - name: Fetch previously generated voiceover and inspect file
+        shell: bash
+        run: |
+          mkdir -p voice-assets
+          python3 - <<'PY'
+          import urllib.request,urllib.error,os
+          url='https://www.aidocmaker.com/g0/audio?name=8f6959bce03f4ab393cc84b56c1aa937'
+          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
+          try:
+            with urllib.request.urlopen(req,timeout=30) as res:
+              data=res.read(30000000)
+              print('status',res.status,'mime',res.headers.get('Content-Type'),'bytes',len(data),'redirected',res.url)
+              print('firstbytes',repr(data[:70]))
+              open('voice-assets/downloaded.bin','wb').write(data)
+          except Exception as ex: print('retrieval_failure',type(ex).__name__,str(ex)[:350])
+          PY
+          file voice-assets/* 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firstread-generated-voiceover-probe
+          path: voice-assets

@@ -1,163 +1,167 @@
-# FIRSTREAD — evidence-timed earnings intelligence
+# FIRSTREAD
 
-**Current status (October 10, 2026):** The public app and research desk are live; the protected `BITGET_QWEN_API_KEY` is configured server-side. The latest [live Qwen 3.8 Max proof](https://github.com/Iniwura/firstread/actions/runs/38035417592) confirmed a real source-cited Microsoft SEC exhibit response (`AI_REVIEW`, `[E3-MSFT]`). The [production Chromium suite](https://github.com/Iniwura/firstread/actions/runs/38035374550) and [66-test engineering suite](https://github.com/Iniwura/firstread/actions/runs/38035374514) passed. An updated [captioned real-browser demonstration](https://github.com/Iniwura/firstread/actions/runs/38040037762) was recorded, including a live Qwen answer.
+**Evidence-timed earnings research for Bitget Reality tokenized equities.**
 
-The first-visit tour explains the flow and can be replayed with **DESK TOUR**. The landing page is the editorial introduction; analysis happens at [**/desk.html**](https://firstread-psi.vercel.app/desk.html). Bitget submission acceptance and a published compliant X post are **not confirmed**. See [SUBMISSION.md](SUBMISSION.md). AI citations are checked for source ID and historical visibility, not full independent numerical fact-checking.
+**What did you actually know when you had to make the decision?**
 
+FIRSTREAD links real SEC earnings filings, Bitget Reality rToken market observations and constrained Qwen research. Set a historical decision timestamp and inspect which evidence was eligible *then*, what remained unknown, and which market observations came later. Every review keeps its sources and uncertainty visible.
 
+**FIRSTREAD is a human-controlled research tool.** It does not connect exchange accounts, place trades or promise returns.
 
-FIRSTREAD is an evidence-timed earnings desk for Bitget Reality rTokens, built for **Bitget AI Base Camp S2, AI Trading Desk → Information Extraction & Signal Generation**. It helps an active rToken trader ask: after this disclosure, what was actually knowable at the decision time, what did the rToken market show, what conflicts remain, and should a human investigate, wait, or reject the idea?
+[**Live Website**](https://firstread-psi.vercel.app/) · [**Open Research Desk**](https://firstread-psi.vercel.app/desk.html) · [**Watch the 3:28 Judging Demo**](https://youtu.be/yZq9-JpuQco)
 
-The product is intentionally a research desk, not an execution agent. It does not connect to accounts, place orders, invent performance, or turn a thin record into a confident signal.
+**Bitget AI Base Camp Hackathon S2** · AI Trading Desk → **Information Extraction & Signal Generation**
 
-## Run the first gate
+---
 
-With Node.js >= 20 and working outgoing HTTPS to `api.bitget.com`:
+## The problem FIRSTREAD solves
+
+A historical earnings explanation can accidentally mix information from different moments: filings, later prices, present-day vendor fundamentals, and commentary. That creates hindsight disguised as research.
+
+FIRSTREAD uses an explicit decision-time cutoff to separate:
+
+- **Eligible evidence:** SEC / issuer documents with qualifying timestamp precision.
+- **Pre-decision market data:** completed Bitget Reality price candles available by the cutoff.
+- **Later observations:** price reactions displayed separately, never included in the historical AI packet.
+- **Present-day fundamentals:** an independent Bitget Equity MCP check clearly identified as a *current* reconciliation, not historical knowledge.
+- **Unknowns and disagreements:** missing archived consensus, imprecise release timing, inconsistent vendor data and retrieval failures.
+
+The result is a linked, inspectable research brief with one human posture: **INVESTIGATE, WAIT or REJECT**.
+
+## Try the complete research flow
+
+1. **Choose a company.** Select NVIDIA, Apple or Microsoft. Each case is anchored to a verified SEC 8-K Exhibit 99.1 and a Bitget Reality rToken.
+2. **Rewind the decision clock.** For NVIDIA, go to **15 minutes before** the SEC filing acceptance (2026-08-26 20:21:19 UTC). The filed earnings exhibit and its figures remain withheld.
+3. **Move to SEC acceptance.** The exhibit becomes eligible at the exact filing time. Read the source-linked financial comparison and completed historical candles.
+4. **Check independent data.** Run the SEC ↔ Bitget fundamentals reconciliation. NVIDIA has a reported operating-income discrepancy; Apple's sampled vendor data cover a cumulative period and cannot be treated as standalone Q3; Microsoft's sampled matching quarter agrees.
+5. **Ask Bitget Qwen.** On Microsoft, choose a cutoff two hours after SEC acceptance and ask for filed figures, unavailable consensus, and next research steps. A real provider test returned a source-cited review including **[E3-MSFT]**.
+6. **Copy the research receipt.** Inspect the UTC cutoff, source identifiers, evidence hash and limits.
+
+First-time visitors can follow the guided tour and replay it with **DESK TOUR**.
+
+[Open NVIDIA before the filing](https://firstread-psi.vercel.app/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z) · [NVIDIA](https://firstread-psi.vercel.app/desk.html?ticker=NVDA) · [Apple](https://firstread-psi.vercel.app/desk.html?ticker=AAPL) · [Microsoft](https://firstread-psi.vercel.app/desk.html?ticker=MSFT)
+
+> **Important timing caveat:** SEC acceptance is a conservative availability anchor for the *filed exhibit*. It does not prove the earnings announcement was first made public at that moment. Earlier issuer announcements may exist.
+
+## Features at a glance
+
+| Feature | What is implemented |
+|---|---|
+| Temporal evidence gate | Exact UTC cutoff; future documents and incomplete/future candles excluded |
+| SEC earnings research | Three source-identified 8-K Exhibit 99.1 cases |
+| Financial comparison | Filed revenue, EPS, operating income, year-over-year changes and caveats |
+| Bitget Reality markets | Real rToken symbols, instruments and historical one-hour candles |
+| Independent source check | Current-day Bitget Equity MCP fundamentals, outside the historical AI packet |
+| Live constrained AI | Bitget Qwen 3.8 Max, using server-built and cutoff-qualified evidence |
+| Citation guardrail | Model evidence IDs validated against eligible sources |
+| Research receipt | Source references, decision time and evidence hash |
+| Product experience | No-login responsive desk, first-visit tour, clear rules-only fallback |
+
+### Verified SEC filing anchors
+
+| Company | Acceptance time (UTC) | Primary exhibit | Selected filed results |
+|---|---|---|---|
+| NVIDIA · Q2 FY2027 | 2026-08-26 20:21:19 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm) | $96.2B revenue; $2.46 GAAP diluted EPS |
+| Apple · Q3 FY2026 | 2026-07-30 20:30:28 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm) | $109.4B revenue; $2.02 diluted EPS |
+| Microsoft · Q4 FY2026 | 2026-07-29 20:04:53 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/msft-ex99_1.htm) | $90.0B revenue; $4.81 GAAP diluted EPS |
+
+Source metadata and reported facts: [SEC exhibits](data/sec-exhibits.json) · [Verified anchors](data/verified-sec-anchors.json) · [Financial comparison data](data/sec-financial-comparisons.json).
+
+## How it works
+
+```text
+              SEC filings / issuer evidence
+                           │
+     Historical UTC cutoff ┼── Bitget Reality completed candles
+                           │
+                 Temporal evidence gate
+                           │
+                  Server research packet
+                           │
+            ┌──────────────┴──────────────┐
+            │                             │
+     Deterministic brief          Bitget Qwen review
+            │                             │
+            └──────────────┬──────────────┘
+                           │
+               Source IDs + evidence receipt
+                           │
+                   Human decision
+
+   Bitget Equity MCP ─→ Separate present-day source check
+```
+
+- [src/temporal-engine.mjs](src/temporal-engine.mjs) handles publication precision and historical price-candle boundaries.
+- [src/research-engine.mjs](src/research-engine.mjs) creates typed evidence, deterministic research and validates citation IDs.
+- [src/research-service.mjs](src/research-service.mjs) constructs source-qualified cases and the server-authoritative AI packet.
+- [src/bitget-client.mjs](src/bitget-client.mjs) retrieves Bitget Reality market observations.
+- [api/ai.js](api/ai.js) invokes the server-side model and rejects unpermitted evidence references.
+
+The browser sends only the company, UTC cutoff and question. **It cannot provide its own source packet.**
+
+Citation checks validate source *IDs and historical eligibility*, not every number in the model's prose. If the model fails, times out or lacks sufficient evidence, the app can abstain. It does not invent a successful AI answer.
+
+## Run locally
+
+**Requires:** Node.js 20 or newer. Real market-data functions and feasibility probes require access to external HTTPS endpoints.
 
 ```bash
+git clone https://github.com/Iniwura/firstread.git
+cd firstread
 npm test
-npm run probe
-npm run probe:sources
 npm run typecheck
-npm run lint
 npm run build
 npm run dev
 ```
 
-Open `http://127.0.0.1:4174/` for the public editorial homepage, or **`http://127.0.0.1:4174/desk.html`** for the functional research workflow: select NVDA, AAPL, or MSFT; set an exact UTC decision timestamp; run the desk; inspect the visible evidence receipt, completed pre-decision candles, separated reaction window, rules-only baseline, caveats, and reproducible hash; then optionally ask the constrained AI review step.
+Open [http://127.0.0.1:4174/](http://127.0.0.1:4174/) or [the local research desk](http://127.0.0.1:4174/desk.html).
 
-`npm test` checks time-locked evidence/candle handling. `npm run probe` discovers active rToken instruments using Bitget's public `/api/v3/market/instruments` endpoint, queries public historical candlesticks near three **SEC acceptance** times, and writes `reports/bitget-feasibility.json`. If no matching instrument, no coverage, or the API is unreachable, it exits nonzero. No artificial price data are used.
+To check live external data availability:
 
-A PASS establishes candidate candle coverage only. It does **not** establish correct first public earnings release timestamps, historic analyst forecasts, exchange execution, trading performance, or profitability.
-
-## Verified source anchors
-
-- NVDA filing accepted 2026-08-26 16:21:19 ET: https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/0001045810-26-000073-index.html
-- AAPL filing accepted 2026-07-30 16:30:28 ET: https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/0000320193-26-000018-index.htm
-- MSFT filing accepted 2026-07-29 16:04:53 ET: https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/0001193125-26-323632-index.htm
-
-These are **conservative SEC publication anchors**, not proof that earnings information was first public at that instant. Press releases may have appeared earlier; verify before any performance claim.
-
-## Official Bitget technical docs
-
-- Instruments: https://www.bitget.com/docs/catalog/market-market-data/market-instruments
-- Candles: https://www.bitget.com/docs/catalog/market/market-data
-- Reality trading guide: https://www.bitget.com/docs/uta/reality-trading-guide
-- Research fundamentals: https://www.bitget.com/docs/catalog/reality/basic-info
-- US stocks MCP server: https://agent.bitget.com/mcp (discover supported tools dynamically)
-
-## What is real and verified
-
-- Bitget public Reality instruments and historical candles were probed live for `RNVDAUSDT`, `RAAPLUSDT`, and `RMSFTUSDT`.
-- Each case has real one-hour candle coverage around a verified SEC filing-acceptance timestamp.
-- Bitget Reality public stock-info, market-state, market-calendar, and instrument endpoints return live data with the observed `{code,msg,requestTime,data}` envelope.
-- The Bitget US-equity MCP transport exposes an equity catalog. The first probe returned HTTP 503, but [subsequent live verification](https://github.com/Iniwura/firstread/actions/runs/37926356094) confirmed successful equity profile, income statement, metrics and quote queries. Fresh provider values are kept outside the historical evidence packet.
-- Issuer release evidence is labeled with its actual precision. NVDA has an official approximate public-release schedule; Apple and Microsoft are date-only in the retrieved issuer pages and are excluded from precision-sensitive issuer replay.
-
-Reports: `reports/bitget-feasibility.json`, `reports/source-feasibility.json`, and `reports/submission-status.json`.
-
-## Architecture
-
-```text
-Bitget Reality REST ─┐
-SEC + issuer IR ─────┼─> temporal evidence gate ─> rules baseline ─> optional LLM review
-Bitget equity MCP ───┘             │                         │
-                                  └─> receipt + human posture (INVESTIGATE / WAIT / REJECT)
+```bash
+npm run probe
+npm run probe:sources
 ```
 
-- `src/temporal-engine.mjs` fails closed on date-only or malformed timestamps and excludes unfinished/future candles.
-- `src/research-engine.mjs` creates typed evidence objects, audits gaps, builds the deterministic baseline, and validates model evidence IDs.
-- `src/bitget-client.mjs` fetches live public Reality instruments, quotes, candles, session states, and calendar data with rate-limit handling.
-- `src/research-service.mjs` joins the three real cases, primary links, Bitget market response, and point-in-time rules.
-- `api/ai.js` keeps the LLM behind a typed packet and rejects citations to evidence not visible at the selected `asOf`.
-- `index.html`, `styles.css`, and `app.js` are a zero-build editorial finance-terminal UI; no frontend package installation is required.
+These probes can fail during API outages or rate limits; successful candle coverage is not a strategy-backtest or profitability result.
 
-Optional AI configuration uses `BITGET_QWEN_API_KEY`, `BITGET_QWEN_BASE_URL=https://hackathon.bitgetops.com/v1`, and `BITGET_QWEN_MODEL=qwen3.8-max`. OpenAI-compatible variables are supported as a fallback. Keys are server-only.
+**Optional local AI:** Configure a private `BITGET_QWEN_API_KEY` on the server. Provider defaults are `BITGET_QWEN_BASE_URL=https://hackathon.bitgetops.com/v1` and `BITGET_QWEN_MODEL=qwen3.8-max`. Never commit secrets. Without a provider key, the desk operates in rules-only mode.
 
-## Primary SEC earnings exhibits for three companies
+## Verified engineering evidence
 
-The following exact SEC 8-K exhibits were independently inspected and added as time-qualified `E3` evidence. They are included **only from their respective SEC acceptance timestamps** (never before). Apple and Microsoft publisher pages remain date-only, so FIRSTREAD does not invent their earlier public release times.
+| Test | Verified result | Evidence |
+|---|---|---|
+| Automated and adversarial research tests | **66 passed, 0 failed** | [CI run](https://github.com/Iniwura/firstread/actions/runs/38040776566) |
+| Production end-to-end browser checks | **Passed** for all three cases, desktop/mobile and historical replay | [Browser run](https://github.com/Iniwura/firstread/actions/runs/38040776529) |
+| Responsive visual inspection | **Passed** across tested breakpoints | [Visual QA](https://github.com/Iniwura/firstread/actions/runs/38040776588) |
+| Accessibility and API-boundary checks | **Passed** on tested pages | [Judge audit](https://github.com/Iniwura/firstread/actions/runs/38040776573) |
+| Actual Qwen provider request | **Passed** with Microsoft SEC citation `[E3-MSFT]` | [Live AI proof](https://github.com/Iniwura/firstread/actions/runs/38035417592) |
+| SEC versus Bitget fundamentals | NVIDIA mismatch, Apple incomparable period, Microsoft agreement observed | [Live source audit](https://github.com/Iniwura/firstread/actions/runs/37927430868) |
 
-| Case | Accepted at (UTC) | Filed exhibit | Verified reported data |
-|---|---|---|---|
-| NVIDIA | 2026-08-26 20:21:19 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm) | $96.2B quarterly revenue; $2.46 GAAP EPS; $108B ±2% forward revenue outlook |
-| Apple | 2026-07-30 20:30:28 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/a8-kex991q3202606272026.htm) | $109.4B quarterly revenue; $2.02 diluted EPS; 50.1% gross margin |
-| Microsoft | 2026-07-29 20:04:53 | [EX-99.1](https://www.sec.gov/Archives/edgar/data/789019/000119312526323632/msft-ex99_1.htm) | $90B quarterly revenue; $4.81 GAAP EPS; +43% Azure growth |
+[**Watch the final narrated product demo (YouTube)**](https://youtu.be/yZq9-JpuQco)
 
-The `data/sec-exhibits.json` records the source URLs, reported facts, quotes, SEC acceptance anchors and verification date. The application distinguishes a publisher's first-public time from later filing availability and never infers first public release solely from SEC acceptance. A filed source may be web-inspectable independently even when SEC blocks a particular live server request; that retrieval failure is disclosed, not hidden.
+These are engineering observations. They do **not** establish user adoption, trading performance, independent model accuracy or guaranteed returns.
 
-Research reports now include an **actionable human brief**: which financial facts are time-qualified, what remains unverified, what the historical rToken prices actually establish, and what evidence or checks a trader must obtain next. The future/hindsight market response stays outside the pre-decision model packet. Five additional SEC timing tests guard against false historical availability.
+## Honest limitations
 
-## Competition-grade research improvements (October 9)
+- Three fixed supported earnings cases, not arbitrary ticker coverage.
+- Historical market replay uses one-hour candles, not tick-level execution.
+- SEC acceptance does not establish when issuer earnings information first became publicly available.
+- No independently archived historical analyst-consensus series; no unsupported beat/miss claims.
+- Present-day vendor financials and later market observations are excluded from historical AI input.
+- Some source websites resist programmatic retrieval. The desk discloses retrieval failures rather than counting them as corroboration.
+- Checking a model's evidence IDs is not independent numeric fact-checking.
+- No independent human-user study or trading-performance results are claimed.
 
-FIRSTREAD now includes a **decision dossier** in the research response and in the UI. It calculates pre-cutoff price drift, observed intrawindow range, candle-age/gap quality, source-timing precision, and a separate outcome-only market observation. It does not label returns, fills, historical consensus comparisons, or profitability. Later price observations are never included in the model's pre-decision packet.
+## Further documentation
 
-The optional AI endpoint is server-authoritative: the browser submits only the company, exact UTC cutoff, and natural-language question. The server reconstructs the evidence independently, rejects client evidence payloads, and requires model evidence IDs to match the time-filtered packet. An unconfigured provider is shown clearly as rules-only mode; it is **not** represented as live AI analysis.
+- [Submission description and role of the LLM](SUBMISSION.md)
+- [Evaluation protocol](EVALUATION.md)
+- [Production and source verification](PRODUCTION_PROOF.md)
+- [Independent user-test protocol](USER_TEST_PROTOCOL.md)
+- [AI configuration](AI_ACTIVATION.md)
+- [Recorded submission status](reports/submission-status.json)
 
-Historical research is reconstructed from issuer/SEC publication anchors. `firstObservedAt` is **not** fabricated to equal historical publication time. These reconstructed sources do not establish that FIRSTREAD actually observed a release in 2026 at the displayed historical time. Approximate and date-only publisher timestamps remain labeled accordingly.
+**Official references:** [Bitget AI Base Camp S2 handbook](https://bitget-ai.gitbook.io/bitgetai_hackathons2) · [Bitget Reality market data](https://www.bitget.com/docs/catalog/reality/market-data) · [Bitget Agent Hub](https://www.bitget.com/docs/uta/agent-hub)
 
-[Automated quality checks](https://github.com/Iniwura/firstread/actions) now run on push. The GitHub checks cover Node tests, JavaScript syntax, and build verification; a passing workflow does not substitute for a live provider test, an independent external-user study, or production-browser validation.
-
-For a judge-ready walkthrough and proof checklist, see [EVALUATION.md](EVALUATION.md), [PRODUCTION_PROOF.md](PRODUCTION_PROOF.md), and [AI_ACTIVATION.md](AI_ACTIVATION.md). Real AI answers in the public demo require a configured `BITGET_QWEN_API_KEY` (or `OPENAI_API_KEY`) on the Vercel project. A provider key must remain in Vercel encrypted environment variables, never committed to this repository or submitted in chat.
-
-## Scope and responsible proof
-
-- AI research desk: human takes final decision; no live funds required.
-- Strong showcase: SEC/issuer evidence → what was known when → Bitget reaction → conflicting evidence → ABSTAIN or structured human-research report.
-- No historical expectations without archived as-of snapshots.
-- No causal claim from simple price movement; no simulated fills labelled real.
-- Zero fabricated credentials, customers, outcomes, metrics, reviews, or API results.
-
-Observed validation includes a GitHub CI run with **63 of 63 tests passing**, plus live API probes for all three cases, all three end-to-end research workflows, desktop/mobile Chromium verification, case switching, no-lookahead separation, and a simulated bad-network abstention. These are engineering observations, not user adoption or trading-performance metrics. No historical analyst-consensus snapshot, live trading, paper trading, backtest, return, Sharpe, drawdown, fill, or profitability claim is made.
-
-## Financial comparison and independent source reconciliation
-
-FIRSTREAD compares **reported financial metrics year over year using three SEC-filed Exhibit 99.1 records**. It calculates revenue, EPS, operating income and relevant line-item changes. The engine labels earnings-quality caveats such as Apple's tariff-refund benefits, Microsoft discrete gains and cloud/consumer segment divergence, and NVIDIA's Data Center growth. No historical analyst expectations or surprise percentages are invented.
-
-A separate **Reconcile SEC ↔ Bitget** control queries public Bitget Equity MCP income statements at the present time (`equity_fundamental_income`); it is NOT included in any historical AI packet. The reconciliation requires matching symbol, fiscal year and a **standalone fiscal-quarter record**. It refuses year-to-date or annual records as incomparable rather than reporting spurious differences.
-
-The [independent live verification](https://github.com/Iniwura/firstread/actions/runs/37927430868) observed:
-- NVIDIA: revenue and diluted EPS agree; reported operating income differs by $269 million. Metric definition mismatch remains unresolved.
-- Apple: provider has a cumulative three-quarter record rather than a standalone Q3 row; correctly marks it **INCOMPARABLE_PERIOD**.
-- Microsoft: the standalone Q4 income row matches revenue, operating income and diluted EPS; the unrelated annual total is ignored.
-
-A later [live provider check](https://github.com/Iniwura/firstread/actions/runs/37927430868) verifies the abstention and agreements. This is a **post-hoc source audit**, not a historical trading signal, model benchmark, profitability proof or evidence of user adoption.
-
-The `scripts/typecheck.mjs` checks the root browser entrypoint `app.js` in addition to API/scripts/source JavaScript. This was added after the production browser check exposed malformed JavaScript that the earlier source-only CI did not catch.
-
-## Demonstration video and verified app
-
-A captioned real-browser video demonstrates all three issuer cases, historical evidence isolation, SEC-sourced YoY financial analysis and the independent Bitget data reconciliation.
-
-- [Captioned competition demo (GitHub Actions artifact)](https://github.com/Iniwura/firstread/actions/runs/37927622231/artifacts/11614679622) — browser recording, converted to MP4 and archived.
-- [Production browser proof](https://github.com/Iniwura/firstread/actions/runs/37928241804) — PASS with zero failures, desktop/mobile, user journey and live reconciliation.
-- [Automated quality proof](https://github.com/Iniwura/firstread/actions/runs/37928108573) — 63/63 tests pass and root browser entrypoint syntax verified.
-
-The video is a scripted product demonstration, not a successful live Qwen response or an independent human usability study. Actual Qwen access has been applied for by the builder and remains unverified until the key is issued and a real response passes the live-model test.
-
-## Public website and research workspace (October 9 redesign)
-
-- **Public editorial website:** [firstread-psi.vercel.app](https://firstread-psi.vercel.app/) — custom, art-directed standalone presentation.
-- **Working research desk:** [firstread-psi.vercel.app/desk.html](https://firstread-psi.vercel.app/desk.html) — original SEC and Bitget workflows retained.
-- **Deep-linked cases:** `/desk.html?ticker=NVDA`, `/desk.html?ticker=AAPL`, and `/desk.html?ticker=MSFT`.
-- **Time-specific demo:** `/desk.html?ticker=NVDA&asOf=2026-08-26T20%3A21%3A18.000Z` holds SEC-filed exhibits out one second before acceptance.
-
-The site intentionally separates a designed first impression from a high-density analyst workspace. The public reference behind the visual direction was Monodrift; its branding, code and images were **not** copied. FIRSTREAD uses its own typography, content and locally packaged public-domain photograph of New York Stock Exchange ticker equipment from the [Library of Congress, c.1922](https://www.loc.gov/item/2013647237/).
-
-Visual QA verifies five breakpoints (1440, 1100, 820, 390 and 375px), the historical cut-off toggle, source isolation, accessible mobile menu, case links, and the unchanged Bitget research journeys. Both pages have separate responsive styles and intentionally share the same product identity.
-
-## Competition materials
-
-- [Submission description and role of LLM](SUBMISSION.md)
-- [Submission status](reports/submission-status.json)
-- Live demo: https://firstread-psi.vercel.app/
-
-The live form was checked and appeared fillable, but was not submitted. It currently states an October 8, 23:59 (UTC+8) deadline; the official activity page shows a conflicting earlier timeline. Acceptance and any extension are not claimed. The X promotional draft is in `SUBMISSION.md` and requires user approval before posting.
-
-## Primary references
-
-- Bitget Reality market data: https://www.bitget.com/docs/catalog/reality/market-data
-- Bitget Agent Hub / equity MCP: https://www.bitget.com/docs/uta/agent-hub
-- Required Bitget interaction post: https://x.com/Bitget_AI/status/2062506424085917944?s=20
-
-The handbook-defined implementation is represented by this tree; see `SUBMISSION.md` for the current honest delivery status and remaining external actions.
+**Read the record before making the call.**
